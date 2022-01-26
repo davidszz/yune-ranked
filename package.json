@@ -18,7 +18,9 @@
   },
   "dependencies": {
     "discord.js": "^13.6.0",
-    "dotenv": "^14.3.0"
+    "dotenv": "^14.3.0",
+    "mongoose": "^6.1.8",
+    "transform-props": "^1.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.8",
@@ -26,6 +28,7 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-typescript": "^7.16.7",
     "@types/dotenv": "^8.2.0",
+    "@types/mongoose": "^5.11.97",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
     "babel-plugin-module-resolver": "^4.1.0",

@@ -25,10 +25,20 @@
     "no-shadow": "off",
     "class-methods-use-this": "off",
     "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+		"@typescript-eslint/no-explicit-any": "off",
 
     "prettier/prettier": "error",
     
     "import/prefer-default-export": "off",
+		"import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "ts": "never",
+        "mjs": "never"
+      }
+    ],
     "import-helpers/order-imports": [
       "warn",
       {
