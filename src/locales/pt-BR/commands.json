@@ -1,8 +1,0 @@
-{
-  "common": {
-    "no_permission": "Você não possui permissão para utilizar este comando."
-  },
-  "ping": {
-    "pdl": "Você possui `{{pdl}}` pdl's!"
-  }
-}
