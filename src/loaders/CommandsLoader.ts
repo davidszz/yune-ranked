@@ -14,7 +14,7 @@ export class CommandsLoader extends Loader {
 
 		const status = { failed: 0, success: 0 };
 		for await (const file of files) {
-			if (/\.(js|ts)$/g.test(file.basename)) {
+			if (/\.(js|ts)$/i.test(file.basename)) {
 				try {
 					const File = (await import(file.fullPath)).default;
 					const command = new File(this.client);
@@ -24,15 +24,15 @@ export class CommandsLoader extends Loader {
 					}
 				} catch (err) {
 					status.failed++;
-					Logger.error(`An error ocurrent on loader ${__filename} initialization:`, err);
+					Logger.error(`Failed to load the command file ${file.basename}:`, err);
 				}
 			}
+		}
 
-			if (status.failed) {
-				Logger.warn(`${status.success} commands loaded and ${status.failed} failed`);
-			} else {
-				Logger.success(`All ${status.success} commands loaded!`);
-			}
+		if (status.failed) {
+			Logger.warn(`${status.success} commands loaded and ${status.failed} failed`);
+		} else {
+			Logger.success(`All ${status.success} commands loaded!`);
 		}
 
 		if (!process.argv.includes('--no-deploy')) {
