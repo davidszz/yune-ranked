@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-export interface IMatchTeam {
+interface IMatchTeam {
 	members: string[];
 	captainId: string;
 }
@@ -14,6 +14,22 @@ export interface IMatchSchema {
 	updatedAt: Date;
 }
 
+const MatchTeamSchema = new Schema<IMatchTeam>(
+	{
+		members: {
+			type: [String],
+			required: true,
+		},
+		captainId: {
+			type: String,
+			required: true,
+		},
+	},
+	{
+		_id: false,
+	}
+);
+
 export const MatchSchema = new Schema<IMatchSchema>(
 	{
 		matchId: {
@@ -24,13 +40,7 @@ export const MatchSchema = new Schema<IMatchSchema>(
 			type: String,
 			required: true,
 		},
-		teams: [
-			{
-				_id: false,
-				members: [{ type: String, ref: 'Member' }],
-				captainId: String,
-			},
-		],
+		teams: [MatchTeamSchema, MatchTeamSchema],
 	},
 	{
 		timestamps: {

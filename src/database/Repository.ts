@@ -1,4 +1,4 @@
-import { Document, FilterQuery, Model, Mongoose } from 'mongoose';
+import { Document, FilterQuery, Model, Mongoose, QueryOptions, UpdateQuery } from 'mongoose';
 import transformProps from 'transform-props';
 
 export abstract class Repository<T, R = T> {
@@ -12,6 +12,14 @@ export abstract class Repository<T, R = T> {
 
 	parse(entity: Document<T>) {
 		return entity ? (transformProps(entity.toObject({ versionKey: false }), String, '_id') as R) : null;
+	}
+
+	async update(
+		query: string | FilterQuery<T>,
+		entity: UpdateQuery<T>,
+		options: QueryOptions = { upsert: true, new: true }
+	) {
+		await this.model.updateOne(typeof query === 'string' ? { _id: query } : query, entity, options);
 	}
 
 	async findOne(query: string | FilterQuery<T>, projection?: any) {

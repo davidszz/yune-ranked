@@ -15,7 +15,11 @@
 			"module-resolver",
 			{
 				"alias": {
-					"@client": "./src/Yune"
+					"@client": "./src/Yune",
+					"@database": "./src/database",
+					"@utils": "./src/utils",
+					"@services": "./src/services",
+					"@structures": "./src/structures"
 				}
 			}
 		]
