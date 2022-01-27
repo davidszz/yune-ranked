@@ -19,7 +19,7 @@ export class CommandsLoader extends Loader {
 					const File = (await import(file.fullPath)).default;
 					const command = new File(this.client);
 					if (command instanceof Command) {
-						this.client.commands.set(command.name, command);
+						this.client.commands.set(command.name.toLowerCase(), command);
 						status.success++;
 					}
 				} catch (err) {
