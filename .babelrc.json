@@ -19,7 +19,8 @@
 					"@database": "./src/database",
 					"@utils": "./src/utils",
 					"@services": "./src/services",
-					"@structures": "./src/structures"
+					"@structures": "./src/structures",
+					"@loaders": "./src/loaders",
 				}
 			}
 		]
