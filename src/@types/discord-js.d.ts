@@ -8,5 +8,10 @@ declare module 'discord.js' {
 
 	interface BaseCommandInteraction {
 		deferReply(options: InteractionDeferReplyOptions & { fetchReply: true }): Promise<Message>;
+		member: GuildMember;
+	}
+
+	interface CommandInteractionOptionResolver {
+		getMember(name: string, required?: boolean): GuildMember;
 	}
 }

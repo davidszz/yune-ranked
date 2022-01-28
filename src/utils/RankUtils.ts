@@ -1,4 +1,4 @@
-import { MemberRank, RankMMR } from './Constants';
+import { MemberRank, BaseRankMMR } from './Constants';
 
 interface PDLCalculatorOptions {
 	mmr: number;
@@ -9,7 +9,7 @@ interface PDLCalculatorOptions {
 
 export class RankUtils {
 	static calculateWonPdlAmount(options: PDLCalculatorOptions) {
-		const currentRankBaseMMR = RankMMR[options.rank] + options.division * 100;
+		const currentRankBaseMMR = BaseRankMMR[options.rank] + options.division * 100;
 		return Math.floor((options.mmr / currentRankBaseMMR) * 15 * (options.mvp ? 1.2 : 1));
 	}
 

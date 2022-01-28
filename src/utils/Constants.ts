@@ -10,7 +10,7 @@ export enum MemberRank {
 	CHALLENGER = 'challenger',
 }
 
-export const RankMMR = {
+export const BaseRankMMR = {
 	iron: 200,
 	bronze: 500,
 	silver: 800,
