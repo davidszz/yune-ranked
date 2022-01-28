@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import { Rank } from '@utils/Constants';
+import { MemberRank } from '@utils/Constants';
 
 export interface IMemberSchema {
 	_id: string;
@@ -8,9 +8,10 @@ export interface IMemberSchema {
 	guildId: string;
 	wins: number;
 	loses: number;
-	mmr: number;
 	pdl: number;
-	rank: Rank;
+	rank: MemberRank;
+	division: 1 | 2 | 3;
+	mmr: number;
 }
 
 export const MemberSchema = new Schema<IMemberSchema>(
@@ -25,9 +26,10 @@ export const MemberSchema = new Schema<IMemberSchema>(
 		},
 		wins: Number,
 		loses: Number,
-		mmr: Number,
 		pdl: Number,
 		rank: String,
+		division: Number,
+		mmr: Number,
 	},
 	{
 		timestamps: {

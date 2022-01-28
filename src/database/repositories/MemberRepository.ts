@@ -11,6 +11,9 @@ export class MemberRepository extends Repository<IMemberSchema> {
 
 	parse(entity: Document<IMemberSchema>): IMemberSchema {
 		return {
+			wins: 0,
+			loses: 0,
+			pdl: 0,
 			...(super.parse(entity) ?? ({} as IMemberSchema)),
 		};
 	}
