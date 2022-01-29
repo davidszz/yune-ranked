@@ -1,4 +1,5 @@
 import type { Interaction } from 'discord.js';
+import i18next, { StringMap, TFunction, TOptions } from 'i18next';
 
 import type { Yune } from '@client';
 import { Logger } from '@services/Logger';
@@ -26,13 +27,16 @@ export default class MainListener extends EventListener {
 
 		const command = this.client.commands.get(interaction.commandName.toLowerCase());
 		if (command) {
+			const t = (key: string | string[], options?: TOptions<StringMap>) =>
+				i18next.t(key, { ...options, lng: interaction.guildLocale ?? 'pt-BR' });
+
 			try {
 				if (interaction.isAutocomplete()) {
 					if (command.autocomplete) {
 						await command.autocomplete(interaction);
 					}
 				} else {
-					await command.run(interaction);
+					await command.run(interaction, t as TFunction);
 				}
 			} catch (err) {
 				Logger.error(

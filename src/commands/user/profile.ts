@@ -1,9 +1,9 @@
 import { CommandInteraction } from 'discord.js';
+import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
 import { Command } from '@structures/Command';
 import { YuneEmbed } from '@structures/YuneEmbed';
-import { Utils } from '@utils/Utils';
 
 export default class extends Command {
 	constructor(client: Yune) {
@@ -20,7 +20,7 @@ export default class extends Command {
 		});
 	}
 
-	async run(interaction: CommandInteraction) {
+	async run(interaction: CommandInteraction, t: TFunction) {
 		await interaction.deferReply();
 
 		const target = interaction.options.getMember('usuário') ?? interaction.member;
@@ -34,9 +34,10 @@ export default class extends Command {
 			.setDescription([
 				`**Vitórias:** ${data.wins}`,
 				`**Derrotas:** ${data.loses}`,
-				`**Classificação:** ${
-					data.rank ? `${Utils.capitalize(data.rank)} ${'I'.repeat(data.division)} (${data.pdl} pdl)` : 'Unranked'
-				}`,
+				`**Classificação:** ${t(`misc:ranks.${data.rank ? `${data.rank}` : 'unranked'}`, {
+					context: 'division',
+					division: data.division ?? 1,
+				})}`,
 			]);
 
 		await interaction.editReply({

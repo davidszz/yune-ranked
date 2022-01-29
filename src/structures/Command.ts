@@ -5,6 +5,7 @@ import {
 	ApplicationCommandOptionData,
 	Constants,
 } from 'discord.js';
+import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
 
@@ -20,7 +21,7 @@ export abstract class Command {
 	description?: string;
 	options?: ApplicationCommandOptionData[];
 
-	abstract run(interaction: Interaction): void | Promise<void>;
+	abstract run(interaction: Interaction, t: TFunction): void | Promise<void>;
 
 	constructor(public client: Yune, public data: ApplicationCommandData) {
 		this.name = data.name;

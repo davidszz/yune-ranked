@@ -11,6 +11,7 @@ database.connect().then(async () => {
 		{ userId: '757379507358531675', guildId: '880504665807147039' },
 		{
 			$set: {
+				rank: 'master',
 				division: 3,
 			},
 		}
