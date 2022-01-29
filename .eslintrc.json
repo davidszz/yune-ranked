@@ -25,6 +25,7 @@
     "no-shadow": "off",
 		"no-await-in-loop": "off",
 		"no-restricted-syntax": "off",
+		"no-use-before-define": ["error", "nofunc"],
     "class-methods-use-this": "off",
     "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
 		"@typescript-eslint/no-explicit-any": "off",

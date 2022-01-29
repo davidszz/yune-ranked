@@ -1,1 +1,34 @@
-{}
+{
+	"create_queue": {
+		"errors": {
+			"already_joined": "Você já faz parte desta fila. Aguarde os demais participantes.",
+			"cannot_left": "Você não pode sair a fila por ser o criador dela. Caso queira cancelar a fila atual clique no botão **[Destruir]**.",
+			"not_in_queue": "Você não faz parte desta fila.",
+			"cannot_destroy": "Somente o criador da fila pode destruí-la."
+		},
+		"buttons": {
+			"join": "Entrar ({{amount}}/{{max}})",
+			"left": "Sair",
+			"destroy": "Destruir"
+		},
+		"embeds": {
+			"queue": {
+				"author": "Fila de {{- user}}",
+				"description": "Esta fila será cancelada após **5 minutos** caso os times não estejam completos.",
+				"fields": {
+					"team_1": {
+						"name": "Time 1"
+					},
+					"team_2": {
+						"name": "Time 2"
+					},
+					"empty_user": "{{- e_empty_user}} Aguardando...",
+					"accepted_user": "{{- e_accepted_user}} Participante {{position}}"
+				},
+				"footer": "Para entrar na fila clique no botão [Entrar] abaixo"
+			}
+		},
+		"joined": "{{- e_join}} Você entrou na fila de {{- target}}!",
+		"left": "{{- e_left}} Você saiu da fila de {{- target}}!"
+	}
+}

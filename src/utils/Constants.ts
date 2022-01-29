@@ -33,4 +33,18 @@ export const Emojis = {
 	master: '<:master:936795758802374657>',
 	grand_master: '<:grand_master:936795758647197716>',
 	challenger: '<:challenger:936795758668169226>',
+	empty_user: '<:empty_user:936917351918604298>',
+	accepted_user: '<:accepted_user:936917351918628914>',
+	join: '<:join:936935440307613716>',
+	left: '<:left:936935440257269770>',
+};
+
+export const Assets = {
+	images: (path: string) => `src/assets/images/${path}`,
+};
+
+export const Images = {
+	icons: {
+		tip: 'https://i.imgur.com/YbUBcN7.png',
+	},
 };
