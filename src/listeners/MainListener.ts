@@ -33,9 +33,19 @@ export default class MainListener extends EventListener {
 			try {
 				if (interaction.isAutocomplete()) {
 					if (command.autocomplete) {
-						await command.autocomplete(interaction);
+						await command.autocomplete(interaction, t as TFunction);
 					}
 				} else {
+					if (command.permissions?.length && !command.permissions.some((x) => interaction.memberPermissions.has(x))) {
+						await interaction.reply({
+							content: t('common.errors.need_permissions', {
+								permissions: command.permissions.map((x) => `\`${x}\``).join(', '),
+							}),
+							ephemeral: true,
+						});
+						return;
+					}
+
 					await command.run(interaction, t as TFunction);
 				}
 			} catch (err) {

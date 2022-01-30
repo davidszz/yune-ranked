@@ -37,6 +37,8 @@ export const Emojis = {
 	accepted_user: '<:accepted_user:936917351918628914>',
 	join: '<:join:936935440307613716>',
 	left: '<:left:936935440257269770>',
+	toggle_on: '<:toggle_on:937221783604584458>',
+	toggle_off: '<:toggle_off:937221783604563988>',
 };
 
 export const Assets = {
@@ -48,3 +50,9 @@ export const Images = {
 		tip: 'https://i.imgur.com/YbUBcN7.png',
 	},
 };
+
+/* ------------------------------
+-------- Misc Constants ---------
+--------------------------------- */
+
+export const DEFAULT_TEAM_SIZE = 10;

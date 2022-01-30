@@ -1,4 +1,12 @@
 {
+	"common": {
+		"errors": {
+			"need_permissions": "É necessário uma das permissões a seguir para utilizar este comando: {{- permissions}}"
+		}
+	},
+	"teams_size": {
+		"changed": "Você alterou o tamanho das equipes para: `{{size}}` jogadores por equipe."
+	},
 	"create_queue": {
 		"errors": {
 			"already_joined": "Você já faz parte desta fila. Aguarde os demais participantes.",

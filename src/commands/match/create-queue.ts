@@ -25,6 +25,7 @@ export default class extends Command {
 	async run(interaction: CommandInteraction, t: TFunction) {
 		await interaction.deferReply();
 
+		const { teamSize } = await interaction.client.database.guilds.findOne(interaction.guildId, 'teamSize');
 		const participants: User[] = [interaction.user];
 
 		const reply = await interaction.editReply({
@@ -86,7 +87,7 @@ export default class extends Command {
 
 			if (i.customId === 'join' && !participants.some((x) => x?.id === i.user.id)) {
 				const addParticipant = () => {
-					const randIdx = Math.floor(Math.random() * 8);
+					const randIdx = Math.floor(Math.random() * (teamSize * 2));
 					if (participants[randIdx]) {
 						addParticipant();
 					} else {
@@ -117,7 +118,7 @@ export default class extends Command {
 		function generateEmbed() {
 			const parsedParticipants: string[] = [];
 
-			for (let i = 0; i < 8; i++) {
+			for (let i = 0; i < teamSize * 2; i++) {
 				const participant = participants[i];
 				if (participant) {
 					parsedParticipants.push(t('create_queue.embeds.queue.fields.accepted_user', { position: i + 1 }));
@@ -132,8 +133,16 @@ export default class extends Command {
 					iconURL: interaction.user.displayAvatarURL({ format: 'png', dynamic: true }),
 				})
 				.setDescription(t('create_queue.embeds.queue.description'))
-				.addField(t('create_queue.embeds.queue.fields.team_1.name'), parsedParticipants.slice(0, 4).join('\n'), true)
-				.addField(t('create_queue.embeds.queue.fields.team_2.name'), parsedParticipants.slice(4, 8).join('\n'), true)
+				.addField(
+					t('create_queue.embeds.queue.fields.team_1.name'),
+					parsedParticipants.slice(0, teamSize).join('\n'),
+					true
+				)
+				.addField(
+					t('create_queue.embeds.queue.fields.team_2.name'),
+					parsedParticipants.slice(teamSize, teamSize * 2).join('\n'),
+					true
+				)
 				.setFooter({
 					text: t('create_queue.embeds.queue.footer'),
 					iconURL: Images.icons.tip,
@@ -144,7 +153,7 @@ export default class extends Command {
 			const joinBtn = new MessageButton()
 				.setCustomId('join')
 				.setStyle('SUCCESS')
-				.setLabel(t('create_queue.buttons.join', { amount: participants.filter(Boolean).length, max: 8 }))
+				.setLabel(t('create_queue.buttons.join', { amount: participants.filter(Boolean).length, max: teamSize }))
 				.setEmoji(Emojis.join);
 
 			const leftBtn = new MessageButton()

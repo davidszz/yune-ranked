@@ -7,15 +7,15 @@ import { DBWrapper } from '@database/DBWrapper';
 
 const database = new DBWrapper();
 database.connect().then(async () => {
-	await database.members.update(
-		{ userId: '757379507358531675', guildId: '880504665807147039' },
-		{
-			$set: {
-				rank: 'grand_master',
-				division: 3,
-			},
-		}
-	);
+	// await database.members.update(
+	// 	{ userId: '757379507358531675', guildId: '880504665807147039' },
+	// 	{
+	// 		$set: {
+	// 			rank: 'grand_master',
+	// 			division: 3,
+	// 		},
+	// 	}
+	// );
 
 	const client = new Yune({
 		token: process.env.DEVELOPMENT_TOKEN,

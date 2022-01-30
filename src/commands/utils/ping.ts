@@ -8,6 +8,7 @@ export default class extends Command {
 		super(client, {
 			name: 'ping',
 			description: 'Obtem a latência do bot',
+			manageable: false,
 		});
 	}
 
