@@ -30,6 +30,10 @@ export abstract class Repository<T, R = T> {
 		return this.model.findOne(query, projection).then((doc) => this.parse(<Document<T>>doc));
 	}
 
+	async findMany(query: FilterQuery<T>, projection?: any) {
+		return this.model.find(query, projection).then((docs) => docs.map((doc) => this.parse(<Document<T>>doc)));
+	}
+
 	async create(...docs: Partial<T>[]) {
 		return this.model.create(docs).then((doc) => this.parse(<Document<T>>doc[0]));
 	}

@@ -1,5 +1,7 @@
 import { Schema } from 'mongoose';
 
+import { MatchStatus } from '@utils/Constants';
+
 interface IMatchTeam {
 	members: string[];
 	captainId: string;
@@ -9,6 +11,8 @@ export interface IMatchSchema {
 	_id: string;
 	matchId: number;
 	guildId: string;
+	channelId: string;
+	status: MatchStatus;
 	teams: [IMatchTeam, IMatchTeam];
 	createdAt: Date;
 	updatedAt: Date;
@@ -38,6 +42,14 @@ export const MatchSchema = new Schema<IMatchSchema>(
 		},
 		guildId: {
 			type: String,
+			required: true,
+		},
+		channelId: {
+			type: String,
+			required: true,
+		},
+		status: {
+			type: Number,
 			required: true,
 		},
 		teams: [MatchTeamSchema, MatchTeamSchema],

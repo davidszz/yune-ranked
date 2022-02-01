@@ -1,5 +1,6 @@
 import i18next from 'i18next';
 import Backend from 'i18next-fs-backend';
+import moment from 'moment';
 
 import type { Yune } from '@client';
 import { Logger } from '@services/Logger';
@@ -16,6 +17,10 @@ export class LocalesLoader extends Loader {
 	async initialize() {
 		Logger.info('Initializing lang files...');
 
+		i18next.on('languageChanged', (lng) => {
+			moment.locale(lng);
+		});
+
 		await i18next.use(Backend).init({
 			backend: {
 				loadPath: './src/locales/{{lng}}/{{ns}}.json',
@@ -29,6 +34,16 @@ export class LocalesLoader extends Loader {
 				skipOnVariables: false,
 				defaultVariables: {
 					...Object.fromEntries(Object.entries(Emojis).map((x) => [`e_${x[0]}`, x[1]])),
+				},
+				format(value, format) {
+					if (format.startsWith('fromNow')) {
+						return moment(value).fromNow(format === 'fromNow(true)');
+					}
+
+					if (value instanceof Date) {
+						return moment(value).format(format);
+					}
+					return value;
 				},
 			},
 		});

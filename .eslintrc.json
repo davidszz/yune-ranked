@@ -23,6 +23,7 @@
     "no-console": "off",
     "no-plusplus": "off",
     "no-shadow": "off",
+		"no-continue": "off",
 		"no-await-in-loop": "off",
 		"no-restricted-syntax": "off",
 		"no-use-before-define": ["error", "nofunc"],

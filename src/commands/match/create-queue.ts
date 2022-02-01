@@ -12,7 +12,8 @@ import type { TFunction } from 'i18next';
 import type { Yune } from '@client';
 import { Command } from '@structures/Command';
 import { YuneEmbed } from '@structures/YuneEmbed';
-import { Emojis, Images } from '@utils/Constants';
+import { DEFAULT_USER_MMR, Emojis, Images, MatchStatus } from '@utils/Constants';
+import { RankUtils } from '@utils/RankUtils';
 
 export default class extends Command {
 	constructor(client: Yune) {
@@ -28,10 +29,50 @@ export default class extends Command {
 		const { teamSize } = await interaction.client.database.guilds.findOne(interaction.guildId, 'teamSize');
 		const participants: User[] = [interaction.user];
 
-		const reply = await interaction.editReply({
-			embeds: [generateEmbed()],
-			components: [generateButtons()],
+		if (interaction.client.queueMembers.includes(interaction.user.id)) {
+			await interaction.editReply({
+				content: t('create_queue.errors.already_in_queue'),
+			});
+			return;
+		}
+
+		const currentUserMatch = await interaction.client.database.matches.findOne({
+			'teams.members': interaction.user.id,
+			status: MatchStatus.IN_GAME,
 		});
+
+		if (currentUserMatch) {
+			const channelUrl = `https://discord.com/channels/${interaction.guildId}/${currentUserMatch.channelId}`;
+			await interaction.editReply({
+				content: t('create_queue.errors.already_in_game', {
+					match_id: currentUserMatch.matchId,
+					channel_url: channelUrl,
+				}),
+			});
+			return;
+		}
+
+		interaction.client.queueMembers.push(interaction.user.id);
+
+		const reply = await interaction
+			.editReply({
+				embeds: [generateEmbed()],
+				components: [generateButtons()],
+			})
+			.catch(async () => {
+				interaction.client.queueMembers.splice(interaction.client.queueMembers.indexOf(interaction.user.id), 1);
+				try {
+					await interaction.followUp({
+						content: t('create_queue.errors.unknown_error'),
+					});
+				} catch {
+					// Nothing
+				}
+			});
+
+		if (!reply) return;
+
+		const queueUrl = `https://discord.com/channels/${interaction.guildId}/${interaction.channelId}/${reply.id}`;
 
 		const collector = new InteractionCollector<ButtonInteraction>(interaction.client, {
 			message: reply,
@@ -39,12 +80,22 @@ export default class extends Command {
 			interactionType: 'MESSAGE_COMPONENT',
 			time: 5 * 60000,
 			filter: async (i) => {
-				if (i.customId === 'join' && participants.some((x) => x?.id === i.user.id)) {
-					await i.reply({
-						content: t('create_queue.errors.already_joined'),
-						ephemeral: true,
-					});
-					return false;
+				if (i.customId === 'join') {
+					if (participants.some((x) => x?.id === i.user.id)) {
+						await i.reply({
+							content: t('create_queue.errors.already_joined'),
+							ephemeral: true,
+						});
+						return false;
+					}
+
+					if (interaction.client.queueMembers.includes(i.user.id)) {
+						await i.reply({
+							content: t('create_queue.errors.already_in_queue'),
+							ephemeral: true,
+						});
+						return false;
+					}
 				}
 
 				if (i.customId === 'left') {
@@ -78,41 +129,210 @@ export default class extends Command {
 			},
 		});
 
+		collector.on('end', async (_, reason) => {
+			for (const { id } of participants) {
+				interaction.client.queueMembers.splice(interaction.client.queueMembers.indexOf(id), 1);
+			}
+
+			if (['time', 'idle'].includes(reason)) {
+				try {
+					await interaction.deleteReply();
+				} catch {
+					// Nothing
+				}
+			}
+		});
+
 		for await (const [i] of on(collector, 'collect') as AsyncIterableIterator<[ButtonInteraction]>) {
+			if (collector.ended) {
+				await i.editReply({
+					content: t('create_queue.errors.ended', {
+						owner: interaction.user.toString(),
+						queue_url: queueUrl,
+					}),
+				});
+				continue;
+			}
+
 			const editEmbed = () =>
 				interaction.editReply({
 					embeds: [generateEmbed()],
 					components: [generateButtons()],
 				});
 
-			if (i.customId === 'join' && !participants.some((x) => x?.id === i.user.id)) {
-				const addParticipant = () => {
-					const randIdx = Math.floor(Math.random() * (teamSize * 2));
-					if (participants[randIdx]) {
-						addParticipant();
-					} else {
-						participants[randIdx] = i.user;
-					}
-				};
+			if (i.customId === 'join') {
+				if (interaction.client.queueMembers.includes(i.user.id)) {
+					await i.reply({
+						content: t('create_queue.errors.already_in_queue'),
+						ephemeral: true,
+					});
+				}
 
-				addParticipant();
-
-				await editEmbed();
-				await i.editReply({
-					content: t('create_queue.joined', { target: interaction.user.toString() }),
+				const currentUserMatch = await interaction.client.database.matches.findOne({
+					'teams.members': i.user.id,
+					status: MatchStatus.IN_GAME,
 				});
+
+				if (currentUserMatch) {
+					const channelUrl = `https://discord.com/channels/${interaction.guildId}/${currentUserMatch.channelId}`;
+					await interaction.editReply({
+						content: t('create_queue.errors.already_in_game', {
+							match_id: currentUserMatch.matchId,
+							channel_url: channelUrl,
+						}),
+					});
+					continue;
+				}
+
+				if (!participants.some((x) => x?.id === i.user.id)) {
+					const addParticipant = () => {
+						const randIdx = Math.floor(Math.random() * (teamSize * 2));
+						if (participants[randIdx]) {
+							addParticipant();
+						} else {
+							participants[randIdx] = i.user;
+						}
+					};
+
+					addParticipant();
+
+					if (participants.filter(Boolean).length >= teamSize * 2) {
+						collector.stop();
+						await i.editReply({
+							content: t('create_queue.joined', { target: interaction.user.toString() }),
+						});
+						await startMatch();
+					} else {
+						await editEmbed();
+						await i.editReply({
+							content: t('create_queue.joined', { target: interaction.user.toString() }),
+						});
+					}
+				} else {
+					await i.editReply({
+						content: t('create_queue.errors.already_joined'),
+					});
+				}
 			}
 
 			if (i.customId === 'left' && participants.some((x) => x?.id === i.user.id)) {
-				participants.splice(
-					participants.findIndex((x) => x?.id === i.user.id),
-					1
-				);
+				participants[participants.findIndex((x) => x?.id === i.user.id)] = null;
+
 				await editEmbed();
 				await i.editReply({
 					content: t('create_queue.left', { target: interaction.user.toString() }),
 				});
 			}
+
+			if (i.customId === 'destroy') {
+				collector.stop();
+
+				const destroyedEmbed = new YuneEmbed()
+					.setColor('RED')
+					.setAuthor({
+						name: t('create_queue.embeds.destroyed.author', { user: interaction.user.tag }),
+						iconURL: interaction.user.displayAvatarURL({ format: 'png', dynamic: true }),
+					})
+					.setTitle(t('create_queue.embeds.destroyed.title'))
+					.setDescription(t('create_queue.embeds.destroyed.description'))
+					.addField(
+						t('create_queue.embeds.destroyed.fields.started_at.name'),
+						t('create_queue.embeds.destroyed.fields.started_at.value', {
+							started_at: interaction.createdAt,
+						}),
+						true
+					)
+					.addField(
+						t('create_queue.embeds.destroyed.fields.ended_at.name'),
+						t('create_queue.embeds.destroyed.fields.ended_at.value', {
+							ended_at: Date.now(),
+						}),
+						true
+					)
+					.setTimestamp();
+
+				participants.splice(0, participants.length);
+
+				await interaction.editReply({
+					embeds: [destroyedEmbed],
+					components: [],
+				});
+
+				await i.editReply({
+					content: t('create_queue.destroyed', {
+						queue_url: queueUrl,
+					}),
+				});
+			}
+		}
+
+		async function startMatch() {
+			const participantsData = await interaction.client.database.members.findMany(
+				{
+					guildId: interaction.guildId,
+					userId: {
+						$in: participants.filter(Boolean).map((x) => x.id),
+					},
+				},
+				'userId mmr'
+			);
+
+			const totalMmr = participants.filter(Boolean).reduce((acc, val) => {
+				const userMmr = participantsData.find((x) => x.userId === val.id)?.mmr ?? DEFAULT_USER_MMR;
+				return acc + userMmr;
+			}, 0);
+
+			const matchRank = RankUtils.getRankByMmr(Math.ceil(totalMmr / (teamSize * 2)));
+			const matchId = 1;
+
+			const parsedParticipants: string[] = [];
+
+			for (let i = 0; i < teamSize * 2; i++) {
+				const participant = participants[i];
+				if (participant) {
+					parsedParticipants.push(
+						t('create_queue.embeds.started.fields.participant', {
+							position: i + 1,
+							participant: participant.toString(),
+						})
+					);
+				} else {
+					parsedParticipants.push(t('create_queue.embeds.started.fields.unknown_paticipant', { position: i + 1 }));
+				}
+			}
+
+			const startedEmbed = new YuneEmbed()
+				.setColor('GREEN')
+				.setTitle(t('create_queue.embeds.started.title', { match_id: matchId }))
+				.setDescription(
+					t('create_queue.embeds.started.description', {
+						match_rank: t(`misc:ranks.${matchRank.rank}`, {
+							context: 'division',
+							division: matchRank.division,
+						}),
+					})
+				)
+				.addField(
+					t('create_queue.embeds.started.fields.team_1.name'),
+					parsedParticipants.slice(0, teamSize).join('\n'),
+					true
+				)
+				.addField(
+					t('create_queue.embeds.started.fields.team_2.name'),
+					parsedParticipants.slice(teamSize, teamSize * 2).join('\n'),
+					true
+				)
+				.setTimestamp();
+
+			const matchBtn = new MessageButton()
+				.setStyle('LINK')
+				.setLabel(t('create_queue.buttons.match_shortcut'))
+				.setURL(`https://discord.com/channels/${interaction.guildId}/${interaction.channelId}`);
+
+			await interaction.editReply({
+				embeds: [startedEmbed],
+				components: [new MessageActionRow().addComponents(matchBtn)],
+			});
 		}
 
 		function generateEmbed() {
@@ -153,7 +373,7 @@ export default class extends Command {
 			const joinBtn = new MessageButton()
 				.setCustomId('join')
 				.setStyle('SUCCESS')
-				.setLabel(t('create_queue.buttons.join', { amount: participants.filter(Boolean).length, max: teamSize }))
+				.setLabel(t('create_queue.buttons.join', { amount: participants.filter(Boolean).length, max: teamSize * 2 }))
 				.setEmoji(Emojis.join);
 
 			const leftBtn = new MessageButton()

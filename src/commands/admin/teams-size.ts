@@ -15,7 +15,7 @@ export default class extends Command {
 					name: 'tamanho',
 					description: 'Tamanho de cada equipe',
 					type: 'INTEGER',
-					minValue: 2,
+					minValue: 1,
 					maxValue: 10,
 					required: true,
 				},

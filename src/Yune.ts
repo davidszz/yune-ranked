@@ -15,6 +15,7 @@ export class Yune extends Client {
 	database: DBWrapper;
 
 	commands: Collection<string, Command>;
+	queueMembers: string[];
 
 	constructor(options: YuneOptions) {
 		super(options);
@@ -22,6 +23,7 @@ export class Yune extends Client {
 		this.guildId = options.guildId;
 		this.database = options.database;
 		this.commands = new Collection();
+		this.queueMembers = [];
 	}
 
 	async start() {

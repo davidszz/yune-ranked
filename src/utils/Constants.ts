@@ -1,3 +1,8 @@
+export enum MatchStatus {
+	ENDED,
+	IN_GAME,
+}
+
 export enum MemberRank {
 	IRON = 'iron',
 	BRONZE = 'bronze',
@@ -55,4 +60,5 @@ export const Images = {
 -------- Misc Constants ---------
 --------------------------------- */
 
+export const DEFAULT_USER_MMR = BaseRankMMR.iron;
 export const DEFAULT_TEAM_SIZE = 10;

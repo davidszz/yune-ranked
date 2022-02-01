@@ -4,15 +4,15 @@ import { Intents } from 'discord.js';
 
 import { Yune } from '@client';
 import { DBWrapper } from '@database/DBWrapper';
+import { BaseRankMMR, MemberRank } from '@utils/Constants';
 
 const database = new DBWrapper();
 database.connect().then(async () => {
 	// await database.members.update(
-	// 	{ userId: '757379507358531675', guildId: '880504665807147039' },
+	// 	{ userId: '787475567259287554', guildId: '880504665807147039' },
 	// 	{
 	// 		$set: {
-	// 			rank: 'grand_master',
-	// 			division: 3,
+	// 			rank: MemberRank.GRAND_MASTER,
 	// 		},
 	// 	}
 	// );
