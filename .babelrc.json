@@ -20,7 +20,7 @@
 					"@utils": "./src/utils",
 					"@services": "./src/services",
 					"@structures": "./src/structures",
-					"@loaders": "./src/loaders",
+					"@loaders": "./src/loaders"
 				}
 			}
 		]

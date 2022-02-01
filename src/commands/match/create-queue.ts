@@ -10,6 +10,7 @@ import { on } from 'events';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
+import { MatchStartTemplate } from '@structures/canvas/templates/MatchStartTemplate';
 import { Command } from '@structures/Command';
 import { YuneEmbed } from '@structures/YuneEmbed';
 import { DEFAULT_USER_MMR, Emojis, Images, MatchStatus } from '@utils/Constants';
@@ -274,7 +275,7 @@ export default class extends Command {
 						$in: participants.filter(Boolean).map((x) => x.id),
 					},
 				},
-				'userId mmr'
+				'userId mmr rank'
 			);
 
 			const totalMmr = participants.filter(Boolean).reduce((acc, val) => {
@@ -285,21 +286,18 @@ export default class extends Command {
 			const matchRank = RankUtils.getRankByMmr(Math.ceil(totalMmr / (teamSize * 2)));
 			const matchId = 1;
 
-			const parsedParticipants: string[] = [];
+			const template = new MatchStartTemplate(
+				t,
+				[...participants, ...participants, ...participants, ...participants].map((user) => {
+					const participantData = participantsData.find((x) => x.userId === user.id);
+					return {
+						user,
+						rank: participantData?.rank ?? 'unranked',
+					};
+				})
+			);
 
-			for (let i = 0; i < teamSize * 2; i++) {
-				const participant = participants[i];
-				if (participant) {
-					parsedParticipants.push(
-						t('create_queue.embeds.started.fields.participant', {
-							position: i + 1,
-							participant: participant.toString(),
-						})
-					);
-				} else {
-					parsedParticipants.push(t('create_queue.embeds.started.fields.unknown_paticipant', { position: i + 1 }));
-				}
-			}
+			const buffer = await template.build();
 
 			const startedEmbed = new YuneEmbed()
 				.setColor('GREEN')
@@ -312,16 +310,7 @@ export default class extends Command {
 						}),
 					})
 				)
-				.addField(
-					t('create_queue.embeds.started.fields.team_1.name'),
-					parsedParticipants.slice(0, teamSize).join('\n'),
-					true
-				)
-				.addField(
-					t('create_queue.embeds.started.fields.team_2.name'),
-					parsedParticipants.slice(teamSize, teamSize * 2).join('\n'),
-					true
-				)
+				.setImage('attachment://participants.png')
 				.setTimestamp();
 
 			const matchBtn = new MessageButton()
@@ -332,6 +321,7 @@ export default class extends Command {
 			await interaction.editReply({
 				embeds: [startedEmbed],
 				components: [new MessageActionRow().addComponents(matchBtn)],
+				files: [{ attachment: buffer, name: 'participants.png' }],
 			});
 		}
 

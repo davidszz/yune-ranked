@@ -4,7 +4,6 @@ import { Intents } from 'discord.js';
 
 import { Yune } from '@client';
 import { DBWrapper } from '@database/DBWrapper';
-import { BaseRankMMR, MemberRank } from '@utils/Constants';
 
 const database = new DBWrapper();
 database.connect().then(async () => {

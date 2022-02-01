@@ -1,20 +1,32 @@
 {
 	"ranks": {
-		"unranked": "{{- e_unranked}} Unranked",
-		"iron": "{{- e_iron}} Ferro",
-		"iron_division": "{{- e_iron}} Ferro {{division}}",
-		"bronze": "{{- e_bronze}} Bronze",
-		"bronze_division": "{{- e_bronze}} Bronze {{division}}",
-		"silver": "{{- e_silver}} Prata",
-		"silver_division": "{{- e_silver}} Prata {{division}}",
-		"gold": "{{- e_gold}} Ouro",
-		"gold_division": "{{- e_gold}} Ouro {{division}}",
-		"platinum": "{{- e_platinum}} Platina",
-		"platinum_division": "{{- e_platinum}} Platina {{division}}",
-		"diamond": "{{- e_diamond}} Diamante",
-		"diamond_division": "{{- e_diamond}} Diamante {{division}}",
-		"master": "{{- e_master}} Mestre",
-		"grand_master": "{{- e_grand_master}} Grão Mestre",
-		"challenger": "{{- e_challenger}} Desafiante"
+		"names": {
+			"unranked": "Sem ranque",
+			"iron": "Ferro",
+			"bronze": "Bronze",
+			"silver": "Prata",
+			"gold": "Ouro",
+			"platinum": "Platina",
+			"diamond": "Diamante",
+			"master": "Mestre",
+			"grand_master": "Grão Mestre",
+			"challenger": "Desafiante"
+		},
+		"unranked": "{{- e_unranked}} $t(misc:ranks.names.unranked)",
+		"iron": "{{- e_iron}} $t(misc:ranks.names.iron)",
+		"iron_division": "{{- e_iron}} $t(misc:ranks.names.iron) {{division}}",
+		"bronze": "{{- e_bronze}} $t(misc:ranks.names.bronze)",
+		"bronze_division": "{{- e_bronze}} $t(misc:ranks.names.bronze) {{division}}",
+		"silver": "{{- e_silver}} $t(misc:ranks.names.silver)",
+		"silver_division": "{{- e_silver}} $t(misc:ranks.names.silver) {{division}}",
+		"gold": "{{- e_gold}} $t(misc:ranks.names.gold)",
+		"gold_division": "{{- e_gold}} $t(misc:ranks.names.gold) {{division}}",
+		"platinum": "{{- e_platinum}} $t(misc:ranks.names.platinum)",
+		"platinum_division": "{{- e_platinum}} $t(misc:ranks.names.platinum) {{division}}",
+		"diamond": "{{- e_diamond}} $t(misc:ranks.names.diamond)",
+		"diamond_division": "{{- e_diamond}} $t(misc:ranks.names.diamond) {{division}}",
+		"master": "{{- e_master}} $t(misc:ranks.names.master)",
+		"grand_master": "{{- e_grand_master}} $t(misc:ranks.names.grand_master)",
+		"challenger": "{{- e_challenger}} $t(misc:ranks.names.challenger)"
 	}
 }

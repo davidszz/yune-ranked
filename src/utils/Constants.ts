@@ -48,11 +48,45 @@ export const Emojis = {
 
 export const Assets = {
 	images: (path: string) => `src/assets/images/${path}`,
+	font: (name: string, extension: 'otf' | 'ttf' | 'woff' | 'ttc' = 'ttf') => `src/assets/fonts/${name}.${extension}`,
 };
 
 export const Images = {
 	icons: {
 		tip: 'https://i.imgur.com/YbUBcN7.png',
+	},
+};
+
+export const RankAssets = {
+	unranked: {
+		badge: Assets.images('ranks/badges/unranked.png'),
+	},
+	iron: {
+		badge: Assets.images('ranks/badges/iron.png'),
+	},
+	bronze: {
+		badge: Assets.images('ranks/badges/bronze.png'),
+	},
+	silver: {
+		badge: Assets.images('ranks/badges/silver.png'),
+	},
+	gold: {
+		badge: Assets.images('ranks/badges/gold.png'),
+	},
+	platinum: {
+		badge: Assets.images('ranks/badges/platinum.png'),
+	},
+	diamond: {
+		badge: Assets.images('ranks/badges/diamond.png'),
+	},
+	master: {
+		badge: Assets.images('ranks/badges/master.png'),
+	},
+	grand_master: {
+		badge: Assets.images('ranks/badges/grand_master.png'),
+	},
+	challenger: {
+		badge: Assets.images('ranks/badges/challenger.png'),
 	},
 };
 
