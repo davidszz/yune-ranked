@@ -288,7 +288,7 @@ export default class extends Command {
 
 			const template = new MatchStartTemplate(
 				t,
-				[...participants, ...participants, ...participants, ...participants].map((user) => {
+				[...participants, await interaction.client.users.fetch('880531696376746035')].map((user) => {
 					const participantData = participantsData.find((x) => x.userId === user.id);
 					return {
 						user,
@@ -301,7 +301,11 @@ export default class extends Command {
 
 			const startedEmbed = new YuneEmbed()
 				.setColor('GREEN')
-				.setTitle(t('create_queue.embeds.started.title', { match_id: matchId }))
+				.setAuthor({
+					name: t('create_queue.embeds.started.author', { user: interaction.user.tag }),
+					iconURL: interaction.user.displayAvatarURL({ format: 'png', dynamic: true }),
+				})
+				.setTitle(t('create_queue.embeds.started.title'))
 				.setDescription(
 					t('create_queue.embeds.started.description', {
 						match_rank: t(`misc:ranks.${matchRank.rank}`, {
@@ -311,6 +315,9 @@ export default class extends Command {
 					})
 				)
 				.setImage('attachment://participants.png')
+				.setFooter({
+					text: t('create_queue.embeds.started.footer', { match_id: matchId }),
+				})
 				.setTimestamp();
 
 			const matchBtn = new MessageButton()

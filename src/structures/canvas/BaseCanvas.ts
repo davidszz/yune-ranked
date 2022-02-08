@@ -9,11 +9,13 @@ interface IDrawRoundedImageOptions {
 	radius?: number;
 }
 
-export abstract class BaseCanvas<T = unknown> extends Canvas {
+export interface BaseCanvas {
+	build(): Buffer | Promise<Buffer>;
+}
+
+export class BaseCanvas<T = unknown> extends Canvas {
 	ctx: CanvasRenderingContext2D;
 	data: T;
-
-	abstract build(): Buffer | Promise<Buffer>;
 
 	constructor(public t: TFunction, width: number, height: number, type?: 'image' | 'pdf' | 'svg') {
 		super(width, height, type);
@@ -58,6 +60,10 @@ export abstract class BaseCanvas<T = unknown> extends Canvas {
 
 	async loadImage(src: string | Buffer, options?: any) {
 		return loadImage(src, options).catch<null>(() => null);
+	}
+
+	createCanvas(width: number, height: number, type?: 'image' | 'pdf' | 'svg') {
+		return new BaseCanvas(this.t, width, height, type);
 	}
 
 	setFont(font: string) {

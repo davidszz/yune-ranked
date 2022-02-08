@@ -12,74 +12,112 @@ interface IMatchStartUser {
 
 export class MatchStartTemplate extends BaseCanvas<IMatchStartUser[]> {
 	constructor(t: TFunction, data: IMatchStartUser[]) {
-		super(t, 400, Math.ceil(data.length / 2) * 35 + 42);
+		super(t, 32, 0);
 		this.data = data;
 	}
 
 	async build() {
-		this.ctx.fillStyle = '#FFF';
-		this.setFont('bold 16px Poppins');
+		const users = await Promise.all(
+			this.data.map(({ user, rank }) =>
+				this.createUser({
+					username: user.username,
+					avatar: user.displayAvatarURL({ format: 'jpg' }),
+					rank,
+				})
+			)
+		);
 
+		const chunkLength = Math.ceil(Math.max(this.data.length / 2, 1));
+
+		const team1Width = users.slice(0, chunkLength).reduce((prev, next) => (next.width > prev ? next.width : prev), 0);
+		this.width =
+			team1Width +
+			users.slice(chunkLength, this.data.length).reduce((prev, next) => (next.width > prev ? next.width : prev), 0) +
+			24;
+
+		this.height = users.slice(0, chunkLength).reduce((acc, val) => acc + val.height + 8, 0) + 24;
+
+		this.ctx.beginPath();
+		this.ctx.fillStyle = '#5c82ff';
+		this.setFont('bold 12px Poppins');
 		this.fillText({
-			text: this.t('create_queue.embeds.started.fields.team_1.name'),
+			text: 'TIME 1',
 			x: 0,
 			y: 0,
 			verticalAlign: 'top',
 		});
 
+		this.ctx.fillStyle = '#ff5c5c';
 		this.fillText({
-			text: this.t('create_queue.embeds.started.fields.team_2.name'),
-			x: 0 + this.width / 2,
+			text: 'TIME 2',
+			x: team1Width + 24,
 			y: 0,
 			verticalAlign: 'top',
 		});
+		this.ctx.closePath();
 
-		for (let i = 0; i < this.data.length; i++) {
-			const { user, rank } = this.data[i];
+		for (let i = 0; i < chunkLength; i++) {
+			this.ctx.drawImage(users[i], 0, 24 + users.slice(0, i).reduce((acc, val) => acc + val.height + 8, 0));
+		}
 
-			const x = i < Math.ceil(this.data.length / 2) ? 0 : this.width / 2;
-			const y = 30 + Math.floor(i % (this.data.length / 2)) * 40;
-
-			await this.drawUser({
-				avatar: user.displayAvatarURL({ format: 'png' }),
-				username: user.username,
-				rank,
-				x,
-				y,
-			});
+		for (let i = chunkLength; i < this.data.length; i++) {
+			this.ctx.drawImage(
+				users[i],
+				team1Width + 24,
+				24 + users.slice(chunkLength, i).reduce((acc, val) => acc + val.height + 8, 0)
+			);
 		}
 
 		return this.toBuffer();
 	}
 
-	private async drawUser(options: { x: number; y: number; username: string; avatar: string; rank: string }) {
-		this.ctx.beginPath();
+	private async createUser(data: { username: string; avatar: string; rank: string }) {
+		const canvas = this.createCanvas(0, 32);
+		const padding = 6;
 
-		await this.drawRoundedImage({ image: options.avatar, size: 26, x: options.x, y: options.y });
+		const rankName = this.t(`misc:ranks.names.${data.rank}`);
 
-		this.ctx.fillStyle = '#FFFFFF';
-		this.setFont('bold 12px "Montserrat"');
-		this.fillText({
-			text: options.username.slice(0, 16),
-			x: options.x + 24 + 8,
-			y: options.y + 1,
-			verticalAlign: 'top',
+		canvas.setFont('bold 14px Poppins');
+		const usernameWidth = canvas.measureText(data.username).width;
+
+		canvas.setFont('10px Montserrat');
+		const rankWidth = canvas.measureText(rankName).width + 16 + 2;
+
+		canvas.width = Math.max(usernameWidth, rankWidth) + 32 + padding;
+
+		await canvas.drawRoundedImage({
+			image: data.avatar,
+			size: 32,
+			x: 0,
+			y: 0,
 		});
 
-		const rankAssets = RankAssets[options.rank as keyof typeof RankAssets];
-		const badge = await this.loadImage(rankAssets.badge);
-		if (badge) {
-			this.ctx.drawImage(badge, options.x + 24 + 8, options.y + 13, 15, 15);
+		canvas.ctx.fillStyle = '#ffffff';
+		canvas.setFont('bold 14px Poppins');
+
+		canvas.fillText({
+			text: data.username,
+			x: 32 + padding,
+			y: 7,
+			verticalAlign: 'middle',
+		});
+
+		const rankAsset = RankAssets[data.rank as keyof typeof RankAssets].badge;
+		if (rankAsset) {
+			const rankBadge = await this.loadImage(rankAsset);
+			if (rankBadge) {
+				canvas.ctx.drawImage(rankBadge, 32 + padding, canvas.height - 16, 16, 16);
+			}
 		}
 
-		this.setFont('10px "Montserrat"');
-		this.fillText({
-			text: this.t(`misc:ranks.names.${options.rank}`),
-			x: options.x + 24 + 8 + (badge ? 18 : 0),
-			y: options.y + 24,
-			verticalAlign: 'bottom',
+		canvas.setFont('10px Montserrat');
+		canvas.fillText({
+			text: rankName,
+			x: 32 + padding + 16 + 2,
+			y: canvas.height - 16 / 2,
+			verticalAlign: 'middle',
 		});
 
-		this.ctx.closePath();
+		return canvas;
 	}
 }

@@ -56,8 +56,9 @@
 				}
 			},
 			"started": {
+				"author": "Partida de {{- user}}",
 				"title": "Partida iniciada!",
-				"description": "**Rank estimado da partida:** {{- match_rank}}",
+				"description": "Rank estimado da partida: {{- match_rank}}",
 				"fields": {
 					"team_1": {
 						"name": "Time 1"
@@ -67,7 +68,8 @@
 					},
 					"participant": "**{{position}} -** {{- participant}}",
 					"unknown_paticipant": "**{{position}} -** Usuário Desconhecido"
-				}
+				},
+				"footer": "ID: {{- match_id}}"
 			}
 		},
 		"joined": "{{- e_join}} Você entrou na fila de {{- target}}!",
