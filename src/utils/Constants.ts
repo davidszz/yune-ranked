@@ -1,30 +1,6 @@
-export enum MatchStatus {
-	ENDED,
-	IN_GAME,
-}
-
-export enum MemberRank {
-	IRON = 'iron',
-	BRONZE = 'bronze',
-	SILVER = 'silver',
-	GOLD = 'gold',
-	PLATINUM = 'platinum',
-	DIAMOND = 'diamond',
-	MASTER = 'master',
-	GRAND_MASTER = 'grand_master',
-	CHALLENGER = 'challenger',
-}
-
-export const BaseRankMMR = {
-	iron: 200,
-	bronze: 500,
-	silver: 800,
-	gold: 1100,
-	platinum: 1400,
-	diamond: 1700,
-	master: 2000,
-	grand_master: 2300,
-	challenger: 2600,
+export const Assets = {
+	images: (path: string) => `src/assets/images/${path}`,
+	font: (name: string, extension: 'otf' | 'ttf' | 'woff' | 'ttc' = 'ttf') => `src/assets/fonts/${name}.${extension}`,
 };
 
 export const Emojis = {
@@ -46,47 +22,122 @@ export const Emojis = {
 	toggle_off: '<:toggle_off:937221783604563988>',
 };
 
-export const Assets = {
-	images: (path: string) => `src/assets/images/${path}`,
-	font: (name: string, extension: 'otf' | 'ttf' | 'woff' | 'ttc' = 'ttf') => `src/assets/fonts/${name}.${extension}`,
+export enum MatchStatus {
+	ENDED,
+	IN_GAME,
+}
+
+export enum RankType {
+	UNRANKED,
+	IRON,
+	BRONZE,
+	SILVER,
+	GOLD,
+	PLATINUM,
+	DIAMOND,
+	MASTER,
+	GRAND_MASTER,
+	CHALLENGER,
+}
+
+export const Rank = {
+	unranked: {
+		id: 0,
+		name: 'unranked',
+		divisions: null,
+		assets: {
+			badge: Assets.images('ranks/badges/unranked.png'),
+		},
+	},
+	iron: {
+		id: 1,
+		name: 'iron',
+		divisions: 3,
+		assets: {
+			badge: Assets.images('ranks/badges/iron.png'),
+		},
+	},
+	bronze: {
+		id: 2,
+		name: 'bronze',
+		divisions: 3,
+		assets: {
+			badge: Assets.images('ranks/badges/bronze.png'),
+		},
+	},
+	silver: {
+		id: 3,
+		name: 'silver',
+		divisions: 3,
+		assets: {
+			badge: Assets.images('ranks/badges/silver.png'),
+		},
+	},
+	gold: {
+		id: 4,
+		name: 'gold',
+		divisions: 3,
+		assets: {
+			badge: Assets.images('ranks/badges/gold.png'),
+		},
+	},
+	platinum: {
+		id: 5,
+		name: 'platinum',
+		divisions: 3,
+		assets: {
+			badge: Assets.images('ranks/badges/platinum.png'),
+		},
+	},
+	diamond: {
+		id: 6,
+		name: 'diamond',
+		divisions: 3,
+		assets: {
+			badge: Assets.images('ranks/badges/diamond.png'),
+		},
+	},
+	master: {
+		id: 7,
+		name: 'master',
+		divisions: 1,
+		assets: {
+			badge: Assets.images('ranks/badges/master.png'),
+		},
+	},
+	grand_master: {
+		id: 8,
+		name: 'grand_master',
+		divisions: 1,
+		assets: {
+			badge: Assets.images('ranks/badges/grand_master.png'),
+		},
+	},
+	challenger: {
+		id: 9,
+		name: 'challenger',
+		divisions: 1,
+		assets: {
+			badge: Assets.images('ranks/badges/challenger.png'),
+		},
+	},
+};
+
+export const BaseRankMMR = {
+	iron: 200,
+	bronze: 500,
+	silver: 800,
+	gold: 1100,
+	platinum: 1400,
+	diamond: 1700,
+	master: 2000,
+	grand_master: 2300,
+	challenger: 2600,
 };
 
 export const Images = {
 	icons: {
 		tip: 'https://i.imgur.com/YbUBcN7.png',
-	},
-};
-
-export const RankAssets = {
-	unranked: {
-		badge: Assets.images('ranks/badges/unranked.png'),
-	},
-	iron: {
-		badge: Assets.images('ranks/badges/iron.png'),
-	},
-	bronze: {
-		badge: Assets.images('ranks/badges/bronze.png'),
-	},
-	silver: {
-		badge: Assets.images('ranks/badges/silver.png'),
-	},
-	gold: {
-		badge: Assets.images('ranks/badges/gold.png'),
-	},
-	platinum: {
-		badge: Assets.images('ranks/badges/platinum.png'),
-	},
-	diamond: {
-		badge: Assets.images('ranks/badges/diamond.png'),
-	},
-	master: {
-		badge: Assets.images('ranks/badges/master.png'),
-	},
-	grand_master: {
-		badge: Assets.images('ranks/badges/grand_master.png'),
-	},
-	challenger: {
-		badge: Assets.images('ranks/badges/challenger.png'),
 	},
 };
 

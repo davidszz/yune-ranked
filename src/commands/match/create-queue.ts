@@ -13,7 +13,7 @@ import type { Yune } from '@client';
 import { MatchStartTemplate } from '@structures/canvas/templates/MatchStartTemplate';
 import { Command } from '@structures/Command';
 import { YuneEmbed } from '@structures/YuneEmbed';
-import { DEFAULT_USER_MMR, Emojis, Images, MatchStatus } from '@utils/Constants';
+import { DEFAULT_USER_MMR, Emojis, Images, MatchStatus, Rank } from '@utils/Constants';
 import { RankUtils } from '@utils/RankUtils';
 
 export default class extends Command {
@@ -308,7 +308,7 @@ export default class extends Command {
 				.setTitle(t('create_queue.embeds.started.title'))
 				.setDescription(
 					t('create_queue.embeds.started.description', {
-						match_rank: t(`misc:ranks.${matchRank.rank}`, {
+						match_rank: t(`misc:ranks.${matchRank.rank.name}`, {
 							context: 'division',
 							division: matchRank.division,
 						}),

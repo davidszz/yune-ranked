@@ -1,13 +1,13 @@
 import type { User } from 'discord.js';
 import { TFunction } from 'i18next';
 
-import { MemberRank, RankAssets } from '@utils/Constants';
+import { Rank, RankType } from '@utils/Constants';
 
 import { BaseCanvas } from '../BaseCanvas';
 
 interface IMatchStartUser {
 	user: User;
-	rank: string | MemberRank;
+	rank: RankType | keyof typeof Rank;
 }
 
 export class MatchStartTemplate extends BaseCanvas<IMatchStartUser[]> {
@@ -71,11 +71,17 @@ export class MatchStartTemplate extends BaseCanvas<IMatchStartUser[]> {
 		return this.toBuffer();
 	}
 
-	private async createUser(data: { username: string; avatar: string; rank: string }) {
+	private async createUser(data: { username: string; avatar: string; rank: RankType | keyof typeof Rank }) {
 		const canvas = this.createCanvas(0, 32);
 		const padding = 6;
 
-		const rankName = this.t(`misc:ranks.names.${data.rank}`);
+		const rankKey =
+			typeof data.rank === 'string'
+				? data.rank
+				: Object.keys(Rank)[Object.values(Rank).findIndex((r) => r.id === data.rank)];
+
+		const userRank = Rank[rankKey as keyof typeof Rank];
+		const rankName = this.t(`misc:ranks.names.${userRank.name}`);
 
 		canvas.setFont('bold 14px Poppins');
 		const usernameWidth = canvas.measureText(data.username).width;
@@ -102,7 +108,7 @@ export class MatchStartTemplate extends BaseCanvas<IMatchStartUser[]> {
 			verticalAlign: 'middle',
 		});
 
-		const rankAsset = RankAssets[data.rank as keyof typeof RankAssets].badge;
+		const rankAsset = userRank.assets.badge;
 		if (rankAsset) {
 			const rankBadge = await this.loadImage(rankAsset);
 			if (rankBadge) {

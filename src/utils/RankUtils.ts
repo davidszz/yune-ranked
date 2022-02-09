@@ -1,20 +1,25 @@
-import { MemberRank, BaseRankMMR } from './Constants';
+import { Rank, RankType, BaseRankMMR } from './Constants';
 
 interface PDLCalculatorOptions {
 	mmr: number;
-	rank: MemberRank;
+	rank: RankType | keyof typeof Rank;
 	division: number;
 	mvp?: boolean;
 }
 
 interface MemberRankResult {
-	rank: string | MemberRank;
+	rank: typeof Rank[keyof typeof Rank];
 	division: number;
 }
 
 export class RankUtils {
 	static calculateWonPdlAmount(options: PDLCalculatorOptions) {
-		const currentRankBaseMMR = BaseRankMMR[options.rank] + options.division * 100;
+		const rankKey =
+			typeof options.rank === 'string'
+				? options.rank
+				: <keyof typeof Rank>Object.keys(Rank)[Object.values(Rank).findIndex((x) => x.id === options.rank)];
+
+		const currentRankBaseMMR = BaseRankMMR[rankKey] + options.division * 100;
 		return Math.floor((options.mmr / currentRankBaseMMR) * 15 * (options.mvp ? 1.2 : 1));
 	}
 
@@ -29,7 +34,7 @@ export class RankUtils {
 
 		const division = Math.ceil((mmr - rank[1]) / 100) || 1;
 		return {
-			rank: rank[0],
+			rank: Rank[rank[0]],
 			division,
 		};
 	}

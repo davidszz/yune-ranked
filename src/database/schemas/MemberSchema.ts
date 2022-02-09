@@ -1,7 +1,5 @@
 import { Schema } from 'mongoose';
 
-import { MemberRank } from '@utils/Constants';
-
 export interface IMemberSchema {
 	_id: string;
 	userId: string;
@@ -9,7 +7,7 @@ export interface IMemberSchema {
 	wins: number;
 	loses: number;
 	pdl: number;
-	rank: MemberRank;
+	rank: number;
 	division: 1 | 2 | 3;
 	mmr: number;
 }
@@ -27,7 +25,7 @@ export const MemberSchema = new Schema<IMemberSchema>(
 		wins: Number,
 		loses: Number,
 		pdl: Number,
-		rank: String,
+		rank: Number,
 		division: Number,
 		mmr: Number,
 	},
