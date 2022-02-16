@@ -32,8 +32,8 @@ export default class extends Command {
 			interaction.guildId,
 			'hideParticipantNames teamSize'
 		);
-		const participants: User[] = [interaction.user];
 
+		const participants: User[] = [interaction.user];
 		const { client, channel, guild } = interaction;
 
 		if (client.queueMembers.some((x) => x.id === interaction.user.id)) {
@@ -130,6 +130,16 @@ export default class extends Command {
 
 					const matchRank = Ranks[RankUtils.getRankByMmr(totalMmr / participants.filter(Boolean).length)];
 
+					const matchData = await client.database.matches.createMatch({
+						guild,
+						queueChannel: channel,
+						teamSize,
+						participants: participants.filter(Boolean).map((x) => ({
+							id: participantsData.find((p) => p.userId === x.id)._id,
+							user: x,
+						})),
+					});
+
 					await interaction.editReply({
 						embeds: [
 							startedEmbed({
@@ -140,7 +150,19 @@ export default class extends Command {
 								matchId: 1,
 							}),
 						],
-						components: [],
+						components: [
+							{
+								type: 'ACTION_ROW',
+								components: [
+									{
+										type: 'BUTTON',
+										url: CreateUrl.channel({ guildId: guild.id, channelId: matchData.channels.chat }),
+										style: 'LINK',
+										label: t('create_queue.buttons.goto_match'),
+									},
+								],
+							},
+						],
 						files: [attachment],
 					});
 					return;
@@ -155,6 +177,8 @@ export default class extends Command {
 				} else if (['idle', 'time'].includes(reason)) {
 					cancelData.reason = t('create_queue.embeds.destroyed.fields.reason.values.time');
 					cancelData.destroyedBy = t('create_queue.embeds.destroyed.fields.destroyed_by.values.system');
+				} else {
+					return;
 				}
 
 				await interaction.editReply({

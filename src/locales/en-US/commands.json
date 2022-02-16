@@ -9,8 +9,8 @@
 	},
 	"create_queue": {
 		"errors": {
-			"already_in_queue": "Você já faz parte de uma fila. [**Clique aqui**]({{- message_url}}) para vizualiza-la.",
-			"already_in_game": "Você ja faz parte da [**Partida {{match_id}}**]({{- chat_url}})",
+			"already_in_queue": "Você já faz parte de uma fila. [**Clique aqui**](<{{- message_url}}>) para vizualiza-la.",
+			"already_in_game": "Você ja faz parte da [**Partida N°{{match_id}}**](<{{- chat_url}}>).",
 			"already_in": "Você já faz parte desta fila.",
 			"not_in_queue": "Você não faz parte desta fila.",
 			"cannot_destroy": "Somente o criador da fila pode destruí-la.",
@@ -20,7 +20,8 @@
 		"buttons": {
 			"join": "Entrar ({{total}}/{{max}})",
 			"leave": "Sair",
-			"destroy": "Destruir"
+			"destroy": "Destruir",
+			"goto_match": "Ir para partida"
 		},
 		"embeds": {
 			"queue": {

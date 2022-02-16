@@ -9,8 +9,7 @@ import { IMatchSchema, MatchSchema } from '../schemas/MatchSchema';
 interface ICreateMatchData {
 	guild: Guild;
 	queueChannel: TextBasedChannel;
-	participants: User[];
-	mmr: number;
+	participants: { id: string; user: User }[];
 	teamSize: number;
 }
 
@@ -19,52 +18,49 @@ export class MatchRepository extends Repository<IMatchSchema> {
 		super(mongoose, model('Match', MatchSchema));
 	}
 
-	async createMatch({ guild, queueChannel, mmr, participants, teamSize }: ICreateMatchData) {
+	async createMatch({ guild, queueChannel, participants, teamSize }: ICreateMatchData) {
 		const matchId = await guild.client.database.guilds.increamentMatchId(guild.id);
 
 		const { everyone } = guild.roles;
+
 		const category = await guild.channels.create(`Partida ${matchId}`, {
 			type: 'GUILD_CATEGORY',
-			permissionOverwrites: [
-				{
-					id: everyone.id,
-					type: 'role',
-					deny: ['SEND_MESSAGES', 'CONNECT'],
-				},
-			],
+			permissionOverwrites: [{ id: everyone.id, type: 'role', deny: ['SEND_MESSAGES', 'CONNECT'] }],
 		});
 
-		const chat = await guild.channels.create(`chat-${matchId}`, {
+		const chat = await category.createChannel(`chat-${matchId}`, {
 			type: 'GUILD_TEXT',
-			parent: category.id,
+			topic: `ID: ${matchId}`,
 			permissionOverwrites: participants.map<OverwriteResolvable>((x) => ({
-				id: x.id,
+				id: x.user.id,
 				type: 'member',
 				allow: ['SEND_MESSAGES'],
 			})),
 		});
 
-		const blueVoice = await guild.channels.create('Time azul', {
+		const blueVoice = await category.createChannel('🔵 Time Azul', {
 			type: 'GUILD_VOICE',
-			parent: category.id,
+			userLimit: teamSize,
 			permissionOverwrites: participants.slice(0, teamSize).map<OverwriteResolvable>((x) => ({
-				id: x.id,
+				id: x.user.id,
 				type: 'member',
 				allow: ['CONNECT'],
 			})),
 		});
 
-		const redVoice = await guild.channels.create('Time vermelho', {
+		const redVoice = await category.createChannel('🔴 Time Vermelho', {
 			type: 'GUILD_VOICE',
-			parent: category.id,
+			userLimit: teamSize,
 			permissionOverwrites: participants.slice(teamSize, teamSize * 2).map<OverwriteResolvable>((x) => ({
-				id: x.id,
+				id: x.user.id,
 				type: 'member',
 				allow: ['CONNECT'],
 			})),
 		});
 
-		const matchData: Partial<IMatchSchema> = {
+		return this.create({
+			guildId: guild.id,
+			matchId,
 			queueChannelId: queueChannel.id,
 			channels: {
 				category: category.id,
@@ -72,23 +68,24 @@ export class MatchRepository extends Repository<IMatchSchema> {
 				blueVoice: blueVoice.id,
 				redVoice: redVoice.id,
 			},
-			guildId: guild.id,
-			matchMmr: mmr,
+			teams: [
+				{
+					teamId: TeamID.BLUE,
+					captainId: participants[0].user.id,
+				},
+				{
+					teamId: TeamID.RED,
+					captainId: participants[teamSize].user.id,
+				},
+			],
+			status: MatchStatus.IN_GAME,
+			participants: participants.map((x, i) => ({
+				member: x.id,
+				userId: x.user.id,
+				isCaptain: [0, teamSize].includes(i),
+			})),
 			createdAt: new Date(),
 			updatedAt: new Date(),
-			status: MatchStatus.IN_GAME,
-			matchId,
-			teams: [
-				{ teamId: TeamID.BLUE, captainId: participants[0].id },
-				{ teamId: TeamID.RED, captainId: participants[teamSize].id },
-			],
-			participants: participants.map((x, i) => ({
-				userId: x.id,
-				isCaptain: !i || i === teamSize,
-				mvp: false,
-			})),
-		};
-
-		return this.create(matchData);
+		});
 	}
 }

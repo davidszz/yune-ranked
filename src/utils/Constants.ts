@@ -64,6 +64,7 @@ export const Ranks = [
 		id: UserRank.UNRANKED,
 		name: 'unranked',
 		mmr: 0,
+		maxPdl: 0,
 		assets: {
 			badge: Assets.images('ranks/badges/unranked.png'),
 		},
@@ -73,6 +74,7 @@ export const Ranks = [
 		name: 'iron',
 		division: 1,
 		mmr: 200,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/iron.png'),
 		},
@@ -82,6 +84,7 @@ export const Ranks = [
 		name: 'iron',
 		division: 2,
 		mmr: 300,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/iron.png'),
 		},
@@ -91,6 +94,7 @@ export const Ranks = [
 		name: 'iron',
 		division: 3,
 		mmr: 400,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/iron.png'),
 		},
@@ -100,6 +104,7 @@ export const Ranks = [
 		name: 'bronze',
 		division: 1,
 		mmr: 500,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/bronze.png'),
 		},
@@ -109,6 +114,7 @@ export const Ranks = [
 		name: 'bronze',
 		division: 2,
 		mmr: 600,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/bronze.png'),
 		},
@@ -118,6 +124,7 @@ export const Ranks = [
 		name: 'bronze',
 		division: 3,
 		mmr: 700,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/bronze.png'),
 		},
@@ -127,6 +134,7 @@ export const Ranks = [
 		name: 'silver',
 		division: 1,
 		mmr: 800,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/silver.png'),
 		},
@@ -136,6 +144,7 @@ export const Ranks = [
 		name: 'silver',
 		division: 2,
 		mmr: 900,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/silver.png'),
 		},
@@ -145,6 +154,7 @@ export const Ranks = [
 		name: 'silver',
 		division: 3,
 		mmr: 1000,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/silver.png'),
 		},
@@ -154,6 +164,7 @@ export const Ranks = [
 		name: 'gold',
 		division: 1,
 		mmr: 1100,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/gold.png'),
 		},
@@ -163,6 +174,7 @@ export const Ranks = [
 		name: 'gold',
 		division: 2,
 		mmr: 1200,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/gold.png'),
 		},
@@ -172,6 +184,7 @@ export const Ranks = [
 		name: 'gold',
 		division: 3,
 		mmr: 1300,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/gold.png'),
 		},
@@ -181,6 +194,7 @@ export const Ranks = [
 		name: 'platinum',
 		division: 1,
 		mmr: 1400,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/platinum.png'),
 		},
@@ -190,6 +204,7 @@ export const Ranks = [
 		name: 'platinum',
 		division: 2,
 		mmr: 1500,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/platinum.png'),
 		},
@@ -199,6 +214,7 @@ export const Ranks = [
 		name: 'platinum',
 		division: 3,
 		mmr: 1600,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/platinum.png'),
 		},
@@ -208,6 +224,7 @@ export const Ranks = [
 		name: 'diamond',
 		division: 1,
 		mmr: 1700,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/diamond.png'),
 		},
@@ -217,6 +234,7 @@ export const Ranks = [
 		name: 'diamond',
 		division: 2,
 		mmr: 1800,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/diamond.png'),
 		},
@@ -226,6 +244,7 @@ export const Ranks = [
 		name: 'diamond',
 		division: 3,
 		mmr: 1900,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/diamond.png'),
 		},
@@ -235,6 +254,7 @@ export const Ranks = [
 		name: 'master',
 		division: 1,
 		mmr: 2000,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/master.png'),
 		},
@@ -244,6 +264,7 @@ export const Ranks = [
 		name: 'master',
 		division: 2,
 		mmr: 2100,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/master.png'),
 		},
@@ -253,6 +274,7 @@ export const Ranks = [
 		name: 'master',
 		division: 3,
 		mmr: 2200,
+		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/master.png'),
 		},
@@ -261,6 +283,7 @@ export const Ranks = [
 		id: UserRank.GRAND_MASTER,
 		name: 'grand_master',
 		mmr: 2300,
+		maxPdl: 400,
 		assets: {
 			badge: Assets.images('ranks/badges/grand_master.png'),
 		},
@@ -269,6 +292,7 @@ export const Ranks = [
 		id: UserRank.CHALLENGER,
 		name: 'challenger',
 		mmr: 2800,
+		maxPdl: 3000,
 		assets: {
 			badge: Assets.images('ranks/badges/challenger.png'),
 		},

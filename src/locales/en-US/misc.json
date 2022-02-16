@@ -26,6 +26,7 @@
 		"diamond": "{{- e_diamond}} $t(misc:ranks.names.diamond)",
 		"diamond_division": "{{- e_diamond}} $t(misc:ranks.names.diamond) {{division}}",
 		"master": "{{- e_master}} $t(misc:ranks.names.master)",
+		"master_division": "{{- e_master}} $t(misc:ranks.names.master) {{division}}",
 		"grand_master": "{{- e_grand_master}} $t(misc:ranks.names.grand_master)",
 		"challenger": "{{- e_challenger}} $t(misc:ranks.names.challenger)"
 	}

@@ -2,15 +2,19 @@ import { Schema } from 'mongoose';
 
 import { MatchStatus, TeamID } from '@utils/Constants';
 
+import { IMemberSchema } from './MemberSchema';
+
 interface IMatchParticipant {
+	member: string | IMemberSchema;
 	userId: string;
-	isCaptain: boolean;
-	mvp: boolean;
+	isCaptain?: boolean;
+	mvp?: boolean;
 }
 
 interface IMatchTeam {
 	teamId: TeamID;
 	captainId: string;
+	win?: boolean;
 }
 
 export interface IMatchSchema {
@@ -25,7 +29,6 @@ export interface IMatchSchema {
 	};
 	queueChannelId: string;
 	status: MatchStatus;
-	matchMmr: number;
 	teams: [IMatchTeam, IMatchTeam];
 	participants: IMatchParticipant[];
 	createdAt: Date;
@@ -34,6 +37,11 @@ export interface IMatchSchema {
 
 const MatchParticipantSchema = new Schema<IMatchParticipant>(
 	{
+		member: {
+			type: String,
+			ref: 'Member',
+			required: true,
+		},
 		userId: {
 			type: String,
 			required: true,
@@ -54,6 +62,7 @@ const MatchTeamSchema = new Schema<IMatchTeam>(
 			type: String,
 			required: true,
 		},
+		win: Boolean,
 	},
 	{
 		_id: false,
@@ -86,7 +95,6 @@ export const MatchSchema = new Schema<IMatchSchema>(
 		},
 		teams: [MatchTeamSchema, MatchTeamSchema],
 		participants: [MatchParticipantSchema],
-		matchMmr: Number,
 	},
 	{
 		timestamps: {
