@@ -1,25 +1,15 @@
-import { Rank, RankType, BaseRankMMR } from './Constants';
+import { Ranks, UserRank } from './Constants';
 
 interface PDLCalculatorOptions {
 	mmr: number;
-	rank: RankType | keyof typeof Rank;
-	division: number;
+	rank: UserRank;
 	mvp?: boolean;
-}
-
-interface MemberRankResult {
-	rank: typeof Rank[keyof typeof Rank];
-	division: number;
 }
 
 export class RankUtils {
 	static calculateWonPdlAmount(options: PDLCalculatorOptions) {
-		const rankKey =
-			typeof options.rank === 'string'
-				? options.rank
-				: <keyof typeof Rank>Object.keys(Rank)[Object.values(Rank).findIndex((x) => x.id === options.rank)];
-
-		const currentRankBaseMMR = BaseRankMMR[rankKey] + options.division * 100;
+		const rank = Ranks[options.rank];
+		const currentRankBaseMMR = rank.mmr;
 		return Math.floor((options.mmr / currentRankBaseMMR) * 15 * (options.mvp ? 1.2 : 1));
 	}
 
@@ -27,15 +17,15 @@ export class RankUtils {
 		return Math.max(30 - this.calculateWonPdlAmount(options), 5);
 	}
 
-	static getRankByMmr(mmr: number): MemberRankResult {
-		const rank = Object.entries(BaseRankMMR)
-			.sort((a, b) => a[1] - b[1])
-			.reduce((acc, val) => (val[1] <= mmr ? val : acc));
-
-		const division = Math.ceil((mmr - rank[1]) / 100) || 1;
-		return {
-			rank: Rank[rank[0]],
-			division,
-		};
+	static getRankByMmr(mmr: number) {
+		const rank = Ranks.reduce((acc, val) => {
+			if (val.mmr <= mmr) {
+				if (val.mmr >= acc.mmr) {
+					return val;
+				}
+			}
+			return acc;
+		});
+		return rank.id;
 	}
 }

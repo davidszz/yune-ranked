@@ -6,9 +6,8 @@ export interface IMemberSchema {
 	guildId: string;
 	wins: number;
 	loses: number;
-	pdl: number;
 	rank: number;
-	division: 1 | 2 | 3;
+	pdl: number;
 	mmr: number;
 }
 
@@ -26,7 +25,6 @@ export const MemberSchema = new Schema<IMemberSchema>(
 		loses: Number,
 		pdl: Number,
 		rank: Number,
-		division: Number,
 		mmr: Number,
 	},
 	{

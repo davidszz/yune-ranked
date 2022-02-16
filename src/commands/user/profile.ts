@@ -4,7 +4,7 @@ import type { TFunction } from 'i18next';
 import type { Yune } from '@client';
 import { Command } from '@structures/Command';
 import { YuneEmbed } from '@structures/YuneEmbed';
-import { Rank } from '@utils/Constants';
+import { Ranks } from '@utils/Constants';
 
 export default class extends Command {
 	constructor(client: Yune) {
@@ -27,8 +27,8 @@ export default class extends Command {
 		const target = interaction.options.getMember('usuário') ?? interaction.member;
 		const yourself = interaction.user.id === target.id;
 
-		const data = await interaction.client.database.members.findOne(target, 'pdl rank division wins loses');
-		const userRank = Object.values(Rank).find((x) => x.id === data.rank);
+		const data = await interaction.client.database.members.findOne(target, 'pdl rank wins loses');
+		const userRank = Ranks[data.rank];
 
 		const profileEmbed = new YuneEmbed()
 			.setTitle(yourself ? 'Seu perfil' : `Perfil de ${target.user.tag}`)
@@ -37,8 +37,8 @@ export default class extends Command {
 				`**Vitórias:** ${data.wins}`,
 				`**Derrotas:** ${data.loses}`,
 				`**Classificação:** ${t(`misc:ranks.${userRank.name}`, {
-					context: 'division',
-					division: data.division ?? 1,
+					context: userRank.division ? 'division' : null,
+					division: userRank.division,
 				})}`,
 			]);
 

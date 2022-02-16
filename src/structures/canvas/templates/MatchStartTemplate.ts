@@ -1,13 +1,13 @@
 import type { User } from 'discord.js';
 import { TFunction } from 'i18next';
 
-import { Rank, RankType } from '@utils/Constants';
+import { Ranks, UserRank } from '@utils/Constants';
 
 import { BaseCanvas } from '../BaseCanvas';
 
 interface IMatchStartUser {
 	user: User;
-	rank: RankType | keyof typeof Rank;
+	rank: UserRank;
 }
 
 export class MatchStartTemplate extends BaseCanvas<IMatchStartUser[]> {
@@ -71,16 +71,11 @@ export class MatchStartTemplate extends BaseCanvas<IMatchStartUser[]> {
 		return this.toBuffer();
 	}
 
-	private async createUser(data: { username: string; avatar: string; rank: RankType | keyof typeof Rank }) {
+	private async createUser(data: { username: string; avatar: string; rank: UserRank }) {
 		const canvas = this.createCanvas(0, 32);
 		const padding = 6;
 
-		const rankKey =
-			typeof data.rank === 'string'
-				? data.rank
-				: Object.keys(Rank)[Object.values(Rank).findIndex((r) => r.id === data.rank)];
-
-		const userRank = Rank[rankKey as keyof typeof Rank];
+		const userRank = Ranks[data.rank];
 		const rankName = this.t(`misc:ranks.names.${userRank.name}`);
 
 		canvas.setFont('bold 14px Poppins');

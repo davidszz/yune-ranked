@@ -28,117 +28,252 @@ export enum MatchStatus {
 }
 
 export enum TeamID {
-	BLUE = 'blue',
-	RED = 'red',
+	BLUE = 'Blue',
+	RED = 'Red',
 }
 
-export enum RankType {
+export enum UserRank {
 	UNRANKED,
-	IRON,
-	BRONZE,
-	SILVER,
-	GOLD,
-	PLATINUM,
-	DIAMOND,
-	MASTER,
+	IRON_1,
+	IRON_2,
+	IRON_3,
+	BRONZE_1,
+	BRONZE_2,
+	BRONZE_3,
+	SILVER_1,
+	SILVER_2,
+	SILVER_3,
+	GOLD_1,
+	GOLD_2,
+	GOLD_3,
+	PLATINUM_1,
+	PLATINUM_2,
+	PLATINUM_3,
+	DIAMOND_1,
+	DIAMOND_2,
+	DIAMOND_3,
+	MASTER_1,
+	MASTER_2,
+	MASTER_3,
 	GRAND_MASTER,
 	CHALLENGER,
 }
 
-export const Rank = {
-	unranked: {
-		id: 0,
+export const Ranks = [
+	{
+		id: UserRank.UNRANKED,
 		name: 'unranked',
-		divisions: null,
+		mmr: 0,
 		assets: {
 			badge: Assets.images('ranks/badges/unranked.png'),
 		},
 	},
-	iron: {
-		id: 1,
+	{
+		id: UserRank.IRON_1,
 		name: 'iron',
-		divisions: 3,
+		division: 1,
+		mmr: 200,
 		assets: {
 			badge: Assets.images('ranks/badges/iron.png'),
 		},
 	},
-	bronze: {
-		id: 2,
+	{
+		id: UserRank.IRON_2,
+		name: 'iron',
+		division: 2,
+		mmr: 300,
+		assets: {
+			badge: Assets.images('ranks/badges/iron.png'),
+		},
+	},
+	{
+		id: UserRank.IRON_3,
+		name: 'iron',
+		division: 3,
+		mmr: 400,
+		assets: {
+			badge: Assets.images('ranks/badges/iron.png'),
+		},
+	},
+	{
+		id: UserRank.BRONZE_1,
 		name: 'bronze',
-		divisions: 3,
+		division: 1,
+		mmr: 500,
 		assets: {
 			badge: Assets.images('ranks/badges/bronze.png'),
 		},
 	},
-	silver: {
-		id: 3,
+	{
+		id: UserRank.BRONZE_2,
+		name: 'bronze',
+		division: 2,
+		mmr: 600,
+		assets: {
+			badge: Assets.images('ranks/badges/bronze.png'),
+		},
+	},
+	{
+		id: UserRank.BRONZE_3,
+		name: 'bronze',
+		division: 3,
+		mmr: 700,
+		assets: {
+			badge: Assets.images('ranks/badges/bronze.png'),
+		},
+	},
+	{
+		id: UserRank.SILVER_1,
 		name: 'silver',
-		divisions: 3,
+		division: 1,
+		mmr: 800,
 		assets: {
 			badge: Assets.images('ranks/badges/silver.png'),
 		},
 	},
-	gold: {
-		id: 4,
+	{
+		id: UserRank.SILVER_2,
+		name: 'silver',
+		division: 2,
+		mmr: 900,
+		assets: {
+			badge: Assets.images('ranks/badges/silver.png'),
+		},
+	},
+	{
+		id: UserRank.SILVER_3,
+		name: 'silver',
+		division: 3,
+		mmr: 1000,
+		assets: {
+			badge: Assets.images('ranks/badges/silver.png'),
+		},
+	},
+	{
+		id: UserRank.GOLD_1,
 		name: 'gold',
-		divisions: 3,
+		division: 1,
+		mmr: 1100,
 		assets: {
 			badge: Assets.images('ranks/badges/gold.png'),
 		},
 	},
-	platinum: {
-		id: 5,
+	{
+		id: UserRank.GOLD_2,
+		name: 'gold',
+		division: 2,
+		mmr: 1200,
+		assets: {
+			badge: Assets.images('ranks/badges/gold.png'),
+		},
+	},
+	{
+		id: UserRank.GOLD_3,
+		name: 'gold',
+		division: 3,
+		mmr: 1300,
+		assets: {
+			badge: Assets.images('ranks/badges/gold.png'),
+		},
+	},
+	{
+		id: UserRank.PLATINUM_1,
 		name: 'platinum',
-		divisions: 3,
+		division: 1,
+		mmr: 1400,
 		assets: {
 			badge: Assets.images('ranks/badges/platinum.png'),
 		},
 	},
-	diamond: {
-		id: 6,
+	{
+		id: UserRank.PLATINUM_2,
+		name: 'platinum',
+		division: 2,
+		mmr: 1500,
+		assets: {
+			badge: Assets.images('ranks/badges/platinum.png'),
+		},
+	},
+	{
+		id: UserRank.PLATINUM_3,
+		name: 'platinum',
+		division: 3,
+		mmr: 1600,
+		assets: {
+			badge: Assets.images('ranks/badges/platinum.png'),
+		},
+	},
+	{
+		id: UserRank.DIAMOND_1,
 		name: 'diamond',
-		divisions: 3,
+		division: 1,
+		mmr: 1700,
 		assets: {
 			badge: Assets.images('ranks/badges/diamond.png'),
 		},
 	},
-	master: {
-		id: 7,
+	{
+		id: UserRank.DIAMOND_2,
+		name: 'diamond',
+		division: 2,
+		mmr: 1800,
+		assets: {
+			badge: Assets.images('ranks/badges/diamond.png'),
+		},
+	},
+	{
+		id: UserRank.DIAMOND_3,
+		name: 'diamond',
+		division: 3,
+		mmr: 1900,
+		assets: {
+			badge: Assets.images('ranks/badges/diamond.png'),
+		},
+	},
+	{
+		id: UserRank.MASTER_1,
 		name: 'master',
-		divisions: 1,
+		division: 1,
+		mmr: 2000,
 		assets: {
 			badge: Assets.images('ranks/badges/master.png'),
 		},
 	},
-	grand_master: {
-		id: 8,
+	{
+		id: UserRank.MASTER_2,
+		name: 'master',
+		division: 2,
+		mmr: 2100,
+		assets: {
+			badge: Assets.images('ranks/badges/master.png'),
+		},
+	},
+	{
+		id: UserRank.MASTER_3,
+		name: 'master',
+		division: 3,
+		mmr: 2200,
+		assets: {
+			badge: Assets.images('ranks/badges/master.png'),
+		},
+	},
+	{
+		id: UserRank.GRAND_MASTER,
 		name: 'grand_master',
-		divisions: 1,
+		mmr: 2300,
 		assets: {
 			badge: Assets.images('ranks/badges/grand_master.png'),
 		},
 	},
-	challenger: {
-		id: 9,
+	{
+		id: UserRank.CHALLENGER,
 		name: 'challenger',
-		divisions: 1,
+		mmr: 2800,
 		assets: {
 			badge: Assets.images('ranks/badges/challenger.png'),
 		},
 	},
-};
-
-export const BaseRankMMR = {
-	iron: 200,
-	bronze: 500,
-	silver: 800,
-	gold: 1100,
-	platinum: 1400,
-	diamond: 1700,
-	master: 2000,
-	grand_master: 2300,
-	challenger: 2600,
-};
+];
 
 export const Images = {
 	icons: {
@@ -157,5 +292,5 @@ export const CreateUrl = {
 -------- Misc Constants ---------
 --------------------------------- */
 
-export const DEFAULT_USER_MMR = BaseRankMMR.iron;
+export const DEFAULT_USER_MMR = Ranks[UserRank.IRON_1].mmr;
 export const DEFAULT_TEAM_SIZE = 10;

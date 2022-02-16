@@ -1,7 +1,7 @@
 import { GuildMember } from 'discord.js';
 import { Document, FilterQuery, model, Mongoose, QueryOptions, UpdateQuery } from 'mongoose';
 
-import { DEFAULT_USER_MMR } from '@utils/Constants';
+import { DEFAULT_USER_MMR, UserRank } from '@utils/Constants';
 
 import { Repository } from '../Repository';
 import { IMemberSchema, MemberSchema } from '../schemas/MemberSchema';
@@ -13,11 +13,10 @@ export class MemberRepository extends Repository<IMemberSchema> {
 
 	parse(entity: Document<IMemberSchema>): IMemberSchema {
 		return {
-			rank: 0,
+			rank: UserRank.UNRANKED,
 			wins: 0,
 			loses: 0,
 			pdl: 0,
-			division: 1,
 			mmr: DEFAULT_USER_MMR,
 			...(super.parse(entity) ?? ({} as IMemberSchema)),
 		};

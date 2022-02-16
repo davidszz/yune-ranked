@@ -12,9 +12,10 @@
 			"already_in_queue": "Você já faz parte de uma fila. [**Clique aqui**]({{- message_url}}) para vizualiza-la.",
 			"already_in_game": "Você ja faz parte da [**Partida {{match_id}}**]({{- chat_url}})",
 			"already_in": "Você já faz parte desta fila.",
-			"not_in": "",
+			"not_in_queue": "Você não faz parte desta fila.",
 			"cannot_destroy": "Somente o criador da fila pode destruí-la.",
-			"cannot_leave": "O criador da fila não pode sair. Use o botão **[Destruir]** caso queira cancelar a fila."
+			"cannot_leave": "O criador da fila não pode sair. Use o botão **[Destruir]** caso queira cancelar a fila.",
+			"queue_ended": "🤖 Beep-bop! Parece que está fila já foi finalizada ou cancelada."
 		},
 		"buttons": {
 			"join": "Entrar ({{total}}/{{max}})",
@@ -35,6 +36,36 @@
 					"team_red": "Time Vermelho"
 				},
 				"footer": "Para entrar na fila clique no botão [Entrar] abaixo"
+			},
+			"destroyed": {
+				"author": "Partida de {{- user}}",
+				"description": "Esta partida **foi cancelada** e todos os participantes da fila foram removidos e já podem criar e/ou participar de novas filas.",
+				"fields": {
+					"reason": {
+						"name": "Motivo:",
+						"values": {
+							"destroyed": "Cancelada pelo(a) criador(a) da fila.",
+							"time": "Tempo esgotado."
+						}
+					},
+					"destroyed_by": {
+						"name": "Cancelada por:",
+						"values": {
+							"system": "Cancelada automáticamente pelo sistema."
+						}
+					}
+				},
+				"footer": "Partida cancelada"
+			},
+			"creating": {
+				"title": "Criando partida...",
+				"description": "A partida está sendo criada. Este processo pode levar alguns segundos...\n\n**Participantes:** {{- participants}}",
+				"footer": "Os usuários serão notificados após a partida ser criada."
+			},
+			"started": {
+				"author": "Partida de {{- user}}",
+				"description": "Rank estimado da partida: {{- match_rank}}",
+				"footer": "ID: {{match_id}}"
 			}
 		},
 		"canvas": {
