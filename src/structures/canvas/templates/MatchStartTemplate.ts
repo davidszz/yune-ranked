@@ -1,13 +1,14 @@
 import type { User } from 'discord.js';
 import { TFunction } from 'i18next';
 
-import { Ranks, UserRank } from '@utils/Constants';
+import { Assets, Ranks, UserRank } from '@utils/Constants';
 
 import { BaseCanvas } from '../BaseCanvas';
 
 interface IMatchStartUser {
 	user: User;
 	rank: UserRank;
+	isCaptain?: boolean;
 }
 
 export class MatchStartTemplate extends BaseCanvas<IMatchStartUser[]> {
@@ -18,11 +19,12 @@ export class MatchStartTemplate extends BaseCanvas<IMatchStartUser[]> {
 
 	async build() {
 		const users = await Promise.all(
-			this.data.map(({ user, rank }) =>
+			this.data.map(({ user, rank, isCaptain }) =>
 				this.createUser({
 					username: user.username,
 					avatar: user.displayAvatarURL({ format: 'jpg' }),
 					rank,
+					isCaptain: !!isCaptain,
 				})
 			)
 		);
@@ -85,7 +87,7 @@ export class MatchStartTemplate extends BaseCanvas<IMatchStartUser[]> {
 		return this.toBuffer();
 	}
 
-	private async createUser(data: { username: string; avatar: string; rank: UserRank }) {
+	private async createUser(data: { username: string; avatar: string; rank: UserRank; isCaptain: boolean }) {
 		const canvas = this.createCanvas(0, 32);
 		const padding = 6;
 
@@ -98,7 +100,7 @@ export class MatchStartTemplate extends BaseCanvas<IMatchStartUser[]> {
 		canvas.setFont('10px Montserrat');
 		const rankWidth = canvas.measureText(rankName).width + 16 + 2;
 
-		canvas.width = Math.max(usernameWidth, rankWidth) + 32 + padding;
+		canvas.width = Math.max(usernameWidth, rankWidth) + 32 + padding + (data.isCaptain ? 24 : 0);
 
 		await canvas.drawRoundedImage({
 			image: data.avatar,
@@ -116,6 +118,13 @@ export class MatchStartTemplate extends BaseCanvas<IMatchStartUser[]> {
 			y: 7,
 			verticalAlign: 'middle',
 		});
+
+		if (data.isCaptain) {
+			const crownIcon = await this.loadImage(Assets.images('icons/crown.png'));
+			if (crownIcon) {
+				canvas.ctx.drawImage(crownIcon, 32 + padding + usernameWidth + 6, 0, 14, 14);
+			}
+		}
 
 		const rankAsset = userRank.assets.badge;
 		if (rankAsset) {

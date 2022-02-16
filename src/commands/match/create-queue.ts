@@ -5,6 +5,7 @@ import {
 	MessageActionRow,
 	MessageAttachment,
 	MessageButton,
+	TextBasedChannel,
 	User,
 } from 'discord.js';
 import { on } from 'events';
@@ -109,11 +110,12 @@ export default class extends Command {
 
 					const matchImageTemplate = new MatchStartTemplate(
 						t,
-						participants.map((x) => {
+						participants.map((x, i) => {
 							const participantData = participantsData.find((d) => d.userId === x.id);
 							return {
 								rank: participantData?.rank ?? UserRank.UNRANKED,
 								user: x,
+								isCaptain: [0, teamSize].includes(i),
 							};
 						})
 					);
@@ -139,6 +141,43 @@ export default class extends Command {
 							user: x,
 						})),
 					});
+
+					const chatChannel = guild.channels.cache.get(matchData.channels.chat) as TextBasedChannel;
+					if (chatChannel) {
+						const mapParticipants = (users: User[]) =>
+							users.map((x, i) => `${x}${[0, teamSize].includes(i) ? ` ${Emojis.crown}` : ''}`).join('\n');
+
+						const chatEmbed = new YuneEmbed()
+							.setColor('DEFAULT')
+							.setAuthor({
+								name: t('create_queue.embeds.chat.author', {
+									match_id: matchData.matchId,
+								}),
+								iconURL: client.user.displayAvatarURL({ format: 'png', dynamic: true }),
+							})
+							.setDescription(t('create_queue.embeds.chat.description'))
+							.addFields([
+								{
+									name: t('create_queue.embeds.chat.fields.team_blue'),
+									value: mapParticipants(participants.slice(0, teamSize)),
+									inline: true,
+								},
+								{
+									name: t('create_queue.embeds.chat.fields.team_red'),
+									value: mapParticipants(participants.slice(teamSize, teamSize * 2)),
+									inline: true,
+								},
+							])
+							.setFooter({
+								text: t('create_queue.embeds.chat.footer'),
+								iconURL: guild.iconURL({ format: 'png', dynamic: true }),
+							});
+
+						await chatChannel.send({
+							content: participants.join(' '),
+							embeds: [chatEmbed],
+						});
+					}
 
 					await interaction.editReply({
 						embeds: [
@@ -293,13 +332,13 @@ export default class extends Command {
 					t('create_queue.embeds.queue.fields.misc.participant', {
 						context: participant ? nameContext : 'waiting',
 						position: i + 1,
-						user: participant,
+						user: participant?.toString(),
 					})
 				);
 			}
 
 			const embed = new YuneEmbed()
-				.setColor('DARKER_GREY')
+				.setColor('DEFAULT')
 				.setAuthor({
 					name: t('create_queue.embeds.queue.author', { user: interaction.user.tag }),
 					iconURL: interaction.user.displayAvatarURL({ format: 'png', dynamic: true }),

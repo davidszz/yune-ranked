@@ -20,6 +20,7 @@ export const Emojis = {
 	left: '<:left:936935440257269770>',
 	toggle_on: '<:toggle_on:937221783604584458>',
 	toggle_off: '<:toggle_off:937221783604563988>',
+	crown: '<:icrown:943643271299735602>',
 };
 
 export enum MatchStatus {

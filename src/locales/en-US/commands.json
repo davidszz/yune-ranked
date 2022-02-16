@@ -69,12 +69,21 @@
 				"footer": "ID: {{match_id}}"
 			},
 			"deleted": {
-				"author": "Partida N°{{match_id}}",
-				"description": "Esta partida foi cancelada automáticamente por um dos canais da partida terem sidos deletados.",
+				"author": "Partida N° {{match_id}}",
+				"description": "Esta partida foi cancelada automáticamente por um dos canais da partida ter sido deletado.",
 				"fields": {
 					"started_at": "Iniciada em:",
 					"created_by": "Criada por:"
 				}
+			},
+			"chat": {
+				"author": "Partida iniciada • ID: {{match_id}}",
+				"description": "Use o comando **/ajuda** neste canal para obter os comandos disponíveis durante a partida.",
+				"fields": {
+					"team_blue": "🔵 Time Azul:",
+					"team_red": "🔴 Time Vermelho:"
+				},
+				"footer": "Caso ocorra algum imprevisto durante a partida, peça para que um administrador do servidor finalize-a."
 			}
 		},
 		"canvas": {
@@ -83,5 +92,9 @@
 		},
 		"joined": "Você entrou na fila de {{- user}}!",
 		"leave": "Você saiu da fila de {{- user}}!"
+	},
+	"hide_participants": {
+		"turn_on": "Agora o nome dos participantes **não aparecerá** durante as filas de partidas.",
+		"turn_off": "Agora o nome dos participantes **aparecerá** durante as filas de partidas."
 	}
 }
