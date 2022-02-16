@@ -67,6 +67,14 @@
 				"author": "Partida de {{- user}}",
 				"description": "Rank estimado da partida: {{- match_rank}}",
 				"footer": "ID: {{match_id}}"
+			},
+			"deleted": {
+				"author": "Partida N°{{match_id}}",
+				"description": "Esta partida foi cancelada automáticamente por um dos canais da partida terem sidos deletados.",
+				"fields": {
+					"started_at": "Iniciada em:",
+					"created_by": "Criada por:"
+				}
 			}
 		},
 		"canvas": {

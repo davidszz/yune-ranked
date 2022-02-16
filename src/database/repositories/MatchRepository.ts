@@ -25,37 +25,57 @@ export class MatchRepository extends Repository<IMatchSchema> {
 
 		const category = await guild.channels.create(`Partida ${matchId}`, {
 			type: 'GUILD_CATEGORY',
-			permissionOverwrites: [{ id: everyone.id, type: 'role', deny: ['SEND_MESSAGES', 'CONNECT'] }],
 		});
 
 		const chat = await category.createChannel(`chat-${matchId}`, {
 			type: 'GUILD_TEXT',
 			topic: `ID: ${matchId}`,
-			permissionOverwrites: participants.map<OverwriteResolvable>((x) => ({
-				id: x.user.id,
-				type: 'member',
-				allow: ['SEND_MESSAGES'],
-			})),
+			permissionOverwrites: [
+				{
+					id: everyone.id,
+					type: 'role',
+					deny: ['SEND_MESSAGES'],
+				},
+				...participants.map<OverwriteResolvable>((x) => ({
+					id: x.user.id,
+					type: 'member',
+					allow: ['SEND_MESSAGES'],
+				})),
+			],
 		});
 
 		const blueVoice = await category.createChannel('🔵 Time Azul', {
 			type: 'GUILD_VOICE',
 			userLimit: teamSize,
-			permissionOverwrites: participants.slice(0, teamSize).map<OverwriteResolvable>((x) => ({
-				id: x.user.id,
-				type: 'member',
-				allow: ['CONNECT'],
-			})),
+			permissionOverwrites: [
+				{
+					id: everyone.id,
+					type: 'role',
+					deny: ['CONNECT'],
+				},
+				...participants.slice(0, teamSize).map<OverwriteResolvable>((x) => ({
+					id: x.user.id,
+					type: 'member',
+					allow: ['CONNECT'],
+				})),
+			],
 		});
 
 		const redVoice = await category.createChannel('🔴 Time Vermelho', {
 			type: 'GUILD_VOICE',
 			userLimit: teamSize,
-			permissionOverwrites: participants.slice(teamSize, teamSize * 2).map<OverwriteResolvable>((x) => ({
-				id: x.user.id,
-				type: 'member',
-				allow: ['CONNECT'],
-			})),
+			permissionOverwrites: [
+				{
+					id: everyone.id,
+					type: 'role',
+					deny: ['CONNECT'],
+				},
+				...participants.slice(teamSize, teamSize * 2).map<OverwriteResolvable>((x) => ({
+					id: x.user.id,
+					type: 'member',
+					allow: ['CONNECT'],
+				})),
+			],
 		});
 
 		return this.create({

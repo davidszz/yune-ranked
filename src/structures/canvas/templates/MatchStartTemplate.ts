@@ -29,29 +29,15 @@ export class MatchStartTemplate extends BaseCanvas<IMatchStartUser[]> {
 
 		const chunkLength = Math.ceil(Math.max(this.data.length / 2, 1));
 
-		let team1Width = users.slice(0, chunkLength).reduce((prev, next) => (next.width > prev ? next.width : prev), 0);
-
 		this.ctx.beginPath();
-		this.ctx.fillStyle = '#5c82ff';
 		this.setFont('bold 12px Poppins');
-		this.fillText({
-			text: this.t('create_queue.canvas.team_blue'),
-			x: 0,
-			y: 0,
-			verticalAlign: 'top',
-		});
 
-		team1Width = Math.max(team1Width, this.measureText(this.t('create_queue.canvas.team_blue')).width);
-
-		this.ctx.fillStyle = '#ff5c5c';
-		this.fillText({
-			text: this.t('create_queue.canvas.team_red'),
-			x: team1Width + 24,
-			y: 0,
-			verticalAlign: 'top',
-		});
-
+		const team1Width = Math.max(
+			users.slice(0, chunkLength).reduce((prev, next) => (next.width > prev ? next.width : prev), 0),
+			this.measureText(this.t('create_queue.canvas.team_blue')).width
+		);
 		const team2LabelWidth = this.measureText(this.t('create_queue.canvas.team_red')).width;
+
 		this.ctx.closePath();
 
 		this.width =
@@ -63,6 +49,26 @@ export class MatchStartTemplate extends BaseCanvas<IMatchStartUser[]> {
 			24;
 
 		this.height = users.slice(0, chunkLength).reduce((acc, val) => acc + val.height + 8, 0) + 24;
+
+		// Draw team names
+		this.ctx.beginPath();
+		this.ctx.fillStyle = '#5c82ff';
+		this.setFont('bold 12px Poppins');
+		this.fillText({
+			text: this.t('create_queue.canvas.team_blue'),
+			x: 0,
+			y: 0,
+			verticalAlign: 'top',
+		});
+
+		this.ctx.fillStyle = '#ff5c5c';
+		this.fillText({
+			text: this.t('create_queue.canvas.team_red'),
+			x: team1Width + 24,
+			y: 0,
+			verticalAlign: 'top',
+		});
+		this.ctx.closePath();
 
 		for (let i = 0; i < chunkLength; i++) {
 			this.ctx.drawImage(users[i], 0, 24 + users.slice(0, i).reduce((acc, val) => acc + val.height + 8, 0));

@@ -31,7 +31,7 @@ export abstract class Repository<T, R = T> {
 		await this.model.updateOne(typeof query === 'string' ? { _id: query } : query, entity, options);
 	}
 
-	async findOne(query: string | FilterQuery<T>, projection?: any) {
+	async findOne(query: string | FilterQuery<T>, projection?: any): Promise<R> {
 		if (typeof query === 'string') {
 			return this.model.findById(query, projection).then((doc) => this.parse(doc));
 		}
@@ -48,6 +48,10 @@ export abstract class Repository<T, R = T> {
 			typeof query === 'string' ? this.model.findById(query, projection) : this.model.findOne(query, projection);
 
 		return cursor.populate(populateOptions).then((res) => this.parse(<Document<T>>res));
+	}
+
+	async deleteOne(query: string | FilterQuery<T>) {
+		await this.model.deleteOne(typeof query === 'string' ? { _id: query } : query);
 	}
 
 	async create(...docs: Partial<T>[]) {
