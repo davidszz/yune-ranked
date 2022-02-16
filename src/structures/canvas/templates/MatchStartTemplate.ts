@@ -41,7 +41,7 @@ export class MatchStartTemplate extends BaseCanvas<IMatchStartUser[]> {
 		this.ctx.fillStyle = '#5c82ff';
 		this.setFont('bold 12px Poppins');
 		this.fillText({
-			text: 'TIME 1',
+			text: this.t('create_queue.canvas.team_blue'),
 			x: 0,
 			y: 0,
 			verticalAlign: 'top',
@@ -49,7 +49,7 @@ export class MatchStartTemplate extends BaseCanvas<IMatchStartUser[]> {
 
 		this.ctx.fillStyle = '#ff5c5c';
 		this.fillText({
-			text: 'TIME 2',
+			text: this.t('create_queue.canvas.team_red'),
 			x: team1Width + 24,
 			y: 0,
 			verticalAlign: 'top',

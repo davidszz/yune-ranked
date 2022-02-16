@@ -9,71 +9,39 @@
 	},
 	"create_queue": {
 		"errors": {
-			"unknown_error": "Ocorreu um erro ao criar a fila. Contate um administrador ou tente novamente mais tarde.",
-			"already_joined": "Você já faz parte desta fila. Aguarde os demais participantes.",
-			"cannot_left": "Você não pode sair a fila por ser o criador dela. Caso queira cancelar a fila atual clique no botão **[Destruir]**.",
-			"not_in_queue": "Você não faz parte desta fila.",
+			"already_in_queue": "Você já faz parte de uma fila. [**Clique aqui**]({{- message_url}}) para vizualiza-la.",
+			"already_in_game": "Você ja faz parte da [**Partida {{match_id}}**]({{- chat_url}})",
+			"already_in": "Você já faz parte desta fila.",
+			"not_in": "",
 			"cannot_destroy": "Somente o criador da fila pode destruí-la.",
-			"ended": "Parece que a [fila]({{- queue_url}}) de {{- owner}} já foi finalizada ou cancelada.",
-			"already_in_queue": "Você já está participando de uma fila.",
-			"already_in_game": "Atualmente você já faz parte da partida **[{{- match_id}}]({{- channel_url}})**."
+			"cannot_leave": "O criador da fila não pode sair. Use o botão **[Destruir]** caso queira cancelar a fila."
 		},
 		"buttons": {
-			"join": "Entrar ({{amount}}/{{max}})",
-			"left": "Sair",
-			"destroy": "Destruir",
-			"match_shortcut": "Ir para partida"
+			"join": "Entrar ({{total}}/{{max}})",
+			"leave": "Sair",
+			"destroy": "Destruir"
 		},
 		"embeds": {
 			"queue": {
-				"author": "Fila de {{- user}}",
+				"author": "Partida de {{- user}}",
 				"description": "Esta fila será cancelada após **5 minutos** caso os times não estejam completos.",
 				"fields": {
-					"team_1": {
-						"name": "Time 1"
+					"misc": {
+						"participant": "{{- e_accepted_user}} {{- user}}",
+						"participant_waiting": "{{- e_empty_user}} Aguardando...",
+						"participant_anonymous": "{{- e_accepted_user}} Participante {{position}}"
 					},
-					"team_2": {
-						"name": "Time 2"
-					},
-					"empty_user": "{{- e_empty_user}} Aguardando...",
-					"accepted_user": "{{- e_accepted_user}} Participante {{position}}"
+					"team_blue": "Time Azul",
+					"team_red": "Time Vermelho"
 				},
 				"footer": "Para entrar na fila clique no botão [Entrar] abaixo"
-			},
-			"destroyed": {
-				"author": "Fila de {{- user}}",
-				"title": "Fila destruída",
-				"description": "Esta fila foi destruída e os jogadores já foram removidos e já podem iniciar ou participar de novas filas.",
-				"fields": {
-					"started_at": {
-						"name": "Iniciada em:",
-						"value": "{{- started_at, DD/MM/YYYY hh:mm:ss}}"
-					},
-					"ended_at": {
-						"name": "Finalizada após:",
-						"value":  "{{- ended_at, fromNow(true)}}"
-					}
-				}
-			},
-			"started": {
-				"author": "Partida de {{- user}}",
-				"title": "Partida iniciada!",
-				"description": "Rank estimado da partida: {{- match_rank}}",
-				"fields": {
-					"team_1": {
-						"name": "Time 1"
-					},
-					"team_2": {
-						"name": "Time 2"
-					},
-					"participant": "**{{position}} -** {{- participant}}",
-					"unknown_paticipant": "**{{position}} -** Usuário Desconhecido"
-				},
-				"footer": "ID: {{- match_id}}"
 			}
 		},
-		"joined": "{{- e_join}} Você entrou na fila de {{- target}}!",
-		"left": "{{- e_left}} Você saiu da fila de {{- target}}!",
-		"destroyed": "Você destruiu sua [fila]({{- queue_url}}) atual com sucesso!"
+		"canvas": {
+			"team_blue": "TIME AZUL",
+			"team_red": "TIME VERMELHO"
+		},
+		"joined": "Você entrou na fila de {{- user}}!",
+		"leave": "Você saiu da fila de {{- user}}!"
 	}
 }

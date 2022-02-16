@@ -22,7 +22,7 @@ export abstract class Repository<T, R = T> {
 		await this.model.updateOne(typeof query === 'string' ? { _id: query } : query, entity, options);
 	}
 
-	async findOne(query: string | FilterQuery<T>, projection?: any) {
+	async findOne(query: string | FilterQuery<T>, projection?: any): Promise<R> {
 		if (typeof query === 'string') {
 			return this.model.findById(query, projection).then((doc) => this.parse(<Document<T>>doc));
 		}

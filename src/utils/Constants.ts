@@ -27,6 +27,11 @@ export enum MatchStatus {
 	IN_GAME,
 }
 
+export enum TeamID {
+	BLUE = 'blue',
+	RED = 'red',
+}
+
 export enum RankType {
 	UNRANKED,
 	IRON,
@@ -139,6 +144,13 @@ export const Images = {
 	icons: {
 		tip: 'https://i.imgur.com/YbUBcN7.png',
 	},
+};
+
+export const CreateUrl = {
+	message: (opts: { guildId: string; channelId: string; messageId: string }) =>
+		`https://discord.com/channels/${opts.guildId}/${opts.channelId}/${opts.messageId}`,
+	channel: (opts: { guildId: string; channelId: string }) =>
+		`https://discord.com/channels/${opts.guildId}/${opts.channelId}`,
 };
 
 /* ------------------------------

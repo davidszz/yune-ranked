@@ -4,6 +4,12 @@ import type { DBWrapper } from '@database/DBWrapper';
 import * as Loaders from '@loaders';
 import type { Command } from '@structures/Command';
 
+interface IQueueMember {
+	id: string;
+	messageId: string;
+	channelId: string;
+}
+
 interface YuneOptions extends ClientOptions {
 	token: string;
 	guildId: string;
@@ -15,7 +21,7 @@ export class Yune extends Client {
 	database: DBWrapper;
 
 	commands: Collection<string, Command>;
-	queueMembers: string[];
+	queueMembers: IQueueMember[];
 
 	constructor(options: YuneOptions) {
 		super(options);

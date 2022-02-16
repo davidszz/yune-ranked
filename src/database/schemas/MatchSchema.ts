@@ -1,9 +1,15 @@
 import { Schema } from 'mongoose';
 
-import { MatchStatus } from '@utils/Constants';
+import { MatchStatus, TeamID } from '@utils/Constants';
+
+interface IMatchParticipant {
+	userId: string;
+	isCaptain: boolean;
+	mvp: boolean;
+}
 
 interface IMatchTeam {
-	members: string[];
+	teamId: TeamID;
 	captainId: string;
 }
 
@@ -11,17 +17,37 @@ export interface IMatchSchema {
 	_id: string;
 	matchId: number;
 	guildId: string;
-	channelId: string;
+	channels: {
+		category: string;
+		chat: string;
+		blueVoice: string;
+		redVoice: string;
+	};
+	queueChannelId: string;
 	status: MatchStatus;
+	matchMmr: number;
 	teams: [IMatchTeam, IMatchTeam];
+	participants: IMatchParticipant[];
 	createdAt: Date;
 	updatedAt: Date;
 }
 
+const MatchParticipantSchema = new Schema<IMatchParticipant>(
+	{
+		userId: {
+			type: String,
+			required: true,
+		},
+		isCaptain: Boolean,
+		mvp: Boolean,
+	},
+	{ _id: false }
+);
+
 const MatchTeamSchema = new Schema<IMatchTeam>(
 	{
-		members: {
-			type: [String],
+		teamId: {
+			type: String,
 			required: true,
 		},
 		captainId: {
@@ -44,7 +70,13 @@ export const MatchSchema = new Schema<IMatchSchema>(
 			type: String,
 			required: true,
 		},
-		channelId: {
+		channels: {
+			category: String,
+			chat: String,
+			blueVoice: String,
+			redVoice: String,
+		},
+		queueChannelId: {
 			type: String,
 			required: true,
 		},
@@ -53,6 +85,8 @@ export const MatchSchema = new Schema<IMatchSchema>(
 			required: true,
 		},
 		teams: [MatchTeamSchema, MatchTeamSchema],
+		participants: [MatchParticipantSchema],
+		matchMmr: Number,
 	},
 	{
 		timestamps: {

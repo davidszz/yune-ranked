@@ -13,7 +13,14 @@ export class GuildRepository extends Repository<IGuildSchema> {
 	parse(entity: Document<IGuildSchema>): IGuildSchema {
 		return {
 			teamSize: DEFAULT_TEAM_SIZE,
+			hideParticipantNames: true,
 			...(super.parse(entity) ?? ({} as IGuildSchema)),
 		};
+	}
+
+	async increamentMatchId(id: string) {
+		return this.model
+			.findByIdAndUpdate(id, { $inc: { matchId: 1 } }, { upsert: true, new: true })
+			.then((res) => res?.matchId ?? 0);
 	}
 }
