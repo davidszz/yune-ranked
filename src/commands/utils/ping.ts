@@ -9,6 +9,7 @@ export default class extends Command {
 			name: 'ping',
 			description: 'Obtem a latência do bot',
 			manageable: false,
+			showInMatchHelp: true,
 		});
 	}
 

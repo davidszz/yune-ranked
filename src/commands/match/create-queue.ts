@@ -12,6 +12,7 @@ import { on } from 'events';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
+import { createMatch } from '@functions/match/create-match';
 import { MatchStartTemplate } from '@structures/canvas/templates/MatchStartTemplate';
 import { Command } from '@structures/Command';
 import { YuneEmbed } from '@structures/YuneEmbed';
@@ -132,7 +133,7 @@ export default class extends Command {
 
 					const matchRank = Ranks[RankUtils.getRankByMmr(totalMmr / participants.filter(Boolean).length)];
 
-					const matchData = await client.database.matches.createMatch({
+					const matchData = await createMatch({
 						guild,
 						queueChannel: channel,
 						teamSize,

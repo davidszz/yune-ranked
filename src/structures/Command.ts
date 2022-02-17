@@ -13,6 +13,7 @@ import type { Yune } from '@client';
 type CommandData = ApplicationCommandData & {
 	manageable?: boolean;
 	permissions?: (keyof PermissionFlags)[];
+	showInMatchHelp?: boolean;
 };
 
 export interface Command {
@@ -25,6 +26,7 @@ export abstract class Command {
 	defaultPermission?: boolean;
 	manageable: boolean;
 	permissions?: (keyof PermissionFlags)[];
+	showInMatchHelp: boolean;
 
 	description?: string;
 	options?: ApplicationCommandOptionData[];
@@ -36,6 +38,7 @@ export abstract class Command {
 		this.type = data.type;
 		this.defaultPermission = data.defaultPermission;
 		this.manageable = data.manageable ?? true;
+		this.showInMatchHelp = !!data.showInMatchHelp;
 		this.permissions = data.permissions;
 
 		if (data.type === 'CHAT_INPUT' || data.type === Constants.ApplicationCommandTypes.CHAT_INPUT) {

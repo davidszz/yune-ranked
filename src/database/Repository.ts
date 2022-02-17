@@ -43,7 +43,11 @@ export abstract class Repository<T, R = T> {
 		return this.model.find(query, projection).then((docs) => docs.map((doc) => this.parse(<Document<T>>doc)));
 	}
 
-	async findOneAndPopulate(query: string | FilterQuery<T>, populateOptions: PopulateOptions, projection?: any) {
+	async findOneAndPopulate(
+		query: string | FilterQuery<T>,
+		populateOptions: PopulateOptions,
+		projection?: any
+	): Promise<R> {
 		const cursor =
 			typeof query === 'string' ? this.model.findById(query, projection) : this.model.findOne(query, projection);
 

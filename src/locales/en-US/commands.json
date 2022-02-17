@@ -98,11 +98,33 @@
 		"turn_off": "Agora o nome dos participantes **aparecerá** durante as filas de partidas."
 	},
 	"finalize": {
+		"errors": {
+			"not_found": "Nenhuma partida foi encontrada com este ID.",
+			"invalid_match_channel": "Este canal não é o canal de uma partida ativa.",
+			"no_permission": "Somente os capitães da partida ou administradores do servidor podem finalizar uma partida.",
+			"no_mvp": "É necessário definir o **jogador MVP** da partida antes de finaliza-la.",
+			"no_team_winner": "É necessário definir o **time vencedor** da partida antes de finaliza-la."
+		},
 		"embeds": {
 			"confirmation": {
 				"title": "Confirmar finalização",
-				"description": "Use os botões abaixo para finalizar ou cancelar a finalização desta partida."
+				"description": "Confirme os dados para finalização da partida e use os botões abaixo para finaliza-la ou cancelar a finalização.\n\n**Obs.:** esta ação é irreversivel.",
+				"fields": {
+					"team_winner": {
+						"name": "Time vencedor:",
+						"values": {
+							"team_blue": "🔵 Time Azul",
+							"team_red": "🔴 Time Vermelho"
+						}
+					},
+					"mvp_player": "Jogador MVP:"
+				}
+			},
+			"finalized": {
+				"title": "Partida finalizada!",
+				"description": "Esta partida foi finalizada por um **administrador ou capitão**. Os canais serão deletados automaticamente em **10 segundos**."
 			}
-		}
+		},
+		"finalized": "{{- author}}, você finalizou a partida **N° {{match_id}}** com sucesso!"
 	}
 }
