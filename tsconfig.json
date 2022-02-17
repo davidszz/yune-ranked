@@ -14,7 +14,8 @@
 			"@utils/*": ["src/utils/*"],
 			"@services/*": ["src/services/*"],
 			"@structures/*": ["src/structures/*"],
-			"@loaders": ["src/loaders"]
+			"@loaders": ["src/loaders"],
+			"@functions/*": ["src/functions/*"]
 		},
     "typeRoots": ["node_modules/@types", "src/@types"],
     "resolveJsonModule": true,

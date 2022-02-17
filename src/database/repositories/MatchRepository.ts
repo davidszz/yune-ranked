@@ -132,7 +132,7 @@ export class MatchRepository extends Repository<IMatchSchema> {
 				  });
 
 			let rank = member.rank ?? UserRank.UNRANKED;
-			let remainingPdl = (member.pdl ?? 0) + wonPdl;
+			let remainingPdl = member.pdl ?? 0;
 
 			if (rank === UserRank.UNRANKED) {
 				if (participant.mvp) {
@@ -140,11 +140,17 @@ export class MatchRepository extends Repository<IMatchSchema> {
 				} else {
 					rank = memberTeam.win ? UserRank.BRONZE_1 : UserRank.IRON_1;
 				}
-			} else {
+			} else if (memberTeam.win) {
+				remainingPdl += wonPdl;
 				while (remainingPdl > Ranks[rank].maxPdl && Ranks[rank + 1] !== null) {
 					remainingPdl -= Ranks[rank].maxPdl;
 					rank++;
 				}
+			} else if (remainingPdl > 0) {
+				remainingPdl = Math.max(remainingPdl - wonPdl, 0);
+			} else if (Ranks[rank - 1] !== null) {
+				remainingPdl = Ranks[rank - 1].maxPdl - wonPdl;
+				rank--;
 			}
 
 			await data.client.database.members.update(
@@ -157,22 +163,22 @@ export class MatchRepository extends Repository<IMatchSchema> {
 					$inc: {
 						wins: memberTeam.win ? 1 : 0,
 						loses: memberTeam.win ? 0 : 1,
-						mmr: wonPdl,
+						mmr: memberTeam.win ? wonPdl : -wonPdl,
 					},
 				}
 			);
+		}
 
-			const chatChannel = data.guild.channels.cache.get(data.match.channels.chat) as TextBasedChannel;
-			if (chatChannel) {
-				const embed = new YuneEmbed()
-					.setColor('YELLOW')
-					.setTitle(data.t('match.embeds.finalized.title'))
-					.setDescription(data.t('match.embeds.finalized.description'));
+		const chatChannel = data.guild.channels.cache.get(data.match.channels.chat) as TextBasedChannel;
+		if (chatChannel) {
+			const embed = new YuneEmbed()
+				.setColor('YELLOW')
+				.setTitle(data.t('match.embeds.finalized.title'))
+				.setDescription(data.t('match.embeds.finalized.description'));
 
-				chatChannel.send({
-					embeds: [embed],
-				});
-			}
+			chatChannel.send({
+				embeds: [embed],
+			});
 		}
 	}
 }

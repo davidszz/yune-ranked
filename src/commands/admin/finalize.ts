@@ -74,6 +74,8 @@ export default class extends Command {
 			interaction.client.database.matches.finalizeMatch({
 				client: interaction.client,
 				match: matchData,
+				guild: interaction.guild,
+				t,
 			});
 		}
 	}

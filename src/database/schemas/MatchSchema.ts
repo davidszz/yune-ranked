@@ -34,6 +34,7 @@ export interface IMatchSchema {
 	participants: IMatchParticipant[];
 	createdAt: Date;
 	updatedAt: Date;
+	endedAt?: Date;
 }
 
 const MatchParticipantSchema = new Schema<IMatchParticipant>(
@@ -44,6 +45,10 @@ const MatchParticipantSchema = new Schema<IMatchParticipant>(
 			required: true,
 		},
 		userId: {
+			type: String,
+			required: true,
+		},
+		teamId: {
 			type: String,
 			required: true,
 		},
@@ -96,6 +101,7 @@ export const MatchSchema = new Schema<IMatchSchema>(
 		},
 		teams: [MatchTeamSchema, MatchTeamSchema],
 		participants: [MatchParticipantSchema],
+		endedAt: Date,
 	},
 	{
 		timestamps: {
