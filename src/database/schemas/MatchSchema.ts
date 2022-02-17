@@ -5,10 +5,11 @@ import { MatchStatus, TeamID } from '@utils/Constants';
 import { IMemberSchema } from './MemberSchema';
 
 interface IMatchParticipant {
-	member: string | IMemberSchema;
+	member: string | Partial<IMemberSchema>;
 	userId: string;
 	isCaptain?: boolean;
 	mvp?: boolean;
+	teamId: TeamID;
 }
 
 interface IMatchTeam {

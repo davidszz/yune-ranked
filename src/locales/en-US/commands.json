@@ -96,5 +96,13 @@
 	"hide_participants": {
 		"turn_on": "Agora o nome dos participantes **não aparecerá** durante as filas de partidas.",
 		"turn_off": "Agora o nome dos participantes **aparecerá** durante as filas de partidas."
+	},
+	"finalize": {
+		"embeds": {
+			"confirmation": {
+				"title": "Confirmar finalização",
+				"description": "Use os botões abaixo para finalizar ou cancelar a finalização desta partida."
+			}
+		}
 	}
 }

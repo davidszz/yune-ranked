@@ -29,5 +29,11 @@
 		"master_division": "{{- e_master}} $t(misc:ranks.names.master) {{division}}",
 		"grand_master": "{{- e_grand_master}} $t(misc:ranks.names.grand_master)",
 		"challenger": "{{- e_challenger}} $t(misc:ranks.names.challenger)"
+	},
+	"confirmation_embed": {
+		"buttons": {
+			"confirm": "Confirmar",
+			"refuse": "Recusar"
+		}
 	}
 }
