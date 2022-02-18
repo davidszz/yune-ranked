@@ -32,6 +32,7 @@ export interface IMatchSchema {
 	status: MatchStatus;
 	teams: [IMatchTeam, IMatchTeam];
 	participants: IMatchParticipant[];
+	surrenderVotes: string[];
 	createdAt: Date;
 	updatedAt: Date;
 	endedAt?: Date;
@@ -101,6 +102,7 @@ export const MatchSchema = new Schema<IMatchSchema>(
 		},
 		teams: [MatchTeamSchema, MatchTeamSchema],
 		participants: [MatchParticipantSchema],
+		surrenderVotes: [String],
 		endedAt: Date,
 	},
 	{

@@ -10,7 +10,7 @@
 	"create_queue": {
 		"errors": {
 			"already_in_queue": "Você já faz parte de uma fila. [**Clique aqui**](<{{- message_url}}>) para vizualiza-la.",
-			"already_in_game": "Você ja faz parte da [**Partida N°{{match_id}}**](<{{- chat_url}}>).",
+			"already_in_game": "Você ja faz parte da [**partida {{match_id}}**](<{{- chat_url}}>).",
 			"already_in": "Você já faz parte desta fila.",
 			"not_in_queue": "Você não faz parte desta fila.",
 			"cannot_destroy": "Somente o criador da fila pode destruí-la.",
@@ -69,7 +69,7 @@
 				"footer": "ID: {{match_id}}"
 			},
 			"deleted": {
-				"author": "Partida N° {{match_id}}",
+				"author": "Partida {{match_id}}",
 				"description": "Esta partida foi cancelada automáticamente por um dos canais da partida ter sido deletado.",
 				"fields": {
 					"started_at": "Iniciada em:",
@@ -125,7 +125,7 @@
 				"description": "Esta partida foi finalizada por um **administrador ou capitão**. Os canais serão deletados automaticamente em **10 segundos**."
 			}
 		},
-		"finalized": "{{- author}}, você finalizou a partida **N° {{match_id}}** com sucesso!"
+		"finalized": "{{- author}}, você finalizou a partida **{{match_id}}** com sucesso!"
 	},
 	"help": {
 		"errors": {
@@ -167,5 +167,33 @@
 		"current_winner": "Time vencedor atual: **{{- current_winner}}**",
 		"no_winner": "Não há nenhum time vencedor definido até o momento.",
 		"changed": "Você definiu o time vencedor da partida como: **{{- winner}}**"
+	},
+	"surrender": {
+		"errors": {
+			"invalid_match_channel": "Este não é um canal válido de uma partida ativa.",
+			"only_participants": "Somente os participantes desta partida podem votar por desistir dela.",
+			"already_voted": "Você já votou por desistir da partida. Aguarde os demais participantes."
+		},
+		"embeds": {
+			"canceled": {
+				"title": "Partida cancelada!",
+				"description": "Esta partida foi cancelada por votação de **{{percentage}}%** dos usuários ({{required_votes}} votos).\n\nOs canais serão deletados em **10 segundos**."
+			}
+		},
+		"last_vote": "{{- user}} deu o voto final de desistência e a partida foi cancelada com um número total de **{{required_votes}}** votos ({{percentage}}%)!",
+		"voted": "{{- user}} votou por desistir da partida **({{votes}}/{{required_votes}})**."
+	},
+	"cancel_match": {
+		"errors": {
+			"not_found": "Nenhuma partida foi encontrada com este ID."
+		},
+		"embeds": {
+			"confirmation": {
+				"title": "Confirmar cancelamento de partida",
+				"description": "Deseja mesmo cancelar a [**partida {{match_id}}**](<{{- match_url}}>)?\n**ATENÇÃO!** Está ação é irreversivel."
+			}
+		},
+		"confirmation_canceled": "Você cancelou o cancelamento da [**partida {{match_id}}**](<{{- match_url}}>)!",
+		"canceled": "A **partida {{match_id}}** foi cancelada com sucesso! Todos os canais já foram deletados."
 	}
 }

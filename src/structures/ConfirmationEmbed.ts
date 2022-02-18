@@ -78,6 +78,10 @@ export class ConfirmationEmbed {
 
 			return new Promise((resolve) => {
 				collector.on('collect', (i) => {
+					i.deferUpdate().catch(() => {
+						// Nothing
+					});
+
 					resolve(i.customId === 'confirm');
 				});
 
