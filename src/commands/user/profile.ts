@@ -11,6 +11,7 @@ export default class extends Command {
 		super(client, {
 			name: 'perfil',
 			description: 'Obtem o perfil do usuário',
+			usage: '[usuário]',
 			showInMatchHelp: true,
 			options: [
 				{

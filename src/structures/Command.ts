@@ -5,6 +5,7 @@ import {
 	ApplicationCommandOptionData,
 	Constants,
 	PermissionFlags,
+	ChatInputApplicationCommandData,
 } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -14,6 +15,7 @@ type CommandData = ApplicationCommandData & {
 	manageable?: boolean;
 	permissions?: (keyof PermissionFlags)[];
 	showInMatchHelp?: boolean;
+	usage?: string;
 };
 
 export interface Command {
@@ -27,6 +29,7 @@ export abstract class Command {
 	manageable: boolean;
 	permissions?: (keyof PermissionFlags)[];
 	showInMatchHelp: boolean;
+	usage: string;
 
 	description?: string;
 	options?: ApplicationCommandOptionData[];
@@ -40,10 +43,15 @@ export abstract class Command {
 		this.manageable = data.manageable ?? true;
 		this.showInMatchHelp = !!data.showInMatchHelp;
 		this.permissions = data.permissions;
+		this.usage = data.usage ?? '';
 
-		if (data.type === 'CHAT_INPUT' || data.type === Constants.ApplicationCommandTypes.CHAT_INPUT) {
-			this.description = data.description;
-			this.options = data.options;
+		if (!data.type || data.type === 'CHAT_INPUT' || data.type === Constants.ApplicationCommandTypes.CHAT_INPUT) {
+			this.description = (<ChatInputApplicationCommandData>data).description;
+			this.options = (<ChatInputApplicationCommandData>data).options;
 		}
+	}
+
+	get fullName() {
+		return `${this.name} ${this.usage}`.trim();
 	}
 }

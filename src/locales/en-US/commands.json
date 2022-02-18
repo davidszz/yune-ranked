@@ -126,5 +126,21 @@
 			}
 		},
 		"finalized": "{{- author}}, você finalizou a partida **N° {{match_id}}** com sucesso!"
+	},
+	"help": {
+		"errors": {
+			"no_commands": "Não há nenhum comando disponível no momento.",
+			"no_watch_commands": "Não há nenhum comando disponível para que possa ser usado em canais de partidas."
+		},
+		"embeds": {
+			"common": {
+				"description": "Nem todos comandos da lista podem ser utilizados por todos membros.\n\n**<>** obrigatório\n**[]** opcional",
+				"footer": "{{total_commands}} comandos"
+			},
+			"match": {
+				"description": "Caso alguns comandos não apareçam nesta lista, não se preocupe, estes são apenas comandos que podem ser usados no chat das partidas.\n\n**<>** obrigatório\n**[]** opcional",
+				"footer": "{{total_commands}} comandos"
+			}
+		}
 	}
 }

@@ -69,7 +69,7 @@ export async function createMatch({ guild, queueChannel, participants, teamSize 
 		],
 	});
 
-	return this.create({
+	return guild.client.database.matches.create({
 		guildId: guild.id,
 		matchId,
 		queueChannelId: queueChannel.id,

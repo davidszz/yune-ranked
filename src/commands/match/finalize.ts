@@ -13,6 +13,7 @@ export default class extends Command {
 		super(client, {
 			name: 'finalizar',
 			description: 'Finaliza uma partida',
+			usage: '[partida]',
 			showInMatchHelp: true,
 			options: [
 				{

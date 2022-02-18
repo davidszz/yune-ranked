@@ -9,6 +9,7 @@ export default class extends Command {
 		super(client, {
 			name: 'tamanho-equipes',
 			description: 'Define o tamanho padrão das equipes nas partidas',
+			usage: '<tamanho>',
 			permissions: ['ADMINISTRATOR'],
 			options: [
 				{
