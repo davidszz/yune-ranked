@@ -142,5 +142,16 @@
 				"footer": "{{total_commands}} comandos"
 			}
 		}
+	},
+	"mvp": {
+		"errors": {
+			"invalid_match_channel": "Este não é um canal válido de uma partida ativa.",
+			"no_permission": "Somente os capitães da partida e os administradores do servidor podem definir o MVP da partida.",
+			"invalid_user": "Este não é um usuário válido desta partida.",
+			"same_mvp": "Este usuário já é o MVP da partida."
+		},
+		"current_mvp": "O jogador MVP atual da partida é: {{- user}}",
+		"no_mvp": "Não há nenhum jogador MVP definido até o momento.",
+		"changed": "O jogador MVP da partida foi definido como: {{- user}}"
 	}
 }
