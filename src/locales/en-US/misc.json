@@ -35,5 +35,17 @@
 			"confirm": "Confirmar",
 			"refuse": "Recusar"
 		}
+	},
+	"paginated_embed": {
+		"template": {
+			"footer": "Página {{current_page}}/{{pages}}",
+			"footer_with_text": "{{text}} — Página {{current_page}}/{{pages}}"
+		},
+		"buttons": {
+			"previous": "Anterior",
+			"next": "Próximo",
+			"delete": "Deletar",
+			"current_page": "Página {{current_page}}/{{pages}}"
+		}
 	}
 }

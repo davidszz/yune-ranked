@@ -11,7 +11,7 @@ import { MatchStatus } from '@utils/Constants';
 export default class extends Command {
 	constructor(client: Yune) {
 		super(client, {
-			name: 'finalize',
+			name: 'finalizar',
 			description: 'Finaliza uma partida',
 			showInMatchHelp: true,
 			options: [
