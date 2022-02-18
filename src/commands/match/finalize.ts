@@ -6,7 +6,7 @@ import { finalizeMatch } from '@functions/match/finalize-match';
 import { Command } from '@structures/Command';
 import { ConfirmationEmbed } from '@structures/ConfirmationEmbed';
 import { YuneEmbed } from '@structures/YuneEmbed';
-import { MatchStatus } from '@utils/Constants';
+import { MatchStatus, TeamID } from '@utils/Constants';
 
 export default class extends Command {
 	constructor(client: Yune) {
@@ -85,7 +85,7 @@ export default class extends Command {
 				{
 					name: t('finalize.embeds.confirmation.fields.team_winner.name'),
 					value: t('finalize.embeds.confirmation.fields.team_winner.values.team', {
-						context: matchData.teams.find((x) => x.win).teamId.toLowerCase(),
+						context: matchData.teams.find((x) => x.win).teamId === TeamID.BLUE ? 'blue' : 'red',
 					}),
 					inline: true,
 				},

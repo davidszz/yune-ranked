@@ -49,7 +49,7 @@ const MatchParticipantSchema = new Schema<IMatchParticipant>(
 			required: true,
 		},
 		teamId: {
-			type: String,
+			type: Number,
 			required: true,
 		},
 		isCaptain: Boolean,
@@ -61,7 +61,7 @@ const MatchParticipantSchema = new Schema<IMatchParticipant>(
 const MatchTeamSchema = new Schema<IMatchTeam>(
 	{
 		teamId: {
-			type: String,
+			type: Number,
 			required: true,
 		},
 		captainId: {

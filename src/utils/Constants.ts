@@ -21,6 +21,8 @@ export const Emojis = {
 	toggle_on: '<:toggle_on:937221783604584458>',
 	toggle_off: '<:toggle_off:937221783604563988>',
 	crown: '<:icrown:943643271299735602>',
+	team_blue: '<:team_blue:944303523171016705>',
+	team_red: '<:team_red:944303523267493938>',
 };
 
 export enum MatchStatus {
@@ -29,8 +31,8 @@ export enum MatchStatus {
 }
 
 export enum TeamID {
-	BLUE = 'Blue',
-	RED = 'Red',
+	BLUE = 1,
+	RED,
 }
 
 export enum UserRank {

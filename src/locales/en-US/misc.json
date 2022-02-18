@@ -47,5 +47,16 @@
 			"delete": "Deletar",
 			"current_page": "Página {{current_page}}/{{pages}}"
 		}
+	},
+	"match": {
+		"category_name": "Partida {{match_id}}",
+		"teams": {
+			"blue": {
+				"channel_name": "🔵 Time azul"
+			},
+			"red": {
+				"channel_name": "🔴 Time vermelho"
+			}
+		}
 	}
 }

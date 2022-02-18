@@ -1,5 +1,6 @@
 import type { Guild, OverwriteResolvable, TextBasedChannel, User } from 'discord.js';
 
+import { tFunction } from '@functions/misc/t-function';
 import { MatchStatus, TeamID } from '@utils/Constants';
 
 interface ICreateMatchData {
@@ -10,11 +11,11 @@ interface ICreateMatchData {
 }
 
 export async function createMatch({ guild, queueChannel, participants, teamSize }: ICreateMatchData) {
+	const t = tFunction(guild.preferredLocale ?? 'pt-BR');
 	const matchId = await guild.client.database.guilds.increamentMatchId(guild.id);
 
 	const { everyone } = guild.roles;
-
-	const category = await guild.channels.create(`Partida ${matchId}`, {
+	const category = await guild.channels.create(t('misc:match.category_name', { match_id: matchId }), {
 		type: 'GUILD_CATEGORY',
 	});
 
@@ -35,7 +36,7 @@ export async function createMatch({ guild, queueChannel, participants, teamSize 
 		],
 	});
 
-	const blueVoice = await category.createChannel('🔵 Time Azul', {
+	const blueVoice = await category.createChannel(t('misc:match.teams.blue.channel_name'), {
 		type: 'GUILD_VOICE',
 		userLimit: teamSize,
 		permissionOverwrites: [
@@ -52,7 +53,7 @@ export async function createMatch({ guild, queueChannel, participants, teamSize 
 		],
 	});
 
-	const redVoice = await category.createChannel('🔴 Time Vermelho', {
+	const redVoice = await category.createChannel(t('misc:match.teams.red.channel_name'), {
 		type: 'GUILD_VOICE',
 		userLimit: teamSize,
 		permissionOverwrites: [

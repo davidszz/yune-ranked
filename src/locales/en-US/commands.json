@@ -33,8 +33,8 @@
 						"participant_waiting": "{{- e_empty_user}} Aguardando...",
 						"participant_anonymous": "{{- e_accepted_user}} Participante {{position}}"
 					},
-					"team_blue": "Time Azul",
-					"team_red": "Time Vermelho"
+					"team_blue": "Time azul",
+					"team_red": "Time vermelho"
 				},
 				"footer": "Para entrar na fila clique no botão [Entrar] abaixo"
 			},
@@ -80,8 +80,8 @@
 				"author": "Partida iniciada • ID: {{match_id}}",
 				"description": "Use o comando **/ajuda** neste canal para obter os comandos disponíveis durante a partida.",
 				"fields": {
-					"team_blue": "🔵 Time Azul:",
-					"team_red": "🔴 Time Vermelho:"
+					"team_blue": "{{- e_team_blue}} Time azul:",
+					"team_red": "{{- e_team_red}} Time vermelho:"
 				},
 				"footer": "Caso ocorra algum imprevisto durante a partida, peça para que um administrador do servidor finalize-a."
 			}
@@ -113,8 +113,8 @@
 					"team_winner": {
 						"name": "Time vencedor:",
 						"values": {
-							"team_blue": "🔵 Time Azul",
-							"team_red": "🔴 Time Vermelho"
+							"team_blue": "{{- e_team_blue}} Time azul",
+							"team_red": "{{- e_team_red}} Time vermelho"
 						}
 					},
 					"mvp_player": "Jogador MVP:"
@@ -153,5 +153,19 @@
 		"current_mvp": "O jogador MVP atual da partida é: {{- user}}",
 		"no_mvp": "Não há nenhum jogador MVP definido até o momento.",
 		"changed": "O jogador MVP da partida foi definido como: {{- user}}"
+	},
+	"winner": {
+		"errors": {
+			"invalid_match_channel": "Este não é um canal válido de uma partida ativa.",
+			"no_permission": "Somente os capitães da partida e os administradores do servidor podem definir o time vencedor da partida.",
+			"same_winner": "Este time já foi definido como o time vencedor desta partida."
+		},
+		"teams": {
+			"blue": "{{- e_team_blue}} Time azul",
+			"red": "{{- e_team_red}} Time vermelho"
+		},
+		"current_winner": "Time vencedor atual: **{{- current_winner}}**",
+		"no_winner": "Não há nenhum time vencedor definido até o momento.",
+		"changed": "Você definiu o time vencedor da partida como: **{{- winner}}**"
 	}
 }
