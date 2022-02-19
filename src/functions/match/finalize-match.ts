@@ -1,5 +1,6 @@
 import type { Yune } from '@client';
 import type { IMatchSchema } from '@database/schemas/MatchSchema';
+import { updateRankRole } from '@functions/member/update-rank-role';
 import { DEFAULT_USER_MMR, MatchStatus, Ranks, UserRank } from '@utils/Constants';
 import { RankUtils } from '@utils/RankUtils';
 
@@ -9,6 +10,11 @@ interface IFinalizeMatchData {
 }
 
 export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
+	// const matchMmr = match.participants.reduce(
+	// 	(acc, val) => acc + (typeof val.member === 'string' ? 0 : val.member?.mmr ?? 0),
+	// 	0
+	// );
+
 	for (const participant of match.participants) {
 		const member = typeof participant.member === 'string' ? null : participant.member;
 		const team = match.teams.find((x) => x.teamId === participant.teamId);
@@ -67,5 +73,27 @@ export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
 			status: MatchStatus.ENDED,
 			endedAt: new Date(),
 		},
+	});
+
+	const guild = client.guilds.cache.get(match.guildId);
+	if (!guild) return;
+
+	const members = await Promise.all(
+		match.participants.map(async (participant) => {
+			const member = await guild.members.fetch(participant.userId).catch(() => {
+				// Nothing
+			});
+
+			if (!member) return null;
+			return {
+				rank: typeof participant.member === 'string' ? 0 : participant.member.rank,
+				member,
+			};
+		})
+	).then((result) => result.filter(Boolean));
+
+	await updateRankRole({
+		guild,
+		members,
 	});
 }

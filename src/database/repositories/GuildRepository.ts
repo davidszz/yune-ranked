@@ -14,6 +14,7 @@ export class GuildRepository extends Repository<IGuildSchema> {
 		return {
 			teamSize: DEFAULT_TEAM_SIZE,
 			hideParticipantNames: true,
+			rankRoles: [],
 			...(super.parse(entity) ?? ({} as IGuildSchema)),
 		};
 	}
