@@ -34,8 +34,8 @@ export default class extends Command {
 				content: t('nickname_template.current', {
 					template: nicknameTemplate,
 					example: nicknameTemplate
-						.replace(/{rank}/g, '1')
-						.replace(/{username}/g, interaction.member.displayName ?? interaction.user.username)
+						.replace(/{rank}/gi, '1')
+						.replace(/{username}/gi, interaction.member.displayName ?? interaction.user.username)
 						.slice(0, 32),
 				}),
 			});
@@ -62,12 +62,14 @@ export default class extends Command {
 			},
 		});
 
+		this.client.nicknameTemplate = template;
+
 		await interaction.editReply({
 			content: t('nickname_template.changed', {
 				template,
 				example: template
-					.replace(/{rank}/g, '1')
-					.replace(/{username}/g, interaction.member.displayName ?? interaction.user.username)
+					.replace(/{rank}/gi, '1')
+					.replace(/{username}/gi, interaction.member.displayName ?? interaction.user.username)
 					.slice(0, 32),
 			}),
 		});

@@ -10,6 +10,11 @@ interface IQueueMember {
 	channelId: string;
 }
 
+interface INicknameQueue {
+	userId: string;
+	rank: number;
+}
+
 interface YuneOptions extends ClientOptions {
 	token: string;
 	guildId: string;
@@ -22,6 +27,8 @@ export class Yune extends Client {
 
 	commands: Collection<string, Command>;
 	queueMembers: IQueueMember[];
+	nicknameQueue: INicknameQueue[];
+	nicknameTemplate: string;
 
 	constructor(options: YuneOptions) {
 		super(options);
@@ -30,6 +37,7 @@ export class Yune extends Client {
 		this.database = options.database;
 		this.commands = new Collection();
 		this.queueMembers = [];
+		this.nicknameQueue = [];
 	}
 
 	async start() {

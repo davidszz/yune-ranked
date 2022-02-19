@@ -14,5 +14,18 @@ export async function updateNicknames(guild: Guild) {
 
 	if (!membersData?.length) return;
 
-	for (let i = 0; i < membersData.length; i++) {}
+	for (let i = 0; i < membersData.length; i++) {
+		const memberData = membersData[i];
+		const rank = i + 1;
+
+		if (guild.client.nicknameQueue.some((x) => x.userId === memberData.userId)) {
+			const idx = guild.client.nicknameQueue.findIndex((x) => x.userId === memberData.userId);
+			guild.client.nicknameQueue[idx].rank = rank;
+		} else {
+			guild.client.nicknameQueue.push({
+				userId: memberData.userId,
+				rank,
+			});
+		}
+	}
 }

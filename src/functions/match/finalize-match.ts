@@ -4,6 +4,8 @@ import { updateRankRole } from '@functions/member/update-rank-role';
 import { DEFAULT_USER_MMR, MatchStatus, Ranks, UserRank } from '@utils/Constants';
 import { RankUtils } from '@utils/RankUtils';
 
+import { updateNicknames } from './update-nicknames';
+
 interface IFinalizeMatchData {
 	client: Yune;
 	match: IMatchSchema;
@@ -77,6 +79,8 @@ export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
 
 	const guild = client.guilds.cache.get(match.guildId);
 	if (!guild) return;
+
+	updateNicknames(guild);
 
 	const members = await Promise.all(
 		match.participants.map(async (participant) => {

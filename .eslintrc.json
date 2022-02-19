@@ -25,6 +25,7 @@
     "no-shadow": "off",
 		"no-continue": "off",
 		"no-await-in-loop": "off",
+		"no-param-reassign": "off",
 		"no-restricted-syntax": "off",
 		"no-underscore-dangle": "off",
 		"no-nested-ternary": "off",

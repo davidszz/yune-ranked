@@ -4,6 +4,7 @@ import i18next, { StringMap, TFunction, TOptions } from 'i18next';
 import type { Yune } from '@client';
 import { Logger } from '@services/Logger';
 import { EventListener } from '@structures/EventListener';
+import { DEFAULT_NICKNAME_TEMPLATE } from '@utils/Constants';
 
 export default class MainListener extends EventListener {
 	constructor(client: Yune) {
@@ -14,6 +15,9 @@ export default class MainListener extends EventListener {
 
 	async onReady() {
 		Logger.custom({ name: 'YUNE', options: ['magenta', 'bold'] }, `Logged in as ${this.client.user.tag}!`);
+
+		const { nicknameTemplate } = await this.client.database.guilds.findOne(this.client.guildId, 'nicknameTemplate');
+		this.client.nicknameTemplate = nicknameTemplate ?? DEFAULT_NICKNAME_TEMPLATE;
 	}
 
 	async onInteractionCreate(interaction: Interaction) {
