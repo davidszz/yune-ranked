@@ -4,6 +4,10 @@ export interface IMemberSchema {
 	_id: string;
 	userId: string;
 	guildId: string;
+	registered?: boolean;
+	registerEndsAt?: Date;
+	registeredAt?: Date;
+	registeredBy?: string;
 	wins: number;
 	loses: number;
 	rank: number;
@@ -21,6 +25,10 @@ export const MemberSchema = new Schema<IMemberSchema>(
 			type: String,
 			required: true,
 		},
+		registered: Boolean,
+		registerEndsAt: Date,
+		registeredAt: Date,
+		registeredBy: String,
 		wins: Number,
 		loses: Number,
 		pdl: Number,

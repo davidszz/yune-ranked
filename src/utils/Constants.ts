@@ -323,3 +323,7 @@ export const DEFAULT_USER_MMR = Ranks[UserRank.IRON_1].mmr;
 export const DEFAULT_TEAM_SIZE = 10;
 
 export const SURRENDER_VOTES_PERCENTAGE = 0.8;
+
+export const RANK_ROLES_LIMIT = 10;
+
+export const DEFAULT_NICKNAME_TEMPLATE = '#{rank} - {username}';

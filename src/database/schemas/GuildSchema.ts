@@ -1,9 +1,7 @@
 import { Schema } from 'mongoose';
 
-import { UserRank } from '@utils/Constants';
-
 interface IRankRole {
-	rank: UserRank;
+	rank: string;
 	roles: string[];
 }
 
@@ -13,11 +11,13 @@ export interface IGuildSchema {
 	hideParticipantNames: boolean;
 	matchId: number;
 	rankRoles: IRankRole[];
+	registerRoles: string[];
+	nicknameTemplate: string;
 }
 
 const RankRoleSchema = new Schema<IRankRole>(
 	{
-		rank: Number,
+		rank: String,
 		roles: [String],
 	},
 	{ _id: false }
@@ -29,4 +29,6 @@ export const GuildSchema = new Schema<IGuildSchema>({
 	hideParticipantNames: Boolean,
 	matchId: Number,
 	rankRoles: [RankRoleSchema],
+	registerRoles: [String],
+	nicknameTemplate: String,
 });

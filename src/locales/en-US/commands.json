@@ -195,5 +195,45 @@
 		},
 		"confirmation_canceled": "Você cancelou o cancelamento da [**partida {{match_id}}**](<{{- match_url}}>)!",
 		"canceled": "A **partida {{match_id}}** foi cancelada com sucesso! Todos os canais já foram deletados."
+	},
+	"rank_roles": {
+		"add": {
+			"errors": {
+				"managed_role": "Este cargo não pode ser adicionado por ser um cargo **gerênciado pelo sistema**.",
+				"already_has": "Este cargo já foi adicionado anteriormente.",
+				"reached_limit": "Não foi possível adicionar este cargo devido ao limite de cargos **({{limit}})** por rank."
+			},
+			"added": "Você adicionou o cargo {{- role}} ao rank **{{- rank_name}}**. A partir de agora todos usuários que finalizeram uma partida e estiverem neste rank receberão este cargo."
+		},
+		"remove": {
+			"errors": {
+				"no_roles": "Não há nenhum cargo na lista deste rank até o momento.",
+				"invalid_role": "Este cargo não foi adicionado e/ou é inválido."
+			},
+			"removed": "Você removeu o cargo com ID `{{- role}}` da lista de cargos do rank **{{- rank_name}}**!",
+			"removed_valid_role": "Você removeu o cargo {{- role}} da lista de cargos do rank **{{- rank_name}}**!"
+		},
+		"list": {
+			"errors": {
+				"no_roles": "Não há nenhum rank com cargos atribuidos até o momento."
+			},
+			"embeds": {
+				"template": {
+					"title": "Cargos por ranks",
+					"description": {
+						"row": "**{{- rank_name}}:**\n{{- roles}}"
+					},
+					"footer": "Ranks: {{total_ranks}} Cargos: {{total_roles}}"
+				}
+			}
+		}
+	},
+	"nickname_template": {
+		"errors": {
+			"invalid_template": "Por favor forneça um template válido.",
+			"max_length": "O apelido do usuário pode conter no máximo **32 caracteres** devído as regras do Discord. Forneça um modelo menor."
+		},
+		"current": "Modelo atual: `{{- template}}`\n**Como ficará:** {{- example}}",
+		"changed": "Você alterou o modelo de nickname para: `{{- template}}`\n**Como ficará:** {{- example}}"
 	}
 }

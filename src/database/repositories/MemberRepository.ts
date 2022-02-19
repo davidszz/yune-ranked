@@ -13,6 +13,7 @@ export class MemberRepository extends Repository<IMemberSchema> {
 
 	parse(entity: Document<IMemberSchema>): IMemberSchema {
 		return {
+			registered: false,
 			rank: UserRank.UNRANKED,
 			wins: 0,
 			loses: 0,

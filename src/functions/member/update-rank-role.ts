@@ -1,6 +1,6 @@
 import type { Guild, GuildMember } from 'discord.js';
 
-import { UserRank } from '@utils/Constants';
+import { Ranks, UserRank } from '@utils/Constants';
 
 interface IUpdateRankRoleMemberData {
 	rank: UserRank;
@@ -22,7 +22,12 @@ export async function updateRankRole(data: IUpdateRankRoleData) {
 
 	if (Array.isArray(members)) {
 		for (const member of members) {
-			const roles = rankRoles.find((x) => x.rank === member.rank)?.roles ?? [];
+			const memberRank = Ranks[member.rank];
+			if (!memberRank) {
+				continue;
+			}
+
+			const roles = rankRoles.find((x) => x.rank === memberRank.name)?.roles ?? [];
 			const removeRoles = rankRoles
 				.reduce<string[]>((acc, val) => [...acc, ...(val.roles ?? [])], [])
 				.filter((x) => !roles?.includes(x));
@@ -45,24 +50,27 @@ export async function updateRankRole(data: IUpdateRankRoleData) {
 			}
 		}
 	} else {
-		const roles = rankRoles.find((x) => x.rank === members.rank)?.roles ?? [];
-		const removeRoles = rankRoles
-			.reduce<string[]>((acc, val) => [...acc, ...(val.roles ?? [])], [])
-			.filter((x) => !roles?.includes(x));
+		const memberRank = Ranks[members.rank];
+		if (memberRank) {
+			const roles = rankRoles.find((x) => x.rank === memberRank.name)?.roles ?? [];
+			const removeRoles = rankRoles
+				.reduce<string[]>((acc, val) => [...acc, ...(val.roles ?? [])], [])
+				.filter((x) => !roles?.includes(x));
 
-		if (roles.length) {
-			try {
-				await members.member.roles.add(roles);
-			} catch {
-				// Nothing
+			if (roles.length) {
+				try {
+					await members.member.roles.add(roles);
+				} catch {
+					// Nothing
+				}
 			}
-		}
 
-		if (removeRoles.length) {
-			try {
-				await members.member.roles.remove(removeRoles);
-			} catch {
-				// Nothing
+			if (removeRoles.length) {
+				try {
+					await members.member.roles.remove(removeRoles);
+				} catch {
+					// Nothing
+				}
 			}
 		}
 	}
