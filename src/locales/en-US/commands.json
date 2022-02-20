@@ -43,7 +43,7 @@
 			"template": {
 				"title": "Top jogadores do servidor",
 				"description": "Somente usuários assinantes fazem parte do rank.",
-				"description_row": "**#{{rank}}** {{- user}} {{- rank}} {{pdl}}pdl ({{wins}} vitórias)",
+				"description_row": "**#{{rank}}** {{- user}} {{- rank_name}} {{pdl}} pdl ({{wins}} vitórias)",
 				"footer": "Há um total de {{total}} membros no rank"
 			}
 		}
@@ -59,7 +59,8 @@
 			"not_in_queue": "Você não faz parte desta fila.",
 			"cannot_destroy": "Somente o criador da fila pode destruí-la.",
 			"cannot_leave": "O criador da fila não pode sair. Use o botão **[Destruir]** caso queira cancelar a fila.",
-			"queue_ended": "🤖 Beep-bop! Parece que está fila já foi finalizada ou cancelada."
+			"queue_ended": "🤖 Beep-bop! Parece que está fila já foi finalizada ou cancelada.",
+			"subscribers_only": "Somente assinantes podem entrar em filas de partidas."
 		},
 		"buttons": {
 			"join": "Entrar ({{total}}/{{max}})",
@@ -356,7 +357,7 @@
 			"title_yourself": "Seu perfil",
 			"description": "$t(profile.embed.description_header)\n\n$t(profile.embed.description_stats)\n\n$t(profile.embed.description_subscription)",
 			"description_header": "Este é um perfil de usuário básico, futuramente o perfil pode ser alterado. Lembre-se que ainda estamos em fase de testes.",
-			"description_stats": "Vitórias: {{wins}}\nDerrotas: {{loses}}\nRank: {{- rank_name}}",
+			"description_stats": "Vitórias: {{wins}}\nDerrotas: {{loses}}\nRank: {{- rank_name}} {{pdl}} pdl",
 			"description_subscription": "**Informações de assinatura:**\nAssinatura iniciada em: {{- subscribed_at}}\nAssinatura criada por: {{- subscription_created_by}}"
 		}
 	},

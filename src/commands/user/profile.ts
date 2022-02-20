@@ -62,6 +62,7 @@ export default class extends Command {
 						context: userRank.division ? 'division' : null,
 						division: userRank.division,
 					}),
+					pdl: data.pdl ?? 0,
 				})
 			);
 

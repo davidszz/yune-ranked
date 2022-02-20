@@ -252,6 +252,14 @@ export default class extends Command {
 							continue;
 						}
 
+						const { subscribed } = await interaction.client.database.members.findOne(i.member, 'subscribed');
+						if (!subscribed) {
+							i.editReply({
+								content: t('create_queue.errors.subscribers_only'),
+							});
+							continue;
+						}
+
 						const currentMatch = await getMatchByUserId(i.user.id);
 						if (currentMatch) {
 							i.editReply({
@@ -281,7 +289,7 @@ export default class extends Command {
 
 						await i.editReply({
 							content: t('create_queue.joined', {
-								user: i.user.toString(),
+								user: interaction.user.toString(),
 							}),
 						});
 					} else if (i.customId === 'leave') {
@@ -309,7 +317,7 @@ export default class extends Command {
 
 						await i.editReply({
 							content: t('create_queue.leave', {
-								user: i.user.toString(),
+								user: interaction.user.toString(),
 							}),
 						});
 					}
@@ -512,7 +520,7 @@ export default class extends Command {
 		}
 
 		function addParticipant(user: User) {
-			if (participants.length >= teamSize * 2) {
+			if (participants.filter(Boolean).length >= teamSize * 2) {
 				return;
 			}
 

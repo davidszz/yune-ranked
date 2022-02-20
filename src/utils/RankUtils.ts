@@ -1,4 +1,4 @@
-import { Ranks, UserRank } from './Constants';
+import { DEFAULT_USER_MMR, Ranks, UserRank } from './Constants';
 
 interface PDLCalculatorOptions {
 	mmr: number;
@@ -9,8 +9,9 @@ interface PDLCalculatorOptions {
 export class RankUtils {
 	static calculateWonPdlAmount(options: PDLCalculatorOptions) {
 		const rank = Ranks[options.rank];
-		const currentRankBaseMMR = rank.mmr;
-		return Math.floor((options.mmr / currentRankBaseMMR) * 15 * (options.mvp ? 1.2 : 1));
+		const currentRankBaseMMR = rank.mmr ?? DEFAULT_USER_MMR;
+		const wonPdl = (options.mmr / currentRankBaseMMR) * 15 * (options.mvp ? 1.2 : 1);
+		return wonPdl > 0 ? Math.floor(wonPdl) : 5;
 	}
 
 	static calculateLosePdlAmount(options: PDLCalculatorOptions) {
@@ -26,6 +27,6 @@ export class RankUtils {
 			}
 			return acc;
 		});
-		return rank.id;
+		return rank.id === UserRank.UNRANKED ? UserRank.IRON_1 : rank.id;
 	}
 }

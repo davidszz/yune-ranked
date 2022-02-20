@@ -28,14 +28,22 @@ export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
 		};
 
 		let rank = member.rank ?? UserRank.UNRANKED;
-		let { pdl } = member;
-		let mmr = 0;
+		let pdl = member.pdl ?? 0;
+		let { mmr } = member;
+
+		const isUnranked = rank === UserRank.UNRANKED;
 
 		if (team.win) {
 			const wonPdlAmount = RankUtils.calculateWonPdlAmount(calcOptions);
-			rank = member.rank !== UserRank.UNRANKED ? member.rank : participant.mvp ? UserRank.BRONZE_3 : UserRank.BRONZE_1;
 
-			mmr = wonPdlAmount;
+			const newRankIfUnranked = participant.mvp ? UserRank.BRONZE_3 : UserRank.BRONZE_1;
+			rank = rank !== UserRank.UNRANKED ? rank : newRankIfUnranked;
+
+			if (isUnranked) {
+				mmr = Ranks[newRankIfUnranked].mmr;
+			}
+
+			mmr += wonPdlAmount;
 			pdl += wonPdlAmount;
 			while (pdl >= Ranks[rank].maxPdl && Ranks[rank + 1] !== null) {
 				pdl -= Ranks[rank].maxPdl;
@@ -43,14 +51,20 @@ export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
 			}
 		} else {
 			const losePdlAmount = RankUtils.calculateLosePdlAmount(calcOptions);
-			rank = member.rank !== UserRank.UNRANKED ? member.rank : participant.mvp ? UserRank.IRON_2 : UserRank.IRON_1;
 
-			mmr = -losePdlAmount;
-			if (pdl > 0) {
-				pdl = Math.max(pdl - losePdlAmount, 0);
-			} else if (Ranks[rank - 1]) {
-				pdl = Ranks[rank - 1].maxPdl - losePdlAmount;
-				rank--;
+			const newRankIfUnranked = participant.mvp ? UserRank.IRON_2 : UserRank.IRON_1;
+			rank = rank !== UserRank.UNRANKED ? rank : newRankIfUnranked;
+
+			if (isUnranked) {
+				mmr = Ranks[newRankIfUnranked].mmr;
+			} else {
+				mmr = Math.max(mmr - losePdlAmount, 100);
+				if (pdl > 0) {
+					pdl = Math.max(pdl - losePdlAmount, 0);
+				} else if (Ranks[rank - 1] && rank - 1 !== UserRank.UNRANKED && Ranks[rank - 1]) {
+					pdl = Ranks[rank - 1].maxPdl - losePdlAmount;
+					rank--;
+				}
 			}
 		}
 
@@ -60,9 +74,9 @@ export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
 				$set: {
 					rank,
 					pdl,
+					mmr,
 				},
 				$inc: {
-					mmr,
 					wins: team.win ? 1 : 0,
 					loses: team.win ? 0 : 1,
 				},

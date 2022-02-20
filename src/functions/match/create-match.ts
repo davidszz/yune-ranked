@@ -70,34 +70,36 @@ export async function createMatch({ guild, queueChannel, participants, teamSize 
 		],
 	});
 
-	return guild.client.database.matches.create({
-		guildId: guild.id,
-		matchId,
-		queueChannelId: queueChannel.id,
-		channels: {
-			category: category.id,
-			chat: chat.id,
-			blueVoice: blueVoice.id,
-			redVoice: redVoice.id,
+	return guild.client.database.matches.create([
+		{
+			guildId: guild.id,
+			matchId,
+			queueChannelId: queueChannel.id,
+			channels: {
+				category: category.id,
+				chat: chat.id,
+				blueVoice: blueVoice.id,
+				redVoice: redVoice.id,
+			},
+			teams: [
+				{
+					teamId: TeamID.BLUE,
+					captainId: participants[0].user.id,
+				},
+				{
+					teamId: TeamID.RED,
+					captainId: participants[teamSize].user.id,
+				},
+			],
+			status: MatchStatus.IN_GAME,
+			participants: participants.map((x, i) => ({
+				member: x.id,
+				userId: x.user.id,
+				isCaptain: [0, teamSize].includes(i),
+				teamId: i < teamSize ? TeamID.BLUE : TeamID.RED,
+			})),
+			createdAt: new Date(),
+			updatedAt: new Date(),
 		},
-		teams: [
-			{
-				teamId: TeamID.BLUE,
-				captainId: participants[0].user.id,
-			},
-			{
-				teamId: TeamID.RED,
-				captainId: participants[teamSize].user.id,
-			},
-		],
-		status: MatchStatus.IN_GAME,
-		participants: participants.map((x, i) => ({
-			member: x.id,
-			userId: x.user.id,
-			isCaptain: [0, teamSize].includes(i),
-			teamId: i < teamSize ? TeamID.BLUE : TeamID.RED,
-		})),
-		createdAt: new Date(),
-		updatedAt: new Date(),
-	});
+	]);
 }

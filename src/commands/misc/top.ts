@@ -21,9 +21,12 @@ export default class extends Command {
 		const members = await interaction.client.database.members.findMany({
 			guildId: interaction.guildId,
 			subscribed: true,
+			rank: {
+				$gt: UserRank.UNRANKED,
+			},
 		});
 
-		if (members?.length) {
+		if (!members?.length) {
 			interaction.editReply({
 				content: t('top.errors.no_members'),
 			});
@@ -32,7 +35,7 @@ export default class extends Command {
 
 		const template = new YuneEmbed()
 			.setTitle(t('top.embeds.template.title'))
-			.setDescription(t('top.embeds.template.description'))
+			.setDescription(t('top.embeds.template.description').concat('\n'))
 			.setFooter({
 				text: t('top.embeds.template.footer', { total: members.length }),
 				iconURL: interaction.client.user.displayAvatarURL({ format: 'png', dynamic: true }),

@@ -3,6 +3,7 @@ import type { TFunction } from 'i18next';
 
 import { PaginatedEmbed } from '@structures/PaginatedEmbed';
 import { YuneEmbed } from '@structures/YuneEmbed';
+import { Ranks } from '@utils/Constants';
 
 export async function list(interaction: CommandInteraction, t: TFunction): Promise<void> {
 	const { rankRoles } = await interaction.client.database.guilds.findOne(interaction.guildId, 'rankRoles');
@@ -17,13 +18,18 @@ export async function list(interaction: CommandInteraction, t: TFunction): Promi
 		return;
 	}
 
-	const values = rankRoles.map((x) => ({
-		id: x.rank,
-		value: {
-			rankName: t(`misc:ranks.${x.rank}`),
-			roles: x.roles.map((x) => `<@&${x}>`),
-		},
-	}));
+	const values = rankRoles
+		.sort((a, b) => {
+			const rr = (name: string) => Ranks.find((x) => x.name === name).id;
+			return rr(a.rank) - rr(b.rank);
+		})
+		.map((x) => ({
+			id: x.rank,
+			value: {
+				rankName: t(`misc:ranks.${x.rank}`),
+				roles: x.roles.map((x) => `<@&${x}>`),
+			},
+		}));
 
 	const template = new YuneEmbed().setTitle(t('rank_roles.list.embeds.template.title')).setFooter({
 		text: t('rank_roles.list.embeds.template.footer', {
