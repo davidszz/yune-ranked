@@ -292,5 +292,11 @@
 				"footer": "Total: {{total}}"
 			}
 		}
+	},
+	"delete_code": {
+		"errors": {
+			"invalid_code": "Este não é um código de assinatura válido."
+		},
+		"deleted": "Você deletou uma assinatura com o código: `{{- code}}`"
 	}
 }
