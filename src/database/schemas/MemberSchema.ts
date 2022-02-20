@@ -4,10 +4,10 @@ export interface IMemberSchema {
 	_id: string;
 	userId: string;
 	guildId: string;
-	registered?: boolean;
-	registerEndsAt?: Date;
-	registeredAt?: Date;
-	registeredBy?: string;
+	subscribed?: boolean;
+	subscriptionEndsAt?: Date;
+	subscribedAt?: Date;
+	subscriptionCreatedBy?: string;
 	wins: number;
 	loses: number;
 	rank: number;
@@ -25,10 +25,10 @@ export const MemberSchema = new Schema<IMemberSchema>(
 			type: String,
 			required: true,
 		},
-		registered: Boolean,
-		registerEndsAt: Date,
-		registeredAt: Date,
-		registeredBy: String,
+		subscribed: Boolean,
+		subscriptionEndsAt: Date,
+		subscribedAt: Date,
+		subscriptionCreatedBy: String,
 		wins: Number,
 		loses: Number,
 		pdl: Number,

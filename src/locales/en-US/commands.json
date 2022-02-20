@@ -1,7 +1,11 @@
 {
 	"common": {
 		"errors": {
-			"need_permissions": "É necessário uma das permissões a seguir para utilizar este comando: {{- permissions}}"
+			"need_permissions": "É necessário uma das permissões a seguir para utilizar este comando: {{- permissions}}",
+			"not_subscribed": "Este usuário não possui uma assinatura válida.",
+			"not_subscribed_yourself": "Você não possui uma assinatura válida.",
+			"cannot_be_a_bot": "O usuário não pode ser um bot 🤖.",
+			"invalid_member": "Nenhum **membro do servidor** foi encontrado(a) com esta @menção ou ID."
 		}
 	},
 	"teams_size": {
@@ -298,5 +302,28 @@
 			"invalid_code": "Este não é um código de assinatura válido."
 		},
 		"deleted": "Você deletou uma assinatura com o código: `{{- code}}`"
+	},
+	"redeem": {
+		"errors": {
+			"invalid_code": "Este código é invalido ou já foi resgatado."
+		},
+		"redeemed": "Você ativou um código de assinatura de **{{- duration}}**. Sua assinatura termina em: {{- ends_at}}",
+		"redeemed_broadcast": "{{- user}} ativou um código de assinatura de **{{- duration}}**!"
+	},
+	"profile": {
+		"embed": {
+			"title": "Perfil de {{- target}}",
+			"title_yourself": "Seu perfil",
+			"description": "$t(profile.embed.description_header)\n\n$t(profile.embed.description_stats)\n\n$t(profile.embed.description_subscription)",
+			"description_header": "Este é um perfil de usuário básico, futuramente o perfil pode ser alterado. Lembre-se que ainda estamos em fase de testes.",
+			"description_stats": "Vitórias: {{wins}}\nDerrotas: {{loses}}\nRank: {{- rank_name}}",
+			"description_subscription": "**Informações de assinatura:**\nAssinatura iniciada em: {{- subscribed_at}}\nAssinatura criada por: {{- subscription_created_by}}"
+		}
+	},
+	"remove_subscription": {
+		"errors": {
+			"not_subscribed": "Este usuário não possui uma assinatura válida."
+		},
+		"removed": "Você removeu a assinatura de {{- target}} com sucesso!"
 	}
 }

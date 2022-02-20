@@ -16,7 +16,7 @@ export default class extends Command {
 			options: [
 				{
 					name: 'usuário',
-					description: 'O @usuário para obter o perfil',
+					description: '@menção ou ID do usuário',
 					type: 'USER',
 				},
 			],
@@ -29,20 +29,41 @@ export default class extends Command {
 		const target = interaction.options.getMember('usuário') ?? interaction.member;
 		const yourself = interaction.user.id === target.id;
 
-		const data = await interaction.client.database.members.findOne(target, 'pdl rank wins loses');
+		if (target.user.bot) {
+			interaction.editReply({
+				content: t('common.errors.cannot_be_a_bot'),
+			});
+			return;
+		}
+
+		const data = await interaction.client.database.members.findOne(
+			target,
+			'pdl rank wins loses subscribed subscribedAt subscriptionEndsAt subscriptionCreatedBy'
+		);
+		if (!data.subscribed) {
+			interaction.editReply({
+				content: t('common.errors.not_subscribed', { context: yourself ? 'yourself' : null }),
+			});
+			return;
+		}
+
 		const userRank = Ranks[data.rank];
 
 		const profileEmbed = new YuneEmbed()
-			.setTitle(yourself ? 'Seu perfil' : `Perfil de ${target.user.tag}`)
+			.setTitle(t('profile.embed.title', { context: yourself ? 'yourself' : null, target: target.user.tag }))
 			.setThumbnail(target.user.displayAvatarURL({ format: 'png', dynamic: true }))
-			.setDescription([
-				`**Vitórias:** ${data.wins}`,
-				`**Derrotas:** ${data.loses}`,
-				`**Classificação:** ${t(`misc:ranks.${userRank.name}`, {
-					context: userRank.division ? 'division' : null,
-					division: userRank.division,
-				})}`,
-			]);
+			.setDescription(
+				t('profile.embed.description', {
+					wins: data.wins,
+					loses: data.loses,
+					subscribed_at: data.subscribedAt.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
+					subscription_created_by: `<@!${data.subscriptionCreatedBy}>`,
+					rank_name: t(`misc:ranks.${userRank.name}`, {
+						context: userRank.division ? 'division' : null,
+						division: userRank.division,
+					}),
+				})
+			);
 
 		await interaction.editReply({
 			embeds: [profileEmbed],
