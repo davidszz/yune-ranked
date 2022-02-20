@@ -50,6 +50,16 @@ export default class MainListener extends EventListener {
 						return;
 					}
 
+					if (command.subscribersOnly) {
+						const { subscribed } = await interaction.client.database.members.findOne(interaction.member, 'subscribed');
+						if (!subscribed) {
+							await interaction.reply({
+								content: t('common.errors.subscribers_only'),
+							});
+							return;
+						}
+					}
+
 					await command.run(interaction, t as TFunction);
 				}
 			} catch (err) {

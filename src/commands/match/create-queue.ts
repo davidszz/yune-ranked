@@ -24,6 +24,7 @@ export default class extends Command {
 		super(client, {
 			name: 'criar-fila',
 			description: 'Cria uma fila para iniciar uma partida',
+			subscribersOnly: true,
 		});
 	}
 

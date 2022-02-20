@@ -16,6 +16,7 @@ type CommandData = ApplicationCommandData & {
 	permissions?: (keyof PermissionFlags)[];
 	showInMatchHelp?: boolean;
 	usage?: string;
+	subscribersOnly?: boolean;
 };
 
 export interface Command {
@@ -30,6 +31,7 @@ export abstract class Command {
 	permissions?: (keyof PermissionFlags)[];
 	showInMatchHelp: boolean;
 	usage: string;
+	subscribersOnly: boolean;
 
 	description?: string;
 	options?: ApplicationCommandOptionData[];
@@ -44,6 +46,7 @@ export abstract class Command {
 		this.showInMatchHelp = !!data.showInMatchHelp;
 		this.permissions = data.permissions;
 		this.usage = data.usage ?? '';
+		this.subscribersOnly = !!data.subscribersOnly;
 
 		if (!data.type || data.type === 'CHAT_INPUT' || data.type === Constants.ApplicationCommandTypes.CHAT_INPUT) {
 			this.description = (<ChatInputApplicationCommandData>data).description;

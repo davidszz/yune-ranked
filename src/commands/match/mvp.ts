@@ -12,6 +12,7 @@ export default class extends Command {
 			description: 'Define o jogador MVP da partida',
 			usage: '[usuário]',
 			showInMatchHelp: true,
+			subscribersOnly: true,
 			options: [
 				{
 					name: 'usuário',

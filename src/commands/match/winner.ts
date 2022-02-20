@@ -11,6 +11,7 @@ export default class extends Command {
 			name: 'vencedor',
 			description: 'Define um time como vencedor da partida',
 			showInMatchHelp: true,
+			subscribersOnly: true,
 			usage: '[time]',
 			options: [
 				{

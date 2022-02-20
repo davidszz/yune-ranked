@@ -12,6 +12,7 @@ export default class extends Command {
 			name: 'desistir',
 			description: 'Vote para desistir da partida atual e cancela-la',
 			showInMatchHelp: true,
+			subscribersOnly: true,
 		});
 	}
 

@@ -15,6 +15,7 @@ export default class extends Command {
 			description: 'Finaliza uma partida',
 			usage: '[partida]',
 			showInMatchHelp: true,
+			subscribersOnly: true,
 			options: [
 				{
 					name: 'partida',

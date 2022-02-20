@@ -2,10 +2,25 @@
 	"common": {
 		"errors": {
 			"need_permissions": "É necessário uma das permissões a seguir para utilizar este comando: {{- permissions}}",
+			"subscribers_only": "Somente assinantes podem utilizar este comando.",
 			"not_subscribed": "Este usuário não possui uma assinatura válida.",
 			"not_subscribed_yourself": "Você não possui uma assinatura válida.",
 			"cannot_be_a_bot": "O usuário não pode ser um bot 🤖.",
 			"invalid_member": "Nenhum **membro do servidor** foi encontrado(a) com esta @menção ou ID."
+		}
+	},
+	"rank": {
+		"wins": {
+			"errors": {
+				"no_members": "Não há nenhum membro no rank de vitórias até o momento."
+			},
+			"embed": {
+				"title": "Rank de vitórias",
+				"description": "Somente usuários assinantes fazem parte do rank.",
+				"description_row": "**#{{rank}}** {{- user}} - {{wins}} vitórias",
+				"description_user_rank": "**Seu rank:** #{{rank}}",
+				"footer": "Total: {{total}}"
+			}
 		}
 	},
 	"teams_size": {
