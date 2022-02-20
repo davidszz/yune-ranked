@@ -43,7 +43,7 @@
 			"template": {
 				"title": "Top jogadores do servidor",
 				"description": "Somente usuários assinantes fazem parte do rank.",
-				"description_row": "**#{{rank}}** {{- user}} {{- rank_name}} {{pdl}} pdl ({{wins}} vitórias)",
+				"description_row": "**#{{rank}}** {{- user}} {{- rank_name}} `{{pdl}} pdl` ({{wins}} vitórias)",
 				"footer": "Há um total de {{total}} membros no rank"
 			}
 		}
@@ -357,7 +357,7 @@
 			"title_yourself": "Seu perfil",
 			"description": "$t(profile.embed.description_header)\n\n$t(profile.embed.description_stats)\n\n$t(profile.embed.description_subscription)",
 			"description_header": "Este é um perfil de usuário básico, futuramente o perfil pode ser alterado. Lembre-se que ainda estamos em fase de testes.",
-			"description_stats": "Vitórias: {{wins}}\nDerrotas: {{loses}}\nRank: {{- rank_name}} {{pdl}} pdl",
+			"description_stats": "Vitórias: {{wins}}\nDerrotas: {{loses}}\nRank: {{- rank_name}} `{{pdl}} pdl`",
 			"description_subscription": "**Informações de assinatura:**\nAssinatura iniciada em: {{- subscribed_at}}\nAssinatura criada por: {{- subscription_created_by}}"
 		}
 	},

@@ -57,6 +57,7 @@ export default class extends Command {
 		const getMatchByUserId = (userId: string) =>
 			client.database.matches
 				.findOne({
+					guildId: interaction.guildId,
 					'participants.userId': userId,
 					status: MatchStatus.IN_GAME,
 				})

@@ -34,6 +34,7 @@ export default class extends Command {
 		const matchId = interaction.options.getInteger('partida');
 		const matchData = await interaction.client.database.matches.findOne(
 			{
+				guildId: interaction.guildId,
 				status: MatchStatus.IN_GAME,
 				matchId,
 			},

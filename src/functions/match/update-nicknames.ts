@@ -5,7 +5,7 @@ export async function updateNicknames(guild: Guild) {
 		.findMany(
 			{
 				guildId: guild.id,
-				registered: true,
+				subscribed: true,
 				$or: [{ wins: { $gt: 0 } }, { loses: { $gt: 0 } }],
 			},
 			'userId pdl'

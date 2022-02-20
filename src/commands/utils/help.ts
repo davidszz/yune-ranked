@@ -20,6 +20,7 @@ export default class extends Command {
 		await interaction.deferReply({ ephemeral: true });
 
 		const matchData = await interaction.client.database.matches.findOne({
+			guildId: interaction.guildId,
 			status: MatchStatus.IN_GAME,
 			'channels.chat': interaction.channelId,
 		});

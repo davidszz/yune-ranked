@@ -34,6 +34,7 @@ export default class extends Command {
 
 		const matchData = await interaction.client.database.matches.findOneAndPopulate(
 			{
+				guildId: interaction.guildId,
 				status: MatchStatus.IN_GAME,
 				...(matchId ? { matchId } : { 'channels.chat': interaction.channelId }),
 			},
