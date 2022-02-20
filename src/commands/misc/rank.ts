@@ -4,6 +4,7 @@ import type { TFunction } from 'i18next';
 import type { Yune } from '@client';
 import { Command } from '@structures/Command';
 
+import { loses } from './sub/rank/loses';
 import { wins } from './sub/rank/wins';
 
 export default class extends Command {
@@ -32,6 +33,11 @@ export default class extends Command {
 		switch (interaction.options.getSubcommand()) {
 			case 'vitorias': {
 				wins(interaction, t);
+				return;
+			}
+
+			case 'derrotas': {
+				loses(interaction, t);
 			}
 		}
 	}

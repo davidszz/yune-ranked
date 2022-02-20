@@ -20,7 +20,7 @@ export async function list(interaction: CommandInteraction, t: TFunction): Promi
 	const values = rankRoles.map((x) => ({
 		id: x.rank,
 		value: {
-			rankName: t(`misc:ranks.names.${x.rank}`),
+			rankName: t(`misc:ranks.${x.rank}`),
 			roles: x.roles.map((x) => `<@&${x}>`),
 		},
 	}));

@@ -21,6 +21,31 @@
 				"description_user_rank": "**Seu rank:** #{{rank}}",
 				"footer": "Total: {{total}}"
 			}
+		},
+		"loses": {
+			"errors": {
+				"no_members": "Não há nenhum membro no rank de derrotas até o momento."
+			},
+			"embed": {
+				"title": "Rank de derrotas",
+				"description": "Somente usuários assinantes fazem parte do rank.",
+				"description_row": "**#{{rank}}** {{- user}} - {{loses}} derrotas",
+				"description_user_rank": "**Seu rank:** #{{rank}}",
+				"footer": "Total: {{total}}"
+			}
+		}
+	},
+	"top": {
+		"errors": {
+			"no_members": "Não há nenhum membro com um rank até o momento."
+		},
+		"embeds": {
+			"template": {
+				"title": "Top jogadores do servidor",
+				"description": "Somente usuários assinantes fazem parte do rank.",
+				"description_row": "**#{{rank}}** {{- user}} {{- rank}} {{pdl}}pdl ({{wins}} vitórias)",
+				"footer": "Há um total de {{total}} membros no rank"
+			}
 		}
 	},
 	"teams_size": {
