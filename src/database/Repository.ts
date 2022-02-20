@@ -58,7 +58,7 @@ export abstract class Repository<T, R = T> {
 		await this.model.deleteOne(typeof query === 'string' ? { _id: query } : query);
 	}
 
-	async create(...docs: Partial<T>[]) {
+	async create(docs: Partial<T> | Partial<T>[]) {
 		return this.model.create(docs).then((doc) => this.parse(<Document<T>>doc[0]));
 	}
 }

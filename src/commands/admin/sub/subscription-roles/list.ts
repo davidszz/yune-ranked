@@ -1,0 +1,27 @@
+import type { CommandInteraction } from 'discord.js';
+import type { TFunction } from 'i18next';
+
+import { YuneEmbed } from '@structures/YuneEmbed';
+
+export async function list(interaction: CommandInteraction, t: TFunction): Promise<void> {
+	const { subscriptionRoles } = await interaction.client.database.guilds.findOne(
+		interaction.guildId,
+		'subscriptionRoles'
+	);
+	if (!subscriptionRoles?.length) {
+		interaction.editReply({
+			content: t('subscription_roles.list.errors.empty'),
+		});
+		return;
+	}
+
+	const embed = new YuneEmbed().setTitle(t('subscription_roles.list.embed.title')).setDescription(
+		t('subscription_roles.list.embed.description', {
+			roles: subscriptionRoles.map((x) => interaction.guild.roles.cache.get(x)?.toString() ?? `\`${x}\``).join(' '),
+		})
+	);
+
+	interaction.editReply({
+		embeds: [embed],
+	});
+}

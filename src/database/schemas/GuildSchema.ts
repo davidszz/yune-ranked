@@ -11,7 +11,7 @@ export interface IGuildSchema {
 	hideParticipantNames: boolean;
 	matchId: number;
 	rankRoles: IRankRole[];
-	registerRoles: string[];
+	subscriptionRoles: string[];
 	nicknameTemplate: string;
 }
 
@@ -29,6 +29,6 @@ export const GuildSchema = new Schema<IGuildSchema>({
 	hideParticipantNames: Boolean,
 	matchId: Number,
 	rankRoles: [RankRoleSchema],
-	registerRoles: [String],
+	subscriptionRoles: [String],
 	nicknameTemplate: String,
 });

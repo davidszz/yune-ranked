@@ -11,8 +11,6 @@ export default class NicknameChangerJob extends Job {
 	}
 
 	async execute() {
-		console.log(this.client.nicknameQueue);
-
 		if (this.client.guild && this.client.nicknameQueue?.length) {
 			const template = this.client.nicknameTemplate;
 			if (template) {

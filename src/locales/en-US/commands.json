@@ -208,7 +208,7 @@
 		"remove": {
 			"errors": {
 				"no_roles": "Não há nenhum cargo na lista deste rank até o momento.",
-				"invalid_role": "Este cargo não foi adicionado e/ou é inválido."
+				"invalid_role": "Este cargo ainda não foi adicionado e/ou é inválido."
 			},
 			"removed": "Você removeu o cargo com ID `{{- role}}` da lista de cargos do rank **{{- rank_name}}**!",
 			"removed_valid_role": "Você removeu o cargo {{- role}} da lista de cargos do rank **{{- rank_name}}**!"
@@ -235,5 +235,62 @@
 		},
 		"current": "Modelo atual: `{{- template}}`\n**Como ficará:** {{- example}}",
 		"changed": "Você alterou o modelo de nickname para: `{{- template}}`\n**Como ficará:** {{- example}}"
+	},
+	"subscription_roles": {
+		"add": {
+			"errors": {
+				"managed_role": "Este cargo não pode ser adicionado por ser um cargo **gerênciado pelo sistema**.",
+				"already_has": "Este cargo já foi adicionado anteriormente."
+			},
+			"added": "Você adicionou o cargo {{- role}} como um cargo de assinatura. Os membros que ativarem uma assinatura a partir de agora receberão este cargo automaticamente."
+		},
+		"remove": {
+			"errors": {
+				"invalid_role": "Este cargo ainda não foi adicionado e/ou é inválido."
+			},
+			"removed": "Você removeu o cargo com ID `{{- role}}` da lista de cargos de assinatura!",
+			"removed_valid_role": "Você removeu o cargo {{- role}} da lista de cargos de assinatura!"
+		},
+		"list": {
+			"errors": {
+				"empty": "Não há nenhum cargo de assinatura definido até o momento."
+			},
+			"embed": {
+				"title": "Cargos de assinatura",
+				"description": "Estes cargos serão entregues aos usuários logo após ativarem uma assinatura e serão removidos após a data de expiração.\n\n**Cargos:**\n{{- roles}}\n\n`/cargos-assinatura remove @cargo` para remover um cargo;\n`/cargos-assinatura add @cargo` para adicionar um cargo;"
+			}
+		}
+	},
+	"generate_code": {
+		"errors": {
+			"invalid_duration": "Forneça uma duração válida acima de **1 minuto** para gerar um código de assinatura. Exemplo: `30d3h` ou `30 dias e 3 horas`"
+		},
+		"embed": {
+			"title": "Códigos gerados",
+			"title_one": "Código gerado",
+			"description": "Para ativar um dos códigos da lista use `/resgatar <código>`.",
+			"description_one": "Para ativar o código gerado use `/resgatar {{- code}}`.",
+			"fields": {
+				"code": "Códigos:",
+				"code_one": "Código:",
+				"duration": {
+					"name": "Duração dos códigos:",
+					"name_one": "Duração do código:",
+					"value": "{{- duration}} ({{duration_in_minutes}} minutos)"
+				}
+			}
+		}
+	},
+	"subscription_codes": {
+		"errors": {
+			"empty": "Não há nenhum código de assinatura disponível no momento."
+		},
+		"embeds": {
+			"template": {
+				"title": "Códigos de assinatura",
+				"description_row": "**Código:** {{- code}}\n**Duração:** {{- duration}}\n**Criado em:** {{- created_at}}\n**Criado por:** {{- created_by}}",
+				"footer": "Total: {{total}}"
+			}
+		}
 	}
 }
