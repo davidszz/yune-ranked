@@ -18,13 +18,23 @@ export default class extends Command {
 	async run(interaction: CommandInteraction, t: TFunction) {
 		const reply = await interaction.deferReply({ fetchReply: true });
 
-		const members = await interaction.client.database.members.findMany({
-			guildId: interaction.guildId,
-			subscribed: true,
-			rank: {
-				$gt: UserRank.UNRANKED,
-			},
-		});
+		const members = await interaction.client.database.members
+			.findMany(
+				{
+					guildId: interaction.guildId,
+					subscribed: true,
+					rank: {
+						$gt: UserRank.UNRANKED,
+					},
+				},
+				'rank pdl wins userId'
+			)
+			.then((result) =>
+				result
+					.sort((a, b) => b.wins - a.wins)
+					.sort((a, b) => b.pdl - a.pdl)
+					.sort((a, b) => b.rank - a.rank)
+			);
 
 		if (!members?.length) {
 			interaction.editReply({

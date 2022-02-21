@@ -28,6 +28,7 @@ export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
 		};
 
 		let rank = member.rank ?? UserRank.UNRANKED;
+
 		let pdl = member.pdl ?? 0;
 		let { mmr } = member;
 
@@ -45,6 +46,7 @@ export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
 
 			mmr += wonPdlAmount;
 			pdl += wonPdlAmount;
+
 			while (pdl >= Ranks[rank].maxPdl && Ranks[rank + 1] !== null) {
 				pdl -= Ranks[rank].maxPdl;
 				rank++;
@@ -61,7 +63,7 @@ export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
 				mmr = Math.max(mmr - losePdlAmount, 100);
 				if (pdl > 0) {
 					pdl = Math.max(pdl - losePdlAmount, 0);
-				} else if (Ranks[rank - 1] && rank - 1 !== UserRank.UNRANKED && Ranks[rank - 1]) {
+				} else if (Ranks[rank - 1] && rank - 1 !== UserRank.UNRANKED) {
 					pdl = Ranks[rank - 1].maxPdl - losePdlAmount;
 					rank--;
 				}

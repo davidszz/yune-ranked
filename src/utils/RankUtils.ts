@@ -9,7 +9,7 @@ interface PDLCalculatorOptions {
 export class RankUtils {
 	static calculateWonPdlAmount(options: PDLCalculatorOptions) {
 		const rank = Ranks[options.rank];
-		const currentRankBaseMMR = rank.mmr ?? DEFAULT_USER_MMR;
+		const currentRankBaseMMR = rank.mmr > 0 ? rank.mmr : DEFAULT_USER_MMR;
 		const wonPdl = (options.mmr / currentRankBaseMMR) * 15 * (options.mvp ? 1.2 : 1);
 		return wonPdl > 0 ? Math.floor(wonPdl) : 5;
 	}
