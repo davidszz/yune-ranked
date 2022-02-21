@@ -313,8 +313,8 @@
 		"embed": {
 			"title": "Códigos gerados",
 			"title_one": "Código gerado",
-			"description": "Para ativar um dos códigos da lista use `/resgatar <código>`.\n\n{{- e_info}} Caso esteja no celular você pode usar o botão abaixo para receber uma mensagem na qual você consiga copiar os códigos.",
-			"description_one": "Para ativar o código gerado use `/resgatar {{- code}}`.",
+			"description": "Para ativar um dos códigos da lista use `/resgatar <código>`.\n\n{{- e_info}} Caso esteja no celular você pode usar o botão abaixo para receber uma mensagem na qual você consiga copia o código.",
+			"description_one": "Para ativar o código gerado use `/resgatar {{- code}}`.\n\n{{- e_info}} Caso esteja no celular você pode usar o botão abaixo para receber uma mensagem na qual você consiga copiar os códigos.",
 			"fields": {
 				"code": "Códigos:",
 				"code_one": "Código:",
