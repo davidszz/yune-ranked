@@ -8,9 +8,14 @@ export async function updateNicknames(guild: Guild) {
 				subscribed: true,
 				$or: [{ wins: { $gt: 0 } }, { loses: { $gt: 0 } }],
 			},
-			'userId pdl'
+			'userId pdl wins rank'
 		)
-		.then((result) => result.sort((a, b) => b.pdl - a.pdl));
+		.then((result) =>
+			result
+				.sort((a, b) => b.wins - a.wins)
+				.sort((a, b) => b.pdl - a.pdl)
+				.sort((a, b) => b.rank - a.rank)
+		);
 
 	if (!membersData?.length) return;
 
