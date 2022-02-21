@@ -12,17 +12,17 @@ interface IFinalizeMatchData {
 }
 
 export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
-	// const matchMmr = match.participants.reduce(
-	// 	(acc, val) => acc + (typeof val.member === 'string' ? 0 : val.member?.mmr ?? 0),
-	// 	0
-	// );
+	const matchMmr = match.participants.reduce(
+		(acc, val) => acc + (typeof val.member === 'string' ? 0 : val.member?.mmr ?? DEFAULT_USER_MMR),
+		0
+	);
 
 	for (const participant of match.participants) {
 		const member = typeof participant.member === 'string' ? null : participant.member;
 		const team = match.teams.find((x) => x.teamId === participant.teamId);
 
 		const calcOptions = {
-			mmr: member.mmr ?? DEFAULT_USER_MMR,
+			mmr: matchMmr,
 			rank: member.rank ?? UserRank.UNRANKED,
 			mvp: participant.mvp,
 		};
@@ -42,14 +42,14 @@ export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
 
 			if (isUnranked) {
 				mmr = Ranks[newRankIfUnranked].mmr;
-			}
+			} else {
+				mmr += wonPdlAmount;
+				pdl += wonPdlAmount;
 
-			mmr += wonPdlAmount;
-			pdl += wonPdlAmount;
-
-			while (pdl >= Ranks[rank].maxPdl && Ranks[rank + 1] !== null) {
-				pdl -= Ranks[rank].maxPdl;
-				rank++;
+				while (pdl >= Ranks[rank].maxPdl && Ranks[rank + 1] !== null) {
+					pdl -= Ranks[rank].maxPdl;
+					rank++;
+				}
 			}
 		} else {
 			const losePdlAmount = RankUtils.calculateLosePdlAmount(calcOptions);
