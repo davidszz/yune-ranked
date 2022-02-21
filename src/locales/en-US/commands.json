@@ -346,12 +346,54 @@
 			},
 			"embeds": {
 				"confirmation": {
-					"title": "Confirme está ação",
+					"title": "Confirme esta ação",
 					"description": "Tem certeza que deseja resetar o rank de `{{total}}` usuários?"
 				}
 			},
 			"success": "Você resetou o rank de {{- target}} com sucesso!",
-			"success_all": "Você resetou o rank de **{{total}} usuários** do servidor!"
+			"success_all": "{{- user}}, você resetou o rank de **{{total}} usuários** do servidor!"
+		},
+		"wins": {
+			"errors": {
+				"no_members": "Não há nenhum membro com vitórias até o momento.",
+				"already_reset": "Este membro não possui nenhuma vitória até o momento."
+			},
+			"embeds": {
+				"confirmation": {
+					"title": "Confirme esta ação",
+					"description": "Tem certeza que deseja resetar as vitórias de `{{total}}` usuários?"
+				}
+			},
+			"success": "Você resetou as vitórias de {{- target}} com sucesso!",
+			"success_all": "{{- user}}, você resetou as vitórias de **{{total}} usuários** do servidor!"
+		},
+		"loses": {
+			"errors": {
+				"no_members": "Não há nenhum membro com derrotas até o momento.",
+				"already_reset": "Este membro não possui nenhuma derrota até o momento."
+			},
+			"embeds": {
+				"confirmation": {
+					"title": "Confirme esta ação",
+					"description": "Tem certeza que deseja resetar as derrotas de `{{total}}` usuários?"
+				}
+			},
+			"success": "Você resetou as derrotas de {{- target}} com sucesso!",
+			"success_all": "{{- user}}, você resetou as derrotas de **{{total}} usuários** do servidor!"
+		},
+		"all": {
+			"errors": {
+				"no_members": "Não há nenhum membro com vitórias, rank, pontos ou derrotas até o momento.",
+				"already_reset": "Este membro não possui nenhuma vitórias, rank, ponto ou derrota."
+			},
+			"embeds": {
+				"confirmation": {
+					"title": "Confirme esta ação",
+					"description": "Tem certeza que deseja resetar todos dados de `{{total}}` usuários?\n\n> As assinaturas dos usuários **não serão resetadas**."
+				}
+			},
+			"success": "Você resetou os dados de {{- target}} com sucesso!",
+			"success_all": "{{- user}}, você resetou os dados de **{{total}} usuários** do servidor!"
 		}
 	},
 	"generate_code": {

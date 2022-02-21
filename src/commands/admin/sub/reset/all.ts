@@ -4,7 +4,7 @@ import type { TFunction } from 'i18next';
 import { ConfirmationEmbed } from '@structures/ConfirmationEmbed';
 import { YuneEmbed } from '@structures/YuneEmbed';
 
-export async function rank(interaction: ChatInputCommandInteraction, t: TFunction): Promise<void> {
+export async function all(interaction: ChatInputCommandInteraction, t: TFunction): Promise<void> {
 	const target = interaction.options.getUser('usuario');
 
 	if (target?.bot) {
@@ -24,30 +24,33 @@ export async function rank(interaction: ChatInputCommandInteraction, t: TFunctio
 
 	const updateEntity = {
 		$unset: {
-			rank: 0,
+			loses: 0,
+			wins: 0,
 			pdl: 0,
+			rank: 0,
 		},
 	};
 
 	if (!target) {
 		const query = {
 			guildId: interaction.guildId,
-			$or: [{ rank: { $gt: 0 } }, { pdl: { $gt: 0 } }],
+			$or: [{ loses: { $gt: 0 } }, { wins: { $gt: 0 } }, { rank: { $gt: 0 } }, { pdl: { $gt: 0 } }],
 		};
+
 		const resetCount = await interaction.client.database.members.findMany(query, '_id', { returnCount: true });
 
 		if (resetCount < 1) {
 			await interaction.editReply({
-				content: t('reset.rank.errors.no_members'),
+				content: t('reset.all.errors.no_members'),
 			});
 			return;
 		}
 
 		const confirmationEmbed = new YuneEmbed()
 			.setColor('Yellow')
-			.setTitle(t('reset.rank.embeds.confirmation.title'))
+			.setTitle(t('reset.all.embeds.confirmation.title'))
 			.setDescription(
-				t('reset.rank.embeds.confirmation.description', {
+				t('reset.all.embeds.confirmation.description', {
 					total: resetCount,
 				})
 			);
@@ -63,7 +66,7 @@ export async function rank(interaction: ChatInputCommandInteraction, t: TFunctio
 			await interaction.client.database.members.updateMany(query, updateEntity);
 
 			await interaction.channel.send({
-				content: t('reset.rank.success_all', {
+				content: t('reset.all.success_all', {
 					user: interaction.user.toString(),
 					total: resetCount,
 				}),
@@ -72,10 +75,10 @@ export async function rank(interaction: ChatInputCommandInteraction, t: TFunctio
 		return;
 	}
 
-	const targetData = await interaction.client.database.members.findOne(targetMember, 'rank pdl');
-	if (!targetData.rank && !targetData.pdl) {
+	const targetData = await interaction.client.database.members.findOne(targetMember, 'rank pdl wins loses');
+	if (!targetData.rank && !targetData.pdl && !targetData.wins && !targetData.loses) {
 		await interaction.editReply({
-			content: t('reset.rank.errors.already_reset'),
+			content: t('reset.all.errors.already_reset'),
 		});
 		return;
 	}
@@ -83,7 +86,7 @@ export async function rank(interaction: ChatInputCommandInteraction, t: TFunctio
 	await interaction.client.database.members.update(targetMember, updateEntity);
 
 	await interaction.editReply({
-		content: t('reset.rank.success', {
+		content: t('reset.all.success', {
 			target: target.toString(),
 		}),
 	});

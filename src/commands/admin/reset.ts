@@ -4,7 +4,10 @@ import type { TFunction } from 'i18next';
 import type { Yune } from '@client';
 import { Command } from '@structures/Command';
 
+import { all } from './sub/reset/all';
+import { loses } from './sub/reset/loses';
 import { rank } from './sub/reset/rank';
+import { wins } from './sub/reset/wins';
 
 export default class extends Command {
 	constructor(client: Yune) {
@@ -71,6 +74,21 @@ export default class extends Command {
 		switch (interaction.options.getSubcommand()) {
 			case 'rank': {
 				await rank(interaction, t);
+				return;
+			}
+
+			case 'vitorias': {
+				await wins(interaction, t);
+				return;
+			}
+
+			case 'derrotas': {
+				await loses(interaction, t);
+				return;
+			}
+
+			case 'tudo': {
+				await all(interaction, t);
 			}
 		}
 	}
