@@ -1,3 +1,40 @@
+export enum MatchStatus {
+	Ended,
+	InGame,
+}
+
+export enum TeamID {
+	Blue = 1,
+	Red,
+}
+
+export enum UserRank {
+	Unranked,
+	Iron1,
+	Iron2,
+	Iron3,
+	Bronze1,
+	Bronze2,
+	Bronze3,
+	Silver1,
+	Silver2,
+	Silver3,
+	Gold1,
+	Gold2,
+	Gold3,
+	Platinum1,
+	Platinum2,
+	Platinum3,
+	Diamond1,
+	Diamond2,
+	Diamond3,
+	Master1,
+	Master2,
+	Master3,
+	GrandMaster,
+	Challenger,
+}
+
 export const Assets = {
 	images: (path: string) => `src/assets/images/${path}`,
 	font: (name: string, extension: 'otf' | 'ttf' | 'woff' | 'ttc' = 'ttf') => `src/assets/fonts/${name}.${extension}`,
@@ -33,46 +70,9 @@ export const EmojisIds = Object.fromEntries(
 	Object.entries(Emojis).map((x) => [x[0], x[1].replace(/<(a)?:.*:(\d+)>/gi, '$2')])
 ) as Record<keyof typeof Emojis, string>;
 
-export enum MatchStatus {
-	ENDED,
-	IN_GAME,
-}
-
-export enum TeamID {
-	BLUE = 1,
-	RED,
-}
-
-export enum UserRank {
-	UNRANKED,
-	IRON_1,
-	IRON_2,
-	IRON_3,
-	BRONZE_1,
-	BRONZE_2,
-	BRONZE_3,
-	SILVER_1,
-	SILVER_2,
-	SILVER_3,
-	GOLD_1,
-	GOLD_2,
-	GOLD_3,
-	PLATINUM_1,
-	PLATINUM_2,
-	PLATINUM_3,
-	DIAMOND_1,
-	DIAMOND_2,
-	DIAMOND_3,
-	MASTER_1,
-	MASTER_2,
-	MASTER_3,
-	GRAND_MASTER,
-	CHALLENGER,
-}
-
 export const Ranks = [
 	{
-		id: UserRank.UNRANKED,
+		id: UserRank.Unranked,
 		name: 'unranked',
 		mmr: 0,
 		maxPdl: 0,
@@ -81,7 +81,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.IRON_1,
+		id: UserRank.Iron1,
 		name: 'iron',
 		division: 1,
 		mmr: 200,
@@ -91,7 +91,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.IRON_2,
+		id: UserRank.Iron2,
 		name: 'iron',
 		division: 2,
 		mmr: 300,
@@ -101,7 +101,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.IRON_3,
+		id: UserRank.Iron3,
 		name: 'iron',
 		division: 3,
 		mmr: 400,
@@ -111,7 +111,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.BRONZE_1,
+		id: UserRank.Bronze1,
 		name: 'bronze',
 		division: 1,
 		mmr: 500,
@@ -121,7 +121,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.BRONZE_2,
+		id: UserRank.Bronze2,
 		name: 'bronze',
 		division: 2,
 		mmr: 600,
@@ -131,7 +131,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.BRONZE_3,
+		id: UserRank.Bronze3,
 		name: 'bronze',
 		division: 3,
 		mmr: 700,
@@ -141,7 +141,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.SILVER_1,
+		id: UserRank.Silver1,
 		name: 'silver',
 		division: 1,
 		mmr: 800,
@@ -151,7 +151,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.SILVER_2,
+		id: UserRank.Silver2,
 		name: 'silver',
 		division: 2,
 		mmr: 900,
@@ -161,7 +161,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.SILVER_3,
+		id: UserRank.Silver3,
 		name: 'silver',
 		division: 3,
 		mmr: 1000,
@@ -171,7 +171,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.GOLD_1,
+		id: UserRank.Gold1,
 		name: 'gold',
 		division: 1,
 		mmr: 1100,
@@ -181,7 +181,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.GOLD_2,
+		id: UserRank.Gold2,
 		name: 'gold',
 		division: 2,
 		mmr: 1200,
@@ -191,7 +191,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.GOLD_3,
+		id: UserRank.Gold3,
 		name: 'gold',
 		division: 3,
 		mmr: 1300,
@@ -201,7 +201,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.PLATINUM_1,
+		id: UserRank.Platinum1,
 		name: 'platinum',
 		division: 1,
 		mmr: 1400,
@@ -211,7 +211,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.PLATINUM_2,
+		id: UserRank.Platinum2,
 		name: 'platinum',
 		division: 2,
 		mmr: 1500,
@@ -221,7 +221,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.PLATINUM_3,
+		id: UserRank.Platinum3,
 		name: 'platinum',
 		division: 3,
 		mmr: 1600,
@@ -231,7 +231,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.DIAMOND_1,
+		id: UserRank.Diamond1,
 		name: 'diamond',
 		division: 1,
 		mmr: 1700,
@@ -241,7 +241,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.DIAMOND_2,
+		id: UserRank.Diamond2,
 		name: 'diamond',
 		division: 2,
 		mmr: 1800,
@@ -251,7 +251,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.DIAMOND_3,
+		id: UserRank.Diamond3,
 		name: 'diamond',
 		division: 3,
 		mmr: 1900,
@@ -261,7 +261,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.MASTER_1,
+		id: UserRank.Master1,
 		name: 'master',
 		division: 1,
 		mmr: 2000,
@@ -271,7 +271,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.MASTER_2,
+		id: UserRank.Master2,
 		name: 'master',
 		division: 2,
 		mmr: 2100,
@@ -281,7 +281,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.MASTER_3,
+		id: UserRank.Master3,
 		name: 'master',
 		division: 3,
 		mmr: 2200,
@@ -291,7 +291,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.GRAND_MASTER,
+		id: UserRank.GrandMaster,
 		name: 'grand_master',
 		mmr: 2300,
 		maxPdl: 400,
@@ -300,7 +300,7 @@ export const Ranks = [
 		},
 	},
 	{
-		id: UserRank.CHALLENGER,
+		id: UserRank.Challenger,
 		name: 'challenger',
 		mmr: 2800,
 		maxPdl: 3000,
@@ -327,7 +327,7 @@ export const CreateUrl = {
 -------- Misc Constants ---------
 --------------------------------- */
 
-export const DEFAULT_USER_MMR = Ranks[UserRank.IRON_1].mmr;
+export const DEFAULT_USER_MMR = Ranks[UserRank.Iron1].mmr;
 export const DEFAULT_TEAM_SIZE = 10;
 
 export const SURRENDER_VOTES_PERCENTAGE = 0.8;
