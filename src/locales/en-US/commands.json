@@ -384,7 +384,7 @@
 			"description": "$t(profile.embed.description_header)\n\n$t(profile.embed.description_stats)\n\n$t(profile.embed.description_subscription)",
 			"description_header": "Este é um perfil de usuário básico, futuramente o perfil pode ser alterado. Lembre-se que ainda estamos em fase de testes.",
 			"description_stats": "Vitórias: {{wins}}\nDerrotas: {{loses}}\nRank: {{- rank_name}} `{{pdl}} pdl`",
-			"description_subscription": "**Informações de assinatura:**\nAssinatura iniciada em: {{- subscribed_at}}\nAssinatura criada por: {{- subscription_created_by}}"
+			"description_subscription": "**Informações de assinatura:**\nAssinatura iniciada em: {{- subscribed_at}}\nAssinatura termina em: {{- subscription_ends_in}} ({{- subscription_ends_at}})\nAssinatura criada por: {{- subscription_created_by}}"
 		}
 	},
 	"remove_subscription": {

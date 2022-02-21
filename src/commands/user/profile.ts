@@ -5,6 +5,7 @@ import type { Yune } from '@client';
 import { Command } from '@structures/Command';
 import { YuneEmbed } from '@structures/YuneEmbed';
 import { Ranks } from '@utils/Constants';
+import { TimeUtils } from '@utils/TimeUtils';
 
 export default class extends Command {
 	constructor(client: Yune) {
@@ -57,6 +58,12 @@ export default class extends Command {
 					wins: data.wins,
 					loses: data.loses,
 					subscribed_at: data.subscribedAt.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
+					subscription_ends_in: TimeUtils.humanizeDuration(data.subscriptionEndsAt.getTime() - Date.now(), {
+						units: ['d', 'h', 'm'],
+						conjunction: ' e ',
+						serialComma: false,
+					}),
+					subscription_ends_at: data.subscriptionEndsAt.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
 					subscription_created_by: `<@!${data.subscriptionCreatedBy}>`,
 					rank_name: t(`misc:ranks.${userRank.name}`, {
 						context: userRank.division ? 'division' : null,
