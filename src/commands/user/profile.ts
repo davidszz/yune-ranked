@@ -30,7 +30,7 @@ export default class extends Command {
 		const yourself = interaction.user.id === target.id;
 
 		if (target.user.bot) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('common.errors.cannot_be_a_bot'),
 			});
 			return;
@@ -41,7 +41,7 @@ export default class extends Command {
 			'pdl rank wins loses subscribed subscribedAt subscriptionEndsAt subscriptionCreatedBy'
 		);
 		if (!data.subscribed) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('common.errors.not_subscribed', { context: yourself ? 'yourself' : null }),
 			});
 			return;

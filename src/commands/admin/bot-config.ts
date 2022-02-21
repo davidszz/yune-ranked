@@ -77,22 +77,22 @@ export default class extends Command {
 		});
 	}
 
-	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction): Promise<void> {
 		await interaction.deferReply();
 
 		switch (interaction.options.getSubcommand()) {
 			case 'avatar': {
-				avatar(interaction, t);
+				await avatar(interaction, t);
 				return;
 			}
 
 			case 'nome': {
-				username(interaction, t);
+				await username(interaction, t);
 				return;
 			}
 
 			case 'atividade': {
-				activity(interaction, t);
+				await activity(interaction, t);
 			}
 		}
 	}

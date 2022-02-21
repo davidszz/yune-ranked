@@ -38,7 +38,7 @@ export default class extends Command {
 			);
 
 		if (!members?.length) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('top.errors.no_members'),
 			});
 			return;
@@ -84,6 +84,6 @@ export default class extends Command {
 			},
 		});
 
-		paginated.paginate();
+		await paginated.paginate();
 	}
 }

@@ -26,7 +26,7 @@ export default class extends Command {
 			},
 		});
 
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('hide_participants.turn', {
 				context: hideParticipantNames ? 'off' : 'on',
 			}),

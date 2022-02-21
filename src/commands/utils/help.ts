@@ -30,7 +30,7 @@ export default class extends Command {
 				(x) => (!x.type || x.type === ApplicationCommandType.ChatInput) && x.showInMatchHelp
 			);
 			if (!commands.size) {
-				interaction.editReply({
+				await interaction.editReply({
 					content: t('help.errors.no_match_commands'),
 				});
 				return;
@@ -65,7 +65,7 @@ export default class extends Command {
 				(x) => !x.type || x.type === ApplicationCommandType.ChatInput
 			);
 			if (!commands.size) {
-				interaction.editReply({
+				await interaction.editReply({
 					content: t('help.errors.no_commands'),
 				});
 				return;
@@ -94,7 +94,7 @@ export default class extends Command {
 				showCurrentPageBtn: true,
 			});
 
-			paginated.paginate();
+			await paginated.paginate();
 		}
 	}
 }

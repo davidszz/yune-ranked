@@ -47,7 +47,7 @@ export default class extends Command {
 
 		if (client.queueMembers.some((x) => x.id === interaction.user.id)) {
 			const memberQueue = client.queueMembers.find((x) => x.id === interaction.user.id);
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('create_queue.errors.already_in_queue', {
 					message_url: CreateUrl.message({
 						guildId: guild.id,
@@ -71,7 +71,7 @@ export default class extends Command {
 
 		const currentAuthorMatch = await getMatchByUserId(interaction.user.id);
 		if (currentAuthorMatch) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('create_queue.errors.already_in_game', {
 					match_id: currentAuthorMatch.matchId,
 					chat_url: CreateUrl.channel({ guildId: guild.id, channelId: currentAuthorMatch.channels.chat }),
@@ -355,7 +355,7 @@ export default class extends Command {
 			}
 
 			const embed = new YuneEmbed()
-				.setColor(0x454545)
+				.setColor('Default')
 				.setAuthor({
 					name: t('create_queue.embeds.queue.author', { user: interaction.user.tag }),
 					iconURL: interaction.user.displayAvatarURL(),

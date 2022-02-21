@@ -9,7 +9,7 @@ export async function add(interaction: ChatInputCommandInteraction, t: TFunction
 	const role = interaction.options.getRole('cargo');
 
 	if (role.managed || !role.position) {
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('rank_roles.add.errors.managed_role'),
 		});
 		return;
@@ -24,7 +24,7 @@ export async function add(interaction: ChatInputCommandInteraction, t: TFunction
 	};
 
 	if (currentData.roles.includes(role.id)) {
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('rank_roles.add.errors.already_has'),
 		});
 		return;
@@ -32,7 +32,7 @@ export async function add(interaction: ChatInputCommandInteraction, t: TFunction
 
 	currentData.roles = currentData.roles.filter((x) => interaction.guild.roles.cache.has(x));
 	if (currentData.roles.length >= RANK_ROLES_LIMIT) {
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('rank_roles.add.errors.reached_limit', {
 				limit: RANK_ROLES_LIMIT,
 			}),

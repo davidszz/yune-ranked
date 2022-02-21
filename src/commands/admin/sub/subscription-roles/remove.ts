@@ -9,7 +9,7 @@ export async function remove(interaction: ChatInputCommandInteraction, t: TFunct
 		'subscriptionRoles'
 	);
 	if (!subscriptionRoles?.includes(roleId)) {
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('subscription_roles.remove.errors.invalid_role'),
 		});
 		return;
@@ -22,7 +22,7 @@ export async function remove(interaction: ChatInputCommandInteraction, t: TFunct
 	});
 
 	const role = interaction.guild.roles.cache.get(roleId);
-	interaction.editReply({
+	await interaction.editReply({
 		content: t('subscription_roles.remove.removed', {
 			context: role ? 'valid_role' : null,
 			role: role.toString(),

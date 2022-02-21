@@ -12,7 +12,7 @@ export async function list(interaction: ChatInputCommandInteraction, t: TFunctio
 		(x) => x.roles?.filter((roleId) => interaction.guild.roles.cache.has(roleId)).length
 	);
 	if (!validRankRoles.length) {
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('rank_roles.list.errors.no_roles'),
 		});
 		return;
@@ -52,5 +52,5 @@ export async function list(interaction: ChatInputCommandInteraction, t: TFunctio
 		},
 	});
 
-	paginated.paginate();
+	await paginated.paginate();
 }

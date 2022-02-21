@@ -84,7 +84,7 @@ export default class MatchListener extends EventListener {
 					)
 					.setTimestamp();
 
-				queueChannel.send({
+				await queueChannel.send({
 					embeds: [deletedEmbed],
 				});
 			}

@@ -36,7 +36,7 @@ export default class extends Command {
 		);
 
 		if (!matchData?._id) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('mvp.errors.invalid_match_channel'),
 			});
 			return;
@@ -46,7 +46,7 @@ export default class extends Command {
 			!matchData.participants.some((x) => x.userId === interaction.user.id) &&
 			!interaction.memberPermissions.has('Administrator')
 		) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('mvp.errors.no_permission'),
 			});
 			return;
@@ -57,13 +57,13 @@ export default class extends Command {
 
 		if (!target) {
 			if (currentMvp) {
-				interaction.editReply({
+				await interaction.editReply({
 					content: t('mvp.current_mvp', {
 						user: `<@!${currentMvp.userId}>`,
 					}),
 				});
 			} else {
-				interaction.editReply({
+				await interaction.editReply({
 					content: t('mvp.no_mvp'),
 				});
 			}
@@ -71,14 +71,14 @@ export default class extends Command {
 		}
 
 		if (target.bot || !matchData.participants.some((x) => x.userId === target.id)) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('mvp.errors.invalid_user'),
 			});
 			return;
 		}
 
 		if (currentMvp?.userId === target.id) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('mvp.errors.same_mvp'),
 			});
 			return;
@@ -93,7 +93,7 @@ export default class extends Command {
 			},
 		});
 
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('mvp.changed', {
 				user: target.toString(),
 			}),

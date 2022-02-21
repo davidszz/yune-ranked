@@ -29,7 +29,7 @@ export default class extends Command {
 		const subscriptionCode = await interaction.client.database.subscriptionCodes.findOne({ code });
 
 		if (!subscriptionCode?._id) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('redeem.errors.invalid_code'),
 			});
 			return;
@@ -85,7 +85,7 @@ export default class extends Command {
 			}),
 		});
 
-		interaction.channel.send({
+		await interaction.channel.send({
 			content: t('redeem.redeemed_broadcast', {
 				user: interaction.user.toString(),
 				duration: humanizedDuration,

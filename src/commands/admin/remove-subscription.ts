@@ -27,14 +27,14 @@ export default class extends Command {
 
 		const target = interaction.options.getMember('usuario');
 		if (!target?.user) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('common.errors.invalid_member'),
 			});
 			return;
 		}
 
 		if (target.user.bot) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('common.errors.cannot_be_a_bot'),
 			});
 			return;
@@ -42,7 +42,7 @@ export default class extends Command {
 
 		const { subscribed } = await interaction.client.database.members.findOne(target, 'subscribed');
 		if (!subscribed) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('remove_subscription.errors.not_subscribed'),
 			});
 			return;
@@ -57,7 +57,7 @@ export default class extends Command {
 			},
 		});
 
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('remove_subscription.removed', {
 				target: target.toString(),
 			}),

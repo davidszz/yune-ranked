@@ -43,7 +43,7 @@ export default class extends Command {
 		);
 
 		if (!matchData?._id) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('cancel_match.errors.not_found'),
 			});
 			return;
@@ -51,7 +51,7 @@ export default class extends Command {
 
 		const matchUrl = CreateUrl.channel({ guildId: interaction.guildId, channelId: matchData.channels.chat });
 		const confirmationEmbed = new YuneEmbed()
-			.setColor(0xffff00)
+			.setColor('Yellow')
 			.setTitle(t('cancel_match.embeds.confirmation.title'))
 			.setDescription(
 				t('cancel_match.embeds.confirmation.description', {
@@ -80,7 +80,7 @@ export default class extends Command {
 				}
 			}
 
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('cancel_match.canceled', {
 					match_id: matchId,
 				}),
@@ -88,7 +88,7 @@ export default class extends Command {
 				components: [],
 			});
 		} else {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('cancel_match.confirmation_canceled', {
 					match_id: matchId,
 					match_url: matchUrl,

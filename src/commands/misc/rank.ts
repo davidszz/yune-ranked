@@ -32,12 +32,12 @@ export default class extends Command {
 	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		switch (interaction.options.getSubcommand()) {
 			case 'vitorias': {
-				wins(interaction, t);
+				await wins(interaction, t);
 				return;
 			}
 
 			case 'derrotas': {
-				loses(interaction, t);
+				await loses(interaction, t);
 			}
 		}
 	}

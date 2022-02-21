@@ -5,7 +5,7 @@ export async function username(interaction: ChatInputCommandInteraction, t: TFun
 	const username = interaction.options.getString('nome').trim();
 
 	if (username.length < 2 || username.length > 32) {
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('bot_config.username.errors.invalid_length'),
 		});
 		return;

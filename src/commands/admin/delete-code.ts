@@ -29,7 +29,7 @@ export default class extends Command {
 		const subscriptionCode = await interaction.client.database.subscriptionCodes.findOne({ code }, '_id');
 
 		if (!subscriptionCode?._id) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('delete_code.errors.invalid_code'),
 			});
 			return;
@@ -37,7 +37,7 @@ export default class extends Command {
 
 		await interaction.client.database.subscriptionCodes.deleteOne(subscriptionCode._id);
 
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('delete_code.deleted', { code }),
 		});
 	}

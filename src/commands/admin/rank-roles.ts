@@ -80,17 +80,17 @@ export default class extends Command {
 
 		switch (interaction.options.getSubcommand()) {
 			case 'add': {
-				add(interaction, t);
+				await add(interaction, t);
 				return;
 			}
 
 			case 'remove': {
-				remove(interaction, t);
+				await remove(interaction, t);
 				return;
 			}
 
 			case 'list': {
-				list(interaction, t);
+				await list(interaction, t);
 			}
 		}
 	}

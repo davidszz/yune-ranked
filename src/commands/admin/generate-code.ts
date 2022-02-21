@@ -50,7 +50,7 @@ export default class extends Command {
 
 		const parsedDuration = TimeUtils.parseDuration(duration, 60000);
 		if (parsedDuration < 60000) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('generate_code.errors.invalid_duration'),
 			});
 			return;
@@ -112,13 +112,13 @@ export default class extends Command {
 				filter: (i) => i.user.id === interaction.user.id,
 			});
 
-			collector.on('collect', (i) => {
+			collector.on('collect', async (i) => {
 				if (i.customId === 'copy') {
 					i.deferUpdate().catch(() => {
 						// Nothing
 					});
 
-					interaction.followUp({
+					await interaction.followUp({
 						content: entities.map((x) => x.code).join('\n'),
 						ephemeral: true,
 					});

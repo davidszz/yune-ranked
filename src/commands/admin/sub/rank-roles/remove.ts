@@ -11,14 +11,14 @@ export async function remove(interaction: ChatInputCommandInteraction, t: TFunct
 
 	const currentData = rankRoles.find((x) => x.rank === rank);
 	if (!currentData?.roles?.length) {
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('rank_roles.remove.errors.no_roles'),
 		});
 		return;
 	}
 
 	if (!currentData.roles.includes(roleId)) {
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('rank_roles.remove.errors.invalid_role'),
 		});
 		return;
@@ -40,7 +40,7 @@ export async function remove(interaction: ChatInputCommandInteraction, t: TFunct
 
 	const role = interaction.guild.roles.cache.get(roleId);
 	const rankData = Ranks.find((x) => x.name === rank);
-	interaction.editReply({
+	await interaction.editReply({
 		content: t('rank_roles.remove.removed', {
 			context: role ? 'valid_role' : null,
 			role: role?.toString() ?? roleId,

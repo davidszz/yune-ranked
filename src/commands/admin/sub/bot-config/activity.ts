@@ -7,7 +7,7 @@ export async function activity(interaction: ChatInputCommandInteraction, t: TFun
 	const url = interaction.options.getString('url');
 
 	if (name.length < 1 || name.length > 300) {
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('bot_config.activity.errors.invalid_length'),
 		});
 		return;
@@ -35,7 +35,7 @@ export async function activity(interaction: ChatInputCommandInteraction, t: TFun
 		},
 	});
 
-	interaction.editReply({
+	await interaction.editReply({
 		content: t('bot_config.activity.changed', {
 			context: type === ActivityType.Streaming ? 'streaming' : null,
 		}),

@@ -47,11 +47,11 @@ export default class extends Command {
 
 		if (!matchData?._id) {
 			if (matchId) {
-				interaction.editReply({
+				await interaction.editReply({
 					content: t('finalize.errors.not_found'),
 				});
 			} else {
-				interaction.editReply({
+				await interaction.editReply({
 					content: t('finalize.errors.invalid_match_channel'),
 				});
 			}
@@ -60,21 +60,21 @@ export default class extends Command {
 
 		const participant = (id: string) => matchData.participants.find((x) => x.userId === id);
 		if (!interaction.memberPermissions.has('Administrator') && !participant(interaction.user.id)?.isCaptain) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('finalize.errors.no_permission'),
 			});
 			return;
 		}
 
 		if (!matchData.participants.some((x) => x.mvp)) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('finalize.errors.no_mvp'),
 			});
 			return;
 		}
 
 		if (!matchData.teams.some((x) => x.win)) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('finalize.errors.no_team_winner'),
 			});
 			return;
@@ -140,7 +140,7 @@ export default class extends Command {
 			}
 
 			if (interaction.channelId !== matchData.channels.chat) {
-				interaction.channel.send({
+				await interaction.channel.send({
 					content: t('finalize.finalized', {
 						author: interaction.user.toString(),
 						match_id: matchData.matchId,

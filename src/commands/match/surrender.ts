@@ -30,21 +30,21 @@ export default class extends Command {
 		);
 
 		if (!matchData?._id) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('surrender.errors.invalid_match_channel'),
 			});
 			return;
 		}
 
 		if (!matchData.participants.some((x) => x.userId === interaction.user.id)) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('surrender.errors.only_participants'),
 			});
 			return;
 		}
 
 		if (matchData.surrenderVotes?.includes(interaction.user.id)) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('surrender.errors.already_voted'),
 			});
 			return;
@@ -97,7 +97,7 @@ export default class extends Command {
 			},
 		});
 
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('surrender.voted', {
 				user: interaction.user.toString(),
 				votes: totalVotes,

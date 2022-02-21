@@ -10,7 +10,7 @@ export async function avatar(interaction: ChatInputCommandInteraction, t: TFunct
 		.catch(() => false);
 
 	if (!isValidImage) {
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('bot_config.avatar.errors.invalid_image'),
 		});
 		return;

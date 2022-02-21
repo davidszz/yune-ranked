@@ -24,7 +24,7 @@ export default class extends Command {
 		});
 
 		if (!subscriptionCodes.length) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('subscription_codes.errors.empty'),
 			});
 			return;
@@ -57,6 +57,6 @@ export default class extends Command {
 			},
 		});
 
-		paginated.paginate();
+		await paginated.paginate();
 	}
 }

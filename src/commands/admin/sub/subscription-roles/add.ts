@@ -4,7 +4,7 @@ import type { TFunction } from 'i18next';
 export async function add(interaction: ChatInputCommandInteraction, t: TFunction): Promise<void> {
 	const role = interaction.options.getRole('cargo');
 	if (role.managed || !role.position) {
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('subscription_roles.add.errors.managed_role'),
 		});
 		return;
@@ -15,7 +15,7 @@ export async function add(interaction: ChatInputCommandInteraction, t: TFunction
 		'subscriptionRoles'
 	);
 	if (subscriptionRoles?.includes(role.id)) {
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('subscription_roles.add.errors.already_has'),
 		});
 		return;
@@ -27,7 +27,7 @@ export async function add(interaction: ChatInputCommandInteraction, t: TFunction
 		},
 	});
 
-	interaction.editReply({
+	await interaction.editReply({
 		content: t('subscription_roles.add.added', {
 			role: role.toString(),
 		}),

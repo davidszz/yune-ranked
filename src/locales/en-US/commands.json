@@ -341,7 +341,8 @@
 		},
 		"rank": {
 			"errors": {
-				"no_members": "Não há nenhum membro com um rank e/ou pdl's até o momento."
+				"no_members": "Não há nenhum membro com um rank e/ou pdl's até o momento.",
+				"already_reset": "Este membro não possui nenhum rank e/ou pdl's até o momento."
 			},
 			"embeds": {
 				"confirmation": {
@@ -349,6 +350,7 @@
 					"description": "Tem certeza que deseja resetar o rank de `{{total}}` usuários?"
 				}
 			},
+			"success": "Você resetou o rank de {{- target}} com sucesso!",
 			"success_all": "Você resetou o rank de **{{total}} usuários** do servidor!"
 		}
 	},

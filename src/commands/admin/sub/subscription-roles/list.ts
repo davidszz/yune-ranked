@@ -9,7 +9,7 @@ export async function list(interaction: ChatInputCommandInteraction, t: TFunctio
 		'subscriptionRoles'
 	);
 	if (!subscriptionRoles?.length) {
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('subscription_roles.list.errors.empty'),
 		});
 		return;
@@ -21,7 +21,7 @@ export async function list(interaction: ChatInputCommandInteraction, t: TFunctio
 		})
 	);
 
-	interaction.editReply({
+	await interaction.editReply({
 		embeds: [embed],
 	});
 }

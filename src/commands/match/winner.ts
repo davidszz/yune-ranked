@@ -47,7 +47,7 @@ export default class extends Command {
 		);
 
 		if (!matchData?._id) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('winner.errors.invalid_match_channel'),
 			});
 			return;
@@ -57,7 +57,7 @@ export default class extends Command {
 			!matchData.participants.some((x) => x.userId === interaction.user.id) &&
 			!interaction.memberPermissions.has('Administrator')
 		) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('winner.errors.no_permission'),
 			});
 			return;
@@ -66,7 +66,7 @@ export default class extends Command {
 		const winner = interaction.options.getString('time');
 		if (!winner) {
 			if (matchData.teams.some((x) => x.win)) {
-				interaction.editReply({
+				await interaction.editReply({
 					content: t('winner.current_winner', {
 						current_winner: t(
 							`winner.teams.${matchData.teams.find((x) => x.win).teamId === TeamId.Blue ? 'blue' : 'red'}`
@@ -74,7 +74,7 @@ export default class extends Command {
 					}),
 				});
 			} else {
-				interaction.editReply({
+				await interaction.editReply({
 					content: t('winner.no_winner'),
 				});
 			}
@@ -83,7 +83,7 @@ export default class extends Command {
 
 		const winnerId = winner === 'blue' ? TeamId.Blue : TeamId.Red;
 		if (matchData.teams.find((x) => x.win)?.teamId === winnerId) {
-			interaction.editReply({
+			await interaction.editReply({
 				content: t('winner.errors.same_winner'),
 			});
 			return;
@@ -98,7 +98,7 @@ export default class extends Command {
 			},
 		});
 
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('winner.changed', {
 				winner: t(`winner.teams.${winner}`),
 			}),

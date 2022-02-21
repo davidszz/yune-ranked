@@ -18,7 +18,7 @@ export async function wins(interaction: ChatInputCommandInteraction, t: TFunctio
 		.then((result) => result?.sort((a, b) => a.loses - b.loses).sort((a, b) => b.wins - a.wins));
 
 	if (!members.length) {
-		interaction.editReply({
+		await interaction.editReply({
 			content: t('rank.wins.errors.no_members'),
 		});
 		return;
@@ -71,5 +71,5 @@ export async function wins(interaction: ChatInputCommandInteraction, t: TFunctio
 		},
 	});
 
-	paginated.paginate();
+	await paginated.paginate();
 }
