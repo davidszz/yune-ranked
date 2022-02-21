@@ -3,3 +3,5 @@ dist
 yarn-error.log
 .env
 src/listeners/DevListener.ts
+src/commands/admin/reset.ts
+src/commands/admin/sub/reset/rank.ts

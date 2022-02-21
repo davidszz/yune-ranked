@@ -10,6 +10,12 @@ import {
 } from 'mongoose';
 import transformProps from 'transform-props';
 
+interface IFindOptions {
+	sort?: Record<string, any>;
+	limit?: number;
+	returnCount?: boolean;
+}
+
 export abstract class Repository<T, R = T> {
 	mongoose: Mongoose;
 	model: Model<T>;
@@ -31,6 +37,10 @@ export abstract class Repository<T, R = T> {
 		await this.model.updateOne(typeof query === 'string' ? { _id: query } : query, entity, options);
 	}
 
+	async updateMany(query: FilterQuery<T>, entity: UpdateQuery<T>, options: QueryOptions = { upsert: true, new: true }) {
+		await this.model.updateMany(query, entity, options);
+	}
+
 	async findOne(query: string | FilterQuery<T>, projection?: any): Promise<R> {
 		if (typeof query === 'string') {
 			return this.model.findById(query, projection).then((doc) => this.parse(doc));
@@ -39,8 +49,29 @@ export abstract class Repository<T, R = T> {
 		return this.model.findOne(query, projection).then((doc) => this.parse(doc));
 	}
 
-	async findMany(query: FilterQuery<T>, projection?: any): Promise<R[]> {
-		return this.model.find(query, projection).then((docs) => docs.map((doc) => this.parse(<Document<T>>doc)));
+	async findMany(
+		query: FilterQuery<T>,
+		projection: any,
+		options: IFindOptions & { returnCount: true }
+	): Promise<number>;
+
+	async findMany(query: FilterQuery<T>, projection?: any, options?: IFindOptions): Promise<R[]>;
+	async findMany(query: FilterQuery<T>, projection?: any, options?: IFindOptions): Promise<R[] | number> {
+		const cursor = this.model.find(query, projection);
+
+		if (options?.sort) {
+			cursor.sort(options.sort);
+		}
+
+		if (options?.limit) {
+			cursor.limit(options.limit);
+		}
+
+		if (options?.returnCount) {
+			return cursor.count();
+		}
+
+		return cursor.then((docs) => docs.map((doc) => this.parse(<Document<T>>doc)));
 	}
 
 	async findOneAndPopulate(

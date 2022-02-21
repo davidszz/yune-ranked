@@ -98,7 +98,7 @@ export default class extends Command {
 		const copyBtn = new ButtonComponent()
 			.setCustomId('copy')
 			.setStyle(ButtonStyle.Success)
-			.setEmoji({ id: EmojisIds.copy });
+			.setEmoji({ id: EmojisIds.COPY });
 
 		const reply = await interaction.editReply({
 			embeds: [embed],

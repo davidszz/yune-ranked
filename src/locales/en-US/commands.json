@@ -32,7 +32,7 @@
 				"invalid_length": "Forneça um nome de atividade válida entre **2** e **300 caracteres**."
 			},
 			"changed": "Você alterou a atividade do bot com sucesso! A atividade pode demorar para ser alterada.",
-			"changed_streaming": "Você alterou a atividade do bot com sucesso! A atividade pode demorar para ser alterada.\n{{- e_info_in}}{{- e_info_fo}}: Caso a URL informada seja inválida a atividade do bot será definida como **Jogando**."
+			"changed_streaming": "Você alterou a atividade do bot com sucesso! A atividade pode demorar para ser alterada.\n{{- e_INFO_IN}}{{- e_INFO_FO}}: Caso a URL informada seja inválida a atividade do bot será definida como **Jogando**."
 		}
 	},
 	"rank": {
@@ -100,9 +100,9 @@
 				"description": "Esta fila será cancelada após **5 minutos** caso os times não estejam completos.",
 				"fields": {
 					"misc": {
-						"participant": "{{- e_accepted_user}} {{- user}}",
-						"participant_waiting": "{{- e_empty_user}} Aguardando...",
-						"participant_anonymous": "{{- e_accepted_user}} Participante {{position}}"
+						"participant": "{{- e_ACCEPTED_USER}} {{- user}}",
+						"participant_waiting": "{{- e_EMPTY_USER}} Aguardando...",
+						"participant_anonymous": "{{- e_ACCEPTED_USER}} Participante {{position}}"
 					},
 					"team_blue": "Time azul",
 					"team_red": "Time vermelho"
@@ -151,8 +151,8 @@
 				"author": "Partida iniciada • ID: {{match_id}}",
 				"description": "Use o comando **/ajuda** neste canal para obter os comandos disponíveis durante a partida.",
 				"fields": {
-					"team_blue": "{{- e_team_blue}} Time azul:",
-					"team_red": "{{- e_team_red}} Time vermelho:"
+					"team_blue": "{{- e_TEAM_BLUE}} Time azul:",
+					"team_red": "{{- e_TEAM_RED}} Time vermelho:"
 				},
 				"footer": "Caso ocorra algum imprevisto durante a partida, peça para que um administrador do servidor finalize-a."
 			}
@@ -179,13 +179,13 @@
 		"embeds": {
 			"confirmation": {
 				"title": "Confirmar finalização",
-				"description": "Confirme os dados para finalização da partida e use os botões abaixo para finaliza-la ou cancelar a finalização.\n\n**Obs.:** esta ação é irreversivel.",
+				"description": "Confirme os dados para finalização da partida e use os botões abaixo para finaliza-la ou cancelar a finalização.\n\n***Esta ação é irreversivel.***",
 				"fields": {
 					"team_winner": {
 						"name": "Time vencedor:",
 						"values": {
-							"team_blue": "{{- e_team_blue}} Time azul",
-							"team_red": "{{- e_team_red}} Time vermelho"
+							"team_blue": "{{- e_TEAM_BLUE}} Time azul",
+							"team_red": "{{- e_TEAM_RED}} Time vermelho"
 						}
 					},
 					"mvp_player": "Jogador MVP:"
@@ -232,8 +232,8 @@
 			"same_winner": "Este time já foi definido como o time vencedor desta partida."
 		},
 		"teams": {
-			"blue": "{{- e_team_blue}} Time azul",
-			"red": "{{- e_team_red}} Time vermelho"
+			"blue": "{{- e_TEAM_BLUE}} Time azul",
+			"red": "{{- e_TEAM_RED}} Time vermelho"
 		},
 		"current_winner": "Time vencedor atual: **{{- current_winner}}**",
 		"no_winner": "Não há nenhum time vencedor definido até o momento.",
@@ -332,6 +332,23 @@
 			}
 		}
 	},
+	"reset": {
+		"errors": {
+			"invalid_member": "Este usuário não é um membro do servidor."
+		},
+		"rank": {
+			"errors": {
+				"no_members": "Não há nenhum membro com um rank e/ou pdl's até o momento."
+			},
+			"embeds": {
+				"confirmation": {
+					"title": "Confirme está ação",
+					"description": "Tem certeza que deseja resetar o rank de `{{total}}` usuários?"
+				}
+			},
+			"success_all": "Você resetou o rank de **{{total}} usuários** do servidor!"
+		}
+	},
 	"generate_code": {
 		"errors": {
 			"invalid_duration": "Forneça uma duração válida acima de **1 minuto** para gerar um código de assinatura. Exemplo: `30d3h` ou `30 dias e 3 horas`"
@@ -339,8 +356,8 @@
 		"embed": {
 			"title": "Códigos gerados",
 			"title_one": "Código gerado",
-			"description": "Para ativar um dos códigos da lista use `/resgatar <código>`.\n\n{{- e_info}} Caso esteja no celular você pode usar o botão abaixo para receber uma mensagem na qual você consiga copia o código.",
-			"description_one": "Para ativar o código gerado use `/resgatar {{- code}}`.\n\n{{- e_info}} Caso esteja no celular você pode usar o botão abaixo para receber uma mensagem na qual você consiga copiar os códigos.",
+			"description": "Para ativar um dos códigos da lista use `/resgatar <código>`.\n\n{{- e_INFO}} Caso esteja no celular você pode usar o botão abaixo para receber uma mensagem na qual você consiga copia o código.",
+			"description_one": "Para ativar o código gerado use `/resgatar {{- code}}`.\n\n{{- e_INFO}} Caso esteja no celular você pode usar o botão abaixo para receber uma mensagem na qual você consiga copiar os códigos.",
 			"fields": {
 				"code": "Códigos:",
 				"code_one": "Código:",

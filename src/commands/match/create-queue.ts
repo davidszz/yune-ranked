@@ -150,7 +150,7 @@ export default class extends Command {
 					const chatChannel = guild.channels.cache.get(matchData.channels.chat) as TextBasedChannel;
 					if (chatChannel) {
 						const mapParticipants = (users: User[]) =>
-							users.map((x, i) => `${x}${[0, teamSize].includes(i) ? ` ${Emojis.crown}` : ''}`).join('\n');
+							users.map((x, i) => `${x}${[0, teamSize].includes(i) ? ` ${Emojis.CROWN}` : ''}`).join('\n');
 
 						const chatEmbed = new YuneEmbed()
 							.setColor(0x454545)
@@ -451,7 +451,7 @@ export default class extends Command {
 			const joinBtn = new ButtonComponent()
 				.setCustomId('join')
 				.setStyle(ButtonStyle.Success)
-				.setEmoji({ id: EmojisIds.join })
+				.setEmoji({ id: EmojisIds.JOIN })
 				.setLabel(
 					t('create_queue.buttons.join', {
 						total: participants.filter(Boolean).length,
@@ -462,7 +462,7 @@ export default class extends Command {
 			const leaveBtn = new ButtonComponent()
 				.setCustomId('leave')
 				.setStyle(ButtonStyle.Primary)
-				.setEmoji({ id: EmojisIds.left })
+				.setEmoji({ id: EmojisIds.LEFT })
 				.setLabel(t('create_queue.buttons.leave'));
 
 			const destroyBtn = new ButtonComponent()
