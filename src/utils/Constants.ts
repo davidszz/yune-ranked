@@ -25,6 +25,8 @@ export const Emojis = {
 	team_red: '<:team_red:944303523267493938>',
 	copy: '<:copy_paste:945130219730255922>',
 	info: '<:info:945132548609155132>',
+	info_in: '<:info_in:945387615287377950>',
+	info_fo: '<:info_fo:945387615190921226>',
 };
 
 export const EmojisIds = Object.fromEntries(

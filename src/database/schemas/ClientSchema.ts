@@ -1,3 +1,4 @@
+import { ActivitiesOptions, PresenceData } from 'discord.js';
 import { Schema } from 'mongoose';
 
 export interface IClientSchema {
@@ -5,10 +6,35 @@ export interface IClientSchema {
 	token: string;
 	guildId: string;
 	ownerId: string;
+	presence: PresenceData;
 	expiresAt: Date;
 	createdAt: Date;
 	updatedAt: Date;
 }
+
+const ActivitySchema = new Schema<ActivitiesOptions>(
+	{
+		name: {
+			type: String,
+			required: true,
+		},
+		type: {
+			type: Number,
+			required: true,
+		},
+		url: String,
+	},
+	{ _id: false }
+);
+
+const PresenceSchema = new Schema<PresenceData>(
+	{
+		activities: [ActivitySchema],
+		afk: Boolean,
+		status: String,
+	},
+	{ _id: false }
+);
 
 export const ClientSchema = new Schema<IClientSchema>(
 	{
@@ -25,6 +51,7 @@ export const ClientSchema = new Schema<IClientSchema>(
 			type: String,
 			required: true,
 		},
+		presence: PresenceSchema,
 		expiresAt: {
 			type: Date,
 			required: true,

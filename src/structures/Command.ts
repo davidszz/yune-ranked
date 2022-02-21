@@ -4,7 +4,6 @@ import {
 	ApplicationCommandData,
 	ApplicationCommandOptionData,
 	PermissionFlags,
-	ChatInputApplicationCommandData,
 	ApplicationCommandType,
 } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -39,6 +38,8 @@ export abstract class Command {
 	abstract run(interaction: Interaction, t: TFunction): void | Promise<void>;
 
 	constructor(public client: Yune, public data: CommandData) {
+		data.type ??= ApplicationCommandType.ChatInput;
+
 		this.name = data.name;
 		this.type = data.type;
 		this.defaultPermission = data.defaultPermission;
@@ -48,9 +49,9 @@ export abstract class Command {
 		this.usage = data.usage ?? '';
 		this.subscribersOnly = !!data.subscribersOnly;
 
-		if (!data.type || data.type === ApplicationCommandType.ChatInput) {
-			this.description = (<ChatInputApplicationCommandData>data).description;
-			this.options = (<ChatInputApplicationCommandData>data).options;
+		if (data.type === ApplicationCommandType.ChatInput) {
+			this.description = data.description;
+			this.options = data.options;
 		}
 	}
 

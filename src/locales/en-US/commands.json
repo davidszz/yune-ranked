@@ -9,6 +9,32 @@
 			"invalid_member": "Nenhum **membro do servidor** foi encontrado(a) com esta @menção ou ID."
 		}
 	},
+	"bot_config": {
+		"avatar": {
+			"errors": {
+				"invalid_image": "Este arquivo não é uma imagem válida.",
+				"rate_limit": "O avatar do bot está sendo trocado rápido demais. Tente novamente mais tarde.",
+				"unknown_error": "Ocorreu um erro ao alterar o avatar do bot. Tente novamente e caso o erro persista conta-te um [desenvolvedor]({{- support_guild_url}})."
+			},
+			"changed": "Você alterou o avatar do bot com sucesso!"
+		},
+		"username": {
+			"errors": {
+				"invalid_length": "Forneça um nome válido entre **2** e **32 caracteres**.",
+				"too_many_users": "Muitos usuários já usam este nome de usuário.",
+				"rate_limit": "O nome de usuário do bot está sendo trocado rápido demais. Tente novamente mais tarde.",
+				"unknown_error": "Ocorreu um erro ao alterar o nome de usuário do bot. Tente novamente e caso o erro persista conta-te um [desenvolvedor]({{- support_guild_url}})"
+			},
+			"changed": "Você alterou o nome de usuário do bot para: {{- username}}"
+		},
+		"activity": {
+			"errors": {
+				"invalid_length": "Forneça um nome de atividade válida entre **2** e **300 caracteres**."
+			},
+			"changed": "Você alterou a atividade do bot com sucesso! A atividade pode demorar para ser alterada.",
+			"changed_streaming": "Você alterou a atividade do bot com sucesso! A atividade pode demorar para ser alterada.\n{{- e_info_in}}{{- e_info_fo}}: Caso a URL informada seja inválida a atividade do bot será definida como **Jogando**."
+		}
+	},
 	"rank": {
 		"wins": {
 			"errors": {

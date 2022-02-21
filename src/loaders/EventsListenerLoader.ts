@@ -1,3 +1,4 @@
+import { Guild } from 'discord.js';
 import readdir from 'readdirp';
 
 import type { Yune } from '@client';
@@ -28,7 +29,26 @@ export class EventsListenerLoader extends Loader {
 						for (const eventName of eventListener.events) {
 							const listener = eventListener[`on${Utils.capitalize(eventName)}`];
 							if (listener) {
-								this.client.on(eventName, listener.bind(eventListener));
+								this.client.on(eventName, (...args) => {
+									for (const arg of args) {
+										if (
+											arg instanceof Guild ||
+											(typeof arg === 'object' && !Array.isArray('arg') && ('guild' in arg || 'guildId' in arg))
+										) {
+											if (arg instanceof Guild && arg.id !== this.client.guildId) {
+												return;
+											}
+											if (
+												('guild' in arg && arg.guild.id !== this.client.guildId) ||
+												('guildId' in arg && arg.guildId !== this.client.guildId)
+											) {
+												return;
+											}
+										}
+									}
+
+									listener.bind(eventListener)(...args);
+								});
 							}
 						}
 					}

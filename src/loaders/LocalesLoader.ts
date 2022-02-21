@@ -34,6 +34,7 @@ export class LocalesLoader extends Loader {
 				skipOnVariables: false,
 				defaultVariables: {
 					...Object.fromEntries(Object.entries(Emojis).map((x) => [`e_${x[0]}`, x[1]])),
+					support_guild_url: process.env.SUPPORT_GUILD_URL,
 				},
 				format(value, format) {
 					if (format.startsWith('fromNow')) {
