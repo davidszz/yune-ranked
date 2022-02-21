@@ -1,6 +1,7 @@
 import type { Guild, GuildMember } from 'discord.js';
 
-import { Ranks, UserRank } from '@utils/Constants';
+import { Ranks } from '@utils/Ranks';
+import { UserRank } from '@utils/UserRank';
 
 interface IUpdateRankRoleMemberData {
 	rank: UserRank;

@@ -1,4 +1,6 @@
-import { DEFAULT_USER_MMR, Ranks, UserRank } from './Constants';
+import { DEFAULT_USER_MMR } from './Constants';
+import { Ranks } from './Ranks';
+import { UserRank } from './UserRank';
 
 interface PDLCalculatorOptions {
 	mmr: number;
@@ -27,6 +29,6 @@ export class RankUtils {
 			}
 			return acc;
 		});
-		return rank.id === UserRank.UNRANKED ? UserRank.IRON_1 : rank.id;
+		return rank.id === UserRank.Unranked ? UserRank.Iron1 : rank.id;
 	}
 }

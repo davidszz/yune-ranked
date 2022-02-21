@@ -4,14 +4,15 @@ import i18next from 'i18next';
 
 import type { Yune } from '@client';
 import { Command } from '@structures/Command';
-import { Ranks, UserRank } from '@utils/Constants';
+import { Ranks } from '@utils/Ranks';
+import { UserRank } from '@utils/UserRank';
 
 import { add } from './sub/rank-roles/add';
 import { list } from './sub/rank-roles/list';
 import { remove } from './sub/rank-roles/remove';
 
 const rankChoices = Ranks.filter(
-	(x, i) => x.id !== UserRank.UNRANKED && Ranks.findIndex((r) => r.name === x.name) === i
+	(x, i) => x.id !== UserRank.Unranked && Ranks.findIndex((r) => r.name === x.name) === i
 ).map((x) => ({
 	name: i18next.t(`misc:ranks.names.${x.name}`, { lng: 'pt-BR' }),
 	value: x.name,

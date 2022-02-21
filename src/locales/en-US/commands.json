@@ -32,7 +32,7 @@
 				"invalid_length": "Forneça um nome de atividade válida entre **2** e **300 caracteres**."
 			},
 			"changed": "Você alterou a atividade do bot com sucesso! A atividade pode demorar para ser alterada.",
-			"changed_streaming": "Você alterou a atividade do bot com sucesso! A atividade pode demorar para ser alterada.\n{{- e_INFO_IN}}{{- e_INFO_FO}}: Caso a URL informada seja inválida a atividade do bot será definida como **Jogando**."
+			"changed_streaming": "Você alterou a atividade do bot com sucesso! A atividade pode demorar para ser alterada.\n{{- e_info_in}}{{- e_info_fo}}: Caso a URL informada seja inválida a atividade do bot será definida como **Jogando**."
 		}
 	},
 	"rank": {
@@ -100,9 +100,9 @@
 				"description": "Esta fila será cancelada após **5 minutos** caso os times não estejam completos.",
 				"fields": {
 					"misc": {
-						"participant": "{{- e_ACCEPTED_USER}} {{- user}}",
-						"participant_waiting": "{{- e_EMPTY_USER}} Aguardando...",
-						"participant_anonymous": "{{- e_ACCEPTED_USER}} Participante {{position}}"
+						"participant": "{{- e_accepted_user}} {{- user}}",
+						"participant_waiting": "{{- e_empty_user}} Aguardando...",
+						"participant_anonymous": "{{- e_accepted_user}} Participante {{position}}"
 					},
 					"team_blue": "Time azul",
 					"team_red": "Time vermelho"
@@ -143,7 +143,10 @@
 				"author": "Partida {{match_id}}",
 				"description": "Esta partida foi cancelada automáticamente por um dos canais da partida ter sido deletado.",
 				"fields": {
-					"started_at": "Iniciada em:",
+					"started_at": {
+						"name": "Iniciada em:",
+						"created_at": "{{- created_at, DD/MM/YYYY HH:mm:ss}}"
+					},
 					"created_by": "Criada por:"
 				}
 			},
@@ -151,8 +154,8 @@
 				"author": "Partida iniciada • ID: {{match_id}}",
 				"description": "Use o comando **/ajuda** neste canal para obter os comandos disponíveis durante a partida.",
 				"fields": {
-					"team_blue": "{{- e_TEAM_BLUE}} Time azul:",
-					"team_red": "{{- e_TEAM_RED}} Time vermelho:"
+					"team_blue": "{{- e_team_blue}} Time azul:",
+					"team_red": "{{- e_team_red}} Time vermelho:"
 				},
 				"footer": "Caso ocorra algum imprevisto durante a partida, peça para que um administrador do servidor finalize-a."
 			}
@@ -184,8 +187,8 @@
 					"team_winner": {
 						"name": "Time vencedor:",
 						"values": {
-							"team_blue": "{{- e_TEAM_BLUE}} Time azul",
-							"team_red": "{{- e_TEAM_RED}} Time vermelho"
+							"team_blue": "{{- e_team_blue}} Time azul",
+							"team_red": "{{- e_team_red}} Time vermelho"
 						}
 					},
 					"mvp_player": "Jogador MVP:"
@@ -217,23 +220,23 @@
 	"mvp": {
 		"errors": {
 			"invalid_match_channel": "Este não é um canal válido de uma partida ativa.",
-			"no_permission": "Somente os capitães da partida e os administradores do servidor podem definir o MVP da partida.",
+			"no_permission": "Somente os paticipantes da partida e os administradores do servidor podem definir o **MVP** da partida.",
 			"invalid_user": "Este não é um usuário válido desta partida.",
-			"same_mvp": "Este usuário já é o MVP da partida."
+			"same_mvp": "Este usuário já é o **MVP** da partida."
 		},
-		"current_mvp": "O jogador MVP atual da partida é: {{- user}}",
-		"no_mvp": "Não há nenhum jogador MVP definido até o momento.",
-		"changed": "O jogador MVP da partida foi definido como: {{- user}}"
+		"current_mvp": "O jogador **MVP** atual da partida é: {{- user}}",
+		"no_mvp": "Não há nenhum jogador **MVP** definido até o momento.",
+		"changed": "Você definiu {{- user}} como o jogador **MVP** da partida."
 	},
 	"winner": {
 		"errors": {
 			"invalid_match_channel": "Este não é um canal válido de uma partida ativa.",
-			"no_permission": "Somente os capitães da partida e os administradores do servidor podem definir o time vencedor da partida.",
+			"no_permission": "Somente os paticipantes da partida e os administradores do servidor podem definir o time vencedor da partida.",
 			"same_winner": "Este time já foi definido como o time vencedor desta partida."
 		},
 		"teams": {
-			"blue": "{{- e_TEAM_BLUE}} Time azul",
-			"red": "{{- e_TEAM_RED}} Time vermelho"
+			"blue": "{{- e_team_blue}} Time azul",
+			"red": "{{- e_team_red}} Time vermelho"
 		},
 		"current_winner": "Time vencedor atual: **{{- current_winner}}**",
 		"no_winner": "Não há nenhum time vencedor definido até o momento.",
@@ -356,8 +359,8 @@
 		"embed": {
 			"title": "Códigos gerados",
 			"title_one": "Código gerado",
-			"description": "Para ativar um dos códigos da lista use `/resgatar <código>`.\n\n{{- e_INFO}} Caso esteja no celular você pode usar o botão abaixo para receber uma mensagem na qual você consiga copia o código.",
-			"description_one": "Para ativar o código gerado use `/resgatar {{- code}}`.\n\n{{- e_INFO}} Caso esteja no celular você pode usar o botão abaixo para receber uma mensagem na qual você consiga copiar os códigos.",
+			"description": "Para ativar um dos códigos da lista use `/resgatar <código>`.\n\n{{- e_info}} Caso esteja no celular você pode usar o botão abaixo para receber uma mensagem na qual você consiga copia o código.",
+			"description_one": "Para ativar o código gerado use `/resgatar {{- code}}`.\n\n{{- e_info}} Caso esteja no celular você pode usar o botão abaixo para receber uma mensagem na qual você consiga copiar os códigos.",
 			"fields": {
 				"code": "Códigos:",
 				"code_one": "Código:",
@@ -376,7 +379,7 @@
 		"embeds": {
 			"template": {
 				"title": "Códigos de assinatura",
-				"description_row": "**Código:** {{- code}}\n**Duração:** {{- duration}}\n**Criado em:** {{- created_at}}\n**Criado por:** {{- created_by}}",
+				"description_row": "**Código:** {{- code}}\n**Duração:** {{- duration}}\n**Criado em:** {{- created_at, DD/MM/YYYY HH:mm:ss}}\n**Criado por:** {{- created_by}}",
 				"footer": "Total: {{total}}"
 			}
 		}
@@ -391,7 +394,7 @@
 		"errors": {
 			"invalid_code": "Este código é invalido ou já foi resgatado."
 		},
-		"redeemed": "Você ativou um código de assinatura de **{{- duration}}**. Sua assinatura termina em: {{- ends_at}}",
+		"redeemed": "Você ativou um código de assinatura de **{{- duration}}**. Sua assinatura termina em: {{- ends_at, DD/MM/YYYY HH:mm:ss}}",
 		"redeemed_broadcast": "{{- user}} ativou um código de assinatura de **{{- duration}}**!"
 	},
 	"profile": {
@@ -401,7 +404,7 @@
 			"description": "$t(profile.embed.description_header)\n\n$t(profile.embed.description_stats)\n\n$t(profile.embed.description_subscription)",
 			"description_header": "Este é um perfil de usuário básico, futuramente o perfil pode ser alterado. Lembre-se que ainda estamos em fase de testes.",
 			"description_stats": "Vitórias: {{wins}}\nDerrotas: {{loses}}\nRank: {{- rank_name}} `{{pdl}} pdl`",
-			"description_subscription": "**Informações de assinatura:**\nAssinatura iniciada em: {{- subscribed_at}}\nAssinatura termina em: {{- subscription_ends_in}} ({{- subscription_ends_at}})\nAssinatura criada por: {{- subscription_created_by}}"
+			"description_subscription": "**Informações de assinatura:**\nAssinatura iniciada em: {{- subscribed_at, DD/MM/YY HH:mm:ss}}\nAssinatura termina em: {{- subscription_ends_in, fromNow(true)}} ({{- subscription_ends_at, DD/MM/YY HH:mm:ss}})\nAssinatura criada por: {{- subscription_created_by}}"
 		}
 	},
 	"remove_subscription": {

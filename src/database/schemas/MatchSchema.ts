@@ -1,6 +1,7 @@
 import { Schema } from 'mongoose';
 
-import { MatchStatus, TeamID } from '@utils/Constants';
+import { MatchStatus } from '@utils/MatchStatus';
+import { TeamId } from '@utils/TeamId';
 
 import { IMemberSchema } from './MemberSchema';
 
@@ -9,11 +10,11 @@ interface IMatchParticipant {
 	userId: string;
 	isCaptain?: boolean;
 	mvp?: boolean;
-	teamId: TeamID;
+	teamId: TeamId;
 }
 
 interface IMatchTeam {
-	teamId: TeamID;
+	teamId: TeamId;
 	captainId: string;
 	win?: boolean;
 }

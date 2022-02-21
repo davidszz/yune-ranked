@@ -3,7 +3,7 @@ import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
 import { Command } from '@structures/Command';
-import { MatchStatus } from '@utils/Constants';
+import { MatchStatus } from '@utils/MatchStatus';
 
 export default class extends Command {
 	constructor(client: Yune) {
@@ -29,7 +29,7 @@ export default class extends Command {
 		const matchData = await interaction.client.database.matches.findOne(
 			{
 				guildId: interaction.guildId,
-				status: MatchStatus.IN_GAME,
+				status: MatchStatus.InGame,
 				'channels.chat': interaction.channelId,
 			},
 			'participants'

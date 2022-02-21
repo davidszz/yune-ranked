@@ -3,7 +3,8 @@ import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
 import { Command } from '@structures/Command';
-import { MatchStatus, TeamID } from '@utils/Constants';
+import { MatchStatus } from '@utils/MatchStatus';
+import { TeamId } from '@utils/TeamId';
 
 export default class extends Command {
 	constructor(client: Yune) {
@@ -39,7 +40,7 @@ export default class extends Command {
 		const matchData = await interaction.client.database.matches.findOne(
 			{
 				guildId: interaction.guildId,
-				status: MatchStatus.IN_GAME,
+				status: MatchStatus.InGame,
 				'channels.chat': interaction.channelId,
 			},
 			'participants teams'
@@ -68,7 +69,7 @@ export default class extends Command {
 				interaction.editReply({
 					content: t('winner.current_winner', {
 						current_winner: t(
-							`winner.teams.${matchData.teams.find((x) => x.win).teamId === TeamID.BLUE ? 'blue' : 'red'}`
+							`winner.teams.${matchData.teams.find((x) => x.win).teamId === TeamId.Blue ? 'blue' : 'red'}`
 						),
 					}),
 				});
@@ -80,7 +81,7 @@ export default class extends Command {
 			return;
 		}
 
-		const winnerId = winner === 'blue' ? TeamID.BLUE : TeamID.RED;
+		const winnerId = winner === 'blue' ? TeamId.Blue : TeamId.Red;
 		if (matchData.teams.find((x) => x.win)?.teamId === winnerId) {
 			interaction.editReply({
 				content: t('winner.errors.same_winner'),

@@ -1,8 +1,11 @@
 import type { Yune } from '@client';
 import type { IMatchSchema } from '@database/schemas/MatchSchema';
 import { updateRankRole } from '@functions/member/update-rank-role';
-import { DEFAULT_USER_MMR, MatchStatus, Ranks, UserRank } from '@utils/Constants';
+import { DEFAULT_USER_MMR } from '@utils/Constants';
+import { MatchStatus } from '@utils/MatchStatus';
+import { Ranks } from '@utils/Ranks';
 import { RankUtils } from '@utils/RankUtils';
+import { UserRank } from '@utils/UserRank';
 
 import { updateNicknames } from './update-nicknames';
 
@@ -23,22 +26,22 @@ export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
 
 		const calcOptions = {
 			mmr: matchMmr,
-			rank: member.rank ?? UserRank.UNRANKED,
+			rank: member.rank ?? UserRank.Unranked,
 			mvp: participant.mvp,
 		};
 
-		let rank = member.rank ?? UserRank.UNRANKED;
+		let rank = member.rank ?? UserRank.Unranked;
 
 		let pdl = member.pdl ?? 0;
 		let { mmr } = member;
 
-		const isUnranked = rank === UserRank.UNRANKED;
+		const isUnranked = rank === UserRank.Unranked;
 
 		if (team.win) {
 			const wonPdlAmount = RankUtils.calculateWonPdlAmount(calcOptions);
 
-			const newRankIfUnranked = participant.mvp ? UserRank.BRONZE_3 : UserRank.BRONZE_1;
-			rank = rank !== UserRank.UNRANKED ? rank : newRankIfUnranked;
+			const newRankIfUnranked = participant.mvp ? UserRank.Bronze3 : UserRank.Bronze1;
+			rank = rank !== UserRank.Unranked ? rank : newRankIfUnranked;
 
 			if (isUnranked) {
 				mmr = Ranks[newRankIfUnranked].mmr;
@@ -54,8 +57,8 @@ export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
 		} else {
 			const losePdlAmount = RankUtils.calculateLosePdlAmount(calcOptions);
 
-			const newRankIfUnranked = participant.mvp ? UserRank.IRON_2 : UserRank.IRON_1;
-			rank = rank !== UserRank.UNRANKED ? rank : newRankIfUnranked;
+			const newRankIfUnranked = participant.mvp ? UserRank.Iron2 : UserRank.Iron1;
+			rank = rank !== UserRank.Unranked ? rank : newRankIfUnranked;
 
 			if (isUnranked) {
 				mmr = Ranks[newRankIfUnranked].mmr;
@@ -63,7 +66,7 @@ export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
 				mmr = Math.max(mmr - losePdlAmount, 100);
 				if (pdl > 0) {
 					pdl = Math.max(pdl - losePdlAmount, 0);
-				} else if (Ranks[rank - 1] && rank - 1 !== UserRank.UNRANKED) {
+				} else if (Ranks[rank - 1] && rank - 1 !== UserRank.Unranked) {
 					pdl = Ranks[rank - 1].maxPdl - losePdlAmount;
 					rank--;
 				}
@@ -88,7 +91,7 @@ export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
 
 	await client.database.matches.update(match._id, {
 		$set: {
-			status: MatchStatus.ENDED,
+			status: MatchStatus.Ended,
 			endedAt: new Date(),
 		},
 	});

@@ -1,7 +1,7 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-import { Ranks } from '@utils/Constants';
+import { Ranks } from '@utils/Ranks';
 
 export async function remove(interaction: ChatInputCommandInteraction, t: TFunction): Promise<void> {
 	const rank = interaction.options.getString('rank');

@@ -6,7 +6,8 @@ import { finalizeMatch } from '@functions/match/finalize-match';
 import { Command } from '@structures/Command';
 import { ConfirmationEmbed } from '@structures/ConfirmationEmbed';
 import { YuneEmbed } from '@structures/YuneEmbed';
-import { MatchStatus, TeamID } from '@utils/Constants';
+import { MatchStatus } from '@utils/MatchStatus';
+import { TeamId } from '@utils/TeamId';
 
 export default class extends Command {
 	constructor(client: Yune) {
@@ -35,7 +36,7 @@ export default class extends Command {
 		const matchData = await interaction.client.database.matches.findOneAndPopulate(
 			{
 				guildId: interaction.guildId,
-				status: MatchStatus.IN_GAME,
+				status: MatchStatus.InGame,
 				...(matchId ? { matchId } : { 'channels.chat': interaction.channelId }),
 			},
 			{
@@ -80,14 +81,14 @@ export default class extends Command {
 		}
 
 		const confirmationEmbed = new YuneEmbed()
-			.setColor(0xffff00)
+			.setColor('Yellow')
 			.setTitle(t('finalize.embeds.confirmation.title'))
 			.setDescription(t('finalize.embeds.confirmation.description'))
 			.addFields(
 				{
 					name: t('finalize.embeds.confirmation.fields.team_winner.name'),
 					value: t('finalize.embeds.confirmation.fields.team_winner.values.team', {
-						context: matchData.teams.find((x) => x.win).teamId === TeamID.BLUE ? 'blue' : 'red',
+						context: matchData.teams.find((x) => x.win).teamId === TeamId.Blue ? 'blue' : 'red',
 					}),
 					inline: true,
 				},
@@ -115,7 +116,7 @@ export default class extends Command {
 			const chat = interaction.guild.channels.cache.get(matchData.channels.chat);
 			if (chat && chat.isText()) {
 				const finalizedEmbed = new YuneEmbed()
-					.setColor(0xffff00)
+					.setColor('Yellow')
 					.setTitle(t('finalize.embeds.finalized.title'))
 					.setDescription(t('finalize.embeds.finalized.description'));
 

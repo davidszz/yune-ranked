@@ -4,7 +4,8 @@ import type { TFunction } from 'i18next';
 import type { Yune } from '@client';
 import { Command } from '@structures/Command';
 import { YuneEmbed } from '@structures/YuneEmbed';
-import { MatchStatus, SURRENDER_VOTES_PERCENTAGE } from '@utils/Constants';
+import { SURRENDER_VOTES_PERCENTAGE } from '@utils/Constants';
+import { MatchStatus } from '@utils/MatchStatus';
 
 export default class extends Command {
 	constructor(client: Yune) {
@@ -22,7 +23,7 @@ export default class extends Command {
 		const matchData = await interaction.client.database.matches.findOne(
 			{
 				guildId: interaction.guildId,
-				status: MatchStatus.IN_GAME,
+				status: MatchStatus.InGame,
 				'channels.chat': interaction.channelId,
 			},
 			'surrenderVotes participants channels'
@@ -62,7 +63,7 @@ export default class extends Command {
 			});
 
 			const canceledEmbed = new YuneEmbed()
-				.setColor(0xff0000)
+				.setColor('Red')
 				.setTitle(t('surrender.embeds.canceled.title'))
 				.setDescription(
 					t('surrender.embeds.canceled.description', {

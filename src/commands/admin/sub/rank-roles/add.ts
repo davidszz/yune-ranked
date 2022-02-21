@@ -1,7 +1,8 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-import { Ranks, RANK_ROLES_LIMIT } from '@utils/Constants';
+import { RANK_ROLES_LIMIT } from '@utils/Constants';
+import { Ranks } from '@utils/Ranks';
 
 export async function add(interaction: ChatInputCommandInteraction, t: TFunction): Promise<void> {
 	const rank = interaction.options.getString('rank');

@@ -5,7 +5,8 @@ import type { Yune } from '@client';
 import { Command } from '@structures/Command';
 import { PaginatedEmbed } from '@structures/PaginatedEmbed';
 import { YuneEmbed } from '@structures/YuneEmbed';
-import { Ranks, UserRank } from '@utils/Constants';
+import { Ranks } from '@utils/Ranks';
+import { UserRank } from '@utils/UserRank';
 
 export default class extends Command {
 	constructor(client: Yune) {
@@ -24,7 +25,7 @@ export default class extends Command {
 					guildId: interaction.guildId,
 					subscribed: true,
 					rank: {
-						$gt: UserRank.UNRANKED,
+						$gt: UserRank.Unranked,
 					},
 				},
 				'rank pdl wins userId'

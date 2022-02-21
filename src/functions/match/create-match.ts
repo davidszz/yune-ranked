@@ -1,7 +1,8 @@
 import { ChannelType, Guild, GuildMember, OverwriteResolvable, TextBasedChannel, User, VoiceChannel } from 'discord.js';
 
 import { tFunction } from '@functions/misc/t-function';
-import { MatchStatus, TeamID } from '@utils/Constants';
+import { MatchStatus } from '@utils/MatchStatus';
+import { TeamId } from '@utils/TeamId';
 
 interface ICreateMatchData {
 	guild: Guild;
@@ -92,20 +93,20 @@ export async function createMatch({ guild, queueChannel, participants, teamSize 
 			},
 			teams: [
 				{
-					teamId: TeamID.BLUE,
+					teamId: TeamId.Blue,
 					captainId: participants[0].user.id,
 				},
 				{
-					teamId: TeamID.RED,
+					teamId: TeamId.Red,
 					captainId: participants[teamSize].user.id,
 				},
 			],
-			status: MatchStatus.IN_GAME,
+			status: MatchStatus.InGame,
 			participants: participants.map((x, i) => ({
 				member: x.id,
 				userId: x.user.id,
 				isCaptain: [0, teamSize].includes(i),
-				teamId: i < teamSize ? TeamID.BLUE : TeamID.RED,
+				teamId: i < teamSize ? TeamId.Blue : TeamId.Red,
 			})),
 			createdAt: new Date(),
 			updatedAt: new Date(),

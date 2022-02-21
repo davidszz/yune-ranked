@@ -13,7 +13,7 @@ import type { Yune } from '@client';
 import type { ISubscriptionCodeSchema } from '@database/schemas/SubscriptionCodeSchema';
 import { Command } from '@structures/Command';
 import { YuneEmbed } from '@structures/YuneEmbed';
-import { EmojisIds } from '@utils/Constants';
+import { EmojisIds } from '@utils/Emojis';
 import { TimeUtils } from '@utils/TimeUtils';
 import { Utils } from '@utils/Utils';
 
@@ -98,7 +98,7 @@ export default class extends Command {
 		const copyBtn = new ButtonComponent()
 			.setCustomId('copy')
 			.setStyle(ButtonStyle.Success)
-			.setEmoji({ id: EmojisIds.COPY });
+			.setEmoji({ id: EmojisIds.Copy });
 
 		const reply = await interaction.editReply({
 			embeds: [embed],

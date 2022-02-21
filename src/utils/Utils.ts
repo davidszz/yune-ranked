@@ -40,4 +40,8 @@ export class Utils {
 
 		return result.join('');
 	}
+
+	static pascalToSnakecase(text: string) {
+		return text.replace(/\.?([A-Z]+)/g, (x, y) => `_${y.toLowerCase()}`).replace(/^_/, '');
+	}
 }

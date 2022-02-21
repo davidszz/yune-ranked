@@ -18,8 +18,12 @@ import { createMatch } from '@functions/match/create-match';
 import { MatchStartTemplate } from '@structures/canvas/templates/MatchStartTemplate';
 import { Command } from '@structures/Command';
 import { YuneEmbed } from '@structures/YuneEmbed';
-import { CreateUrl, MatchStatus, UserRank, DEFAULT_USER_MMR, Ranks, EmojisIds, Emojis } from '@utils/Constants';
+import { CreateUrl, DEFAULT_USER_MMR } from '@utils/Constants';
+import { Emojis, EmojisIds } from '@utils/Emojis';
+import { MatchStatus } from '@utils/MatchStatus';
+import { Ranks } from '@utils/Ranks';
 import { RankUtils } from '@utils/RankUtils';
+import { UserRank } from '@utils/UserRank';
 
 export default class extends Command {
 	constructor(client: Yune) {
@@ -61,7 +65,7 @@ export default class extends Command {
 				.findOne({
 					guildId: interaction.guildId,
 					'participants.userId': userId,
-					status: MatchStatus.IN_GAME,
+					status: MatchStatus.InGame,
 				})
 				.then((res) => (res?._id ? res : null));
 
@@ -118,7 +122,7 @@ export default class extends Command {
 						participants.map((x, i) => {
 							const participantData = participantsData.find((d) => d.userId === x.id);
 							return {
-								rank: participantData?.rank ?? UserRank.UNRANKED,
+								rank: participantData?.rank ?? UserRank.Unranked,
 								user: x,
 								isCaptain: [0, teamSize].includes(i),
 							};
@@ -150,10 +154,10 @@ export default class extends Command {
 					const chatChannel = guild.channels.cache.get(matchData.channels.chat) as TextBasedChannel;
 					if (chatChannel) {
 						const mapParticipants = (users: User[]) =>
-							users.map((x, i) => `${x}${[0, teamSize].includes(i) ? ` ${Emojis.CROWN}` : ''}`).join('\n');
+							users.map((x, i) => `${x}${[0, teamSize].includes(i) ? ` ${Emojis.Crown}` : ''}`).join('\n');
 
 						const chatEmbed = new YuneEmbed()
-							.setColor(0x454545)
+							.setColor('Default')
 							.setAuthor({
 								name: t('create_queue.embeds.chat.author', {
 									match_id: matchData.matchId,
@@ -378,7 +382,7 @@ export default class extends Command {
 
 		function destroyedEmbed(data: { reason: string; destroyedBy: string }) {
 			return new YuneEmbed()
-				.setColor(0xff0000)
+				.setColor('Red')
 				.setAuthor({
 					name: t('create_queue.embeds.destroyed.author', {
 						user: interaction.user.tag,
@@ -407,7 +411,7 @@ export default class extends Command {
 
 		function creatingEmbed() {
 			return new YuneEmbed()
-				.setColor(0xffff00)
+				.setColor('Yellow')
 				.setTitle(t('create_queue.embeds.creating.title'))
 				.setDescription(
 					t('create_queue.embeds.creating.description', {
@@ -424,7 +428,7 @@ export default class extends Command {
 
 		function startedEmbed(data: { matchRank: string; matchId: number }) {
 			return new YuneEmbed()
-				.setColor(0x00ff00)
+				.setColor('Green')
 				.setAuthor({
 					name: t('create_queue.embeds.started.author', {
 						user: interaction.user.tag,
@@ -451,7 +455,7 @@ export default class extends Command {
 			const joinBtn = new ButtonComponent()
 				.setCustomId('join')
 				.setStyle(ButtonStyle.Success)
-				.setEmoji({ id: EmojisIds.JOIN })
+				.setEmoji({ id: EmojisIds.Join })
 				.setLabel(
 					t('create_queue.buttons.join', {
 						total: participants.filter(Boolean).length,
@@ -462,7 +466,7 @@ export default class extends Command {
 			const leaveBtn = new ButtonComponent()
 				.setCustomId('leave')
 				.setStyle(ButtonStyle.Primary)
-				.setEmoji({ id: EmojisIds.LEFT })
+				.setEmoji({ id: EmojisIds.Left })
 				.setLabel(t('create_queue.buttons.leave'));
 
 			const destroyBtn = new ButtonComponent()

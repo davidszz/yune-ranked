@@ -81,7 +81,7 @@ export default class extends Command {
 		await interaction.editReply({
 			content: t('redeem.redeemed', {
 				duration: humanizedDuration,
-				ends_at: updateData.subscriptionEndsAt.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
+				ends_at: updateData.subscriptionEndsAt,
 			}),
 		});
 

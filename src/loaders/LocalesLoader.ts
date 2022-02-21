@@ -5,7 +5,8 @@ import moment from 'moment';
 import type { Yune } from '@client';
 import { Logger } from '@services/Logger';
 import { Loader } from '@structures/Loader';
-import { Emojis } from '@utils/Constants';
+import { Emojis } from '@utils/Emojis';
+import { Utils } from '@utils/Utils';
 
 export class LocalesLoader extends Loader {
 	constructor(client: Yune) {
@@ -33,7 +34,7 @@ export class LocalesLoader extends Loader {
 			interpolation: {
 				skipOnVariables: false,
 				defaultVariables: {
-					...Object.fromEntries(Object.entries(Emojis).map((x) => [`e_${x[0]}`, x[1]])),
+					...Object.fromEntries(Object.entries(Emojis).map((x) => [`e_${Utils.pascalToSnakecase(x[0])}`, x[1]])),
 					support_guild_url: process.env.SUPPORT_GUILD_URL,
 				},
 				format(value, format) {

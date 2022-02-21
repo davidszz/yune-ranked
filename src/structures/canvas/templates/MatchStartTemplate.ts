@@ -1,7 +1,9 @@
 import type { User } from 'discord.js';
 import { TFunction } from 'i18next';
 
-import { Assets, Ranks, UserRank } from '@utils/Constants';
+import { Assets } from '@utils/Constants';
+import { Ranks } from '@utils/Ranks';
+import { UserRank } from '@utils/UserRank';
 
 import { BaseCanvas } from '../BaseCanvas';
 

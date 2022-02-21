@@ -4,7 +4,7 @@ import i18next, { StringMap, TOptions } from 'i18next';
 import { Yune } from '@client';
 import { EventListener } from '@structures/EventListener';
 import { YuneEmbed } from '@structures/YuneEmbed';
-import { MatchStatus } from '@utils/Constants';
+import { MatchStatus } from '@utils/MatchStatus';
 
 export default class MatchListener extends EventListener {
 	constructor(client: Yune) {
@@ -22,7 +22,7 @@ export default class MatchListener extends EventListener {
 
 		const matchData = await client.database.matches.findOne(
 			{
-				status: MatchStatus.IN_GAME,
+				status: MatchStatus.InGame,
 				guildId: channel.guildId,
 				$or: [
 					{ 'channels.chat': channel.id },
@@ -58,7 +58,7 @@ export default class MatchListener extends EventListener {
 
 				const matchOwner = guild.members.cache.get(matchData.participants[0].userId);
 				const deletedEmbed = new YuneEmbed()
-					.setColor(0xff0000)
+					.setColor('Red')
 					.setAuthor({
 						name: t('create_queue.embeds.deleted.author', {
 							match_id: matchData.matchId,
@@ -68,8 +68,10 @@ export default class MatchListener extends EventListener {
 					.setDescription(t('create_queue.embeds.deleted.description'))
 					.addFields(
 						{
-							name: t('create_queue.embeds.deleted.fields.started_at'),
-							value: matchData.createdAt.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
+							name: t('create_queue.embeds.deleted.fields.started_at.name'),
+							value: t('create_queue.embeds.deleted.fields.started_at.value', {
+								created_at: matchData.createdAt,
+							}),
 							inline: true,
 						},
 						{

@@ -5,7 +5,8 @@ import type { Yune } from '@client';
 import { Command } from '@structures/Command';
 import { ConfirmationEmbed } from '@structures/ConfirmationEmbed';
 import { YuneEmbed } from '@structures/YuneEmbed';
-import { CreateUrl, MatchStatus } from '@utils/Constants';
+import { CreateUrl } from '@utils/Constants';
+import { MatchStatus } from '@utils/MatchStatus';
 
 export default class extends Command {
 	constructor(client: Yune) {
@@ -35,7 +36,7 @@ export default class extends Command {
 		const matchData = await interaction.client.database.matches.findOne(
 			{
 				guildId: interaction.guildId,
-				status: MatchStatus.IN_GAME,
+				status: MatchStatus.InGame,
 				matchId,
 			},
 			'_id channels'
