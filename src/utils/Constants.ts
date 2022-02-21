@@ -23,6 +23,8 @@ export const Emojis = {
 	crown: '<:icrown:943643271299735602>',
 	team_blue: '<:team_blue:944303523171016705>',
 	team_red: '<:team_red:944303523267493938>',
+	copy: '<:copy_paste:945130219730255922>',
+	info: '<:info:945132548609155132>',
 };
 
 export enum MatchStatus {

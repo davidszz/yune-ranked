@@ -1,10 +1,11 @@
-import type { CommandInteraction } from 'discord.js';
+import { CommandInteraction, Message, MessageActionRow, MessageButton } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
 import type { ISubscriptionCodeSchema } from '@database/schemas/SubscriptionCodeSchema';
 import { Command } from '@structures/Command';
 import { YuneEmbed } from '@structures/YuneEmbed';
+import { Emojis } from '@utils/Constants';
 import { TimeUtils } from '@utils/TimeUtils';
 import { Utils } from '@utils/Utils';
 
@@ -86,8 +87,32 @@ export default class extends Command {
 				},
 			]);
 
-		interaction.editReply({
+		const copyBtn = new MessageButton().setCustomId('copy').setStyle('SUCCESS').setEmoji(Emojis.copy);
+
+		const reply = await interaction.editReply({
 			embeds: [embed],
+			components: [new MessageActionRow().addComponents(copyBtn)],
 		});
+
+		if (reply && reply instanceof Message) {
+			const collector = reply.createMessageComponentCollector({
+				componentType: 'BUTTON',
+				idle: 1200000,
+				filter: (i) => i.user.id === interaction.user.id,
+			});
+
+			collector.on('collect', (i) => {
+				if (i.customId === 'copy') {
+					i.deferUpdate().catch(() => {
+						// Nothing
+					});
+
+					interaction.followUp({
+						content: entities.map((x) => x.code).join('\n'),
+						ephemeral: true,
+					});
+				}
+			});
+		}
 	}
 }
