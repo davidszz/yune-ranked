@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-import { Collection, Intents } from 'discord.js';
+import { Collection, IntentsBitField } from 'discord.js';
 
 import { Yune } from '@client';
 import { DBWrapper } from '@database/DBWrapper';
@@ -84,7 +84,7 @@ async function createClient(data: IClientSchema) {
 	const client = new Yune({
 		token: data.token,
 		guildId: data.guildId,
-		intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES],
+		intents: [IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMembers, IntentsBitField.Flags.GuildMembers],
 		database,
 	});
 

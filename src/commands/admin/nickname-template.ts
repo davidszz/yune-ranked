@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
@@ -9,19 +9,19 @@ export default class extends Command {
 		super(client, {
 			name: 'nickname-template',
 			description: 'Defina como ficará o nick dos usuários junto com o rank',
-			permissions: ['ADMINISTRATOR'],
+			permissions: ['Administrator'],
 			usage: '[modelo]',
 			options: [
 				{
 					name: 'modelo',
 					description: 'Modelo do nickname. Exemplo: #{rank} - {username}',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 				},
 			],
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply({ ephemeral: true });
 
 		const template = interaction.options.getString('modelo');

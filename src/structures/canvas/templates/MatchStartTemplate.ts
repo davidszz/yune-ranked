@@ -22,7 +22,7 @@ export class MatchStartTemplate extends BaseCanvas<IMatchStartUser[]> {
 			this.data.map(({ user, rank, isCaptain }) =>
 				this.createUser({
 					username: user.username,
-					avatar: user.displayAvatarURL({ format: 'jpg' }),
+					avatar: user.displayAvatarURL({ extension: 'png' }),
 					rank,
 					isCaptain: !!isCaptain,
 				})

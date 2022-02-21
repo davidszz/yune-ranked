@@ -1,9 +1,10 @@
-import { MessageEmbed, MessageEmbedOptions } from 'discord.js';
+import type { APIEmbed } from 'discord-api-types/v9';
+import { Embed, EmbedData } from 'discord.js';
 
-export class YuneEmbed extends MessageEmbed {
-	constructor(data?: MessageEmbed | MessageEmbedOptions) {
+export class YuneEmbed extends Embed {
+	constructor(data?: APIEmbed | EmbedData) {
 		super(data);
-		this.setColor('#0084FF');
+		super.setColor(0x0084ff);
 	}
 
 	setDescription(...description: any[]): this {

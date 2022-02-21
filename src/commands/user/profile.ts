@@ -1,4 +1,4 @@
-import { CommandInteraction } from 'discord.js';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
@@ -17,13 +17,13 @@ export default class extends Command {
 				{
 					name: 'usuário',
 					description: '@menção ou ID do usuário',
-					type: 'USER',
+					type: ApplicationCommandOptionType.User,
 				},
 			],
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply();
 
 		const target = interaction.options.getMember('usuário') ?? interaction.member;
@@ -51,7 +51,7 @@ export default class extends Command {
 
 		const profileEmbed = new YuneEmbed()
 			.setTitle(t('profile.embed.title', { context: yourself ? 'yourself' : null, target: target.user.tag }))
-			.setThumbnail(target.user.displayAvatarURL({ format: 'png', dynamic: true }))
+			.setThumbnail(target.user.displayAvatarURL())
 			.setDescription(
 				t('profile.embed.description', {
 					wins: data.wins,

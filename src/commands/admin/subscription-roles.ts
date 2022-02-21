@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
@@ -14,17 +14,17 @@ export default class extends Command {
 			name: 'cargos-assinatura',
 			description: 'Gerêncie os cargos que os usuários receberão após ativarem uma assinatura',
 			usage: '<add/remove/list>',
-			permissions: ['ADMINISTRATOR'],
+			permissions: ['Administrator'],
 			options: [
 				{
 					name: 'add',
 					description: 'Adiciona um cargo de assinatura',
-					type: 'SUB_COMMAND',
+					type: ApplicationCommandOptionType.Subcommand,
 					options: [
 						{
 							name: 'cargo',
 							description: '@menção ou ID do cargo',
-							type: 'ROLE',
+							type: ApplicationCommandOptionType.Role,
 							required: true,
 						},
 					],
@@ -32,12 +32,12 @@ export default class extends Command {
 				{
 					name: 'remove',
 					description: 'Remove um cargo de assinatura',
-					type: 'SUB_COMMAND',
+					type: ApplicationCommandOptionType.Subcommand,
 					options: [
 						{
 							name: 'cargo',
 							description: '@menção ou ID do cargo',
-							type: 'STRING',
+							type: ApplicationCommandOptionType.String,
 							required: true,
 						},
 					],
@@ -45,13 +45,13 @@ export default class extends Command {
 				{
 					name: 'list',
 					description: 'Obtem uma lista com todos os cargos de assinatura',
-					type: 'SUB_COMMAND',
+					type: ApplicationCommandOptionType.Subcommand,
 				},
 			],
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply();
 
 		switch (interaction.options.getSubcommand()) {

@@ -1,14 +1,17 @@
 import {
-	BaseCommandInteraction,
+	CommandInteraction,
 	ButtonInteraction,
 	Channel,
 	InteractionCollector,
 	Message,
-	MessageActionRow,
-	MessageButton,
-	MessageEmbed,
+	ActionRow,
+	ButtonComponent,
+	Embed,
 	TextBasedChannel,
 	User,
+	ButtonStyle,
+	InteractionType,
+	ComponentType,
 } from 'discord.js';
 import i18next, { StringMap, TFunction, TOptions } from 'i18next';
 
@@ -22,10 +25,10 @@ interface IValue<T> {
 interface IPaginatedEmbedData<T> {
 	author?: User;
 	locale?: string;
-	target: Message | TextBasedChannel | BaseCommandInteraction;
+	target: Message | TextBasedChannel | CommandInteraction;
 	values: IValue<T>[];
 	limit?: number;
-	template?: MessageEmbed;
+	template?: Embed;
 	deletable?: boolean;
 	rollback?: boolean;
 	showCurrentPageBtn?: boolean;
@@ -34,15 +37,15 @@ interface IPaginatedEmbedData<T> {
 	deleteOnEnd?: boolean;
 
 	createRow: (data: IValue<T>, index: number) => Promise<string> | string;
-	finalizeEmbed?: (embed: MessageEmbed) => Promise<MessageEmbed> | MessageEmbed;
+	finalizeEmbed?: (embed: Embed) => Promise<Embed> | Embed;
 }
 
 export class PaginatedEmbed<T> {
 	author?: User;
-	target: Message | TextBasedChannel | BaseCommandInteraction;
+	target: Message | TextBasedChannel | CommandInteraction;
 	values: IValue<T>[];
 	limit?: number;
-	template?: MessageEmbed;
+	template?: Embed;
 	deletable?: boolean;
 	rollback?: boolean;
 	showCurrentPageBtn?: boolean;
@@ -56,7 +59,7 @@ export class PaginatedEmbed<T> {
 	collector: InteractionCollector<ButtonInteraction>;
 
 	createRow: (data: IValue<T>, index: number) => Promise<string> | string;
-	finalizeEmbed?: (embed: MessageEmbed) => Promise<MessageEmbed> | MessageEmbed;
+	finalizeEmbed?: (embed: Embed) => Promise<Embed> | Embed;
 
 	constructor(data: IPaginatedEmbedData<T>) {
 		this.author = data.author;
@@ -97,7 +100,7 @@ export class PaginatedEmbed<T> {
 					components,
 				});
 			}
-			if (this.target instanceof BaseCommandInteraction) {
+			if (this.target instanceof CommandInteraction) {
 				if (this.target.replied || this.target.deferred) {
 					return this.target.editReply({
 						embeds: [embed],
@@ -121,15 +124,15 @@ export class PaginatedEmbed<T> {
 
 		if (reply) {
 			this.collector = new InteractionCollector<ButtonInteraction>(this.target.client, {
-				interactionType: 'MESSAGE_COMPONENT',
-				componentType: 'BUTTON',
+				interactionType: InteractionType.MessageComponent,
+				componentType: ComponentType.Button,
 				message: reply,
 				idle: this.idle,
 				filter: (i) => (this.author ? this.author.id === i.user.id : true),
 			});
 
 			const editReply = async () => {
-				if (this.target instanceof BaseCommandInteraction) {
+				if (this.target instanceof CommandInteraction) {
 					const embed = await this.createEmbed();
 					await this.target.editReply({
 						embeds: [embed],
@@ -213,40 +216,40 @@ export class PaginatedEmbed<T> {
 	}
 
 	private buttons() {
-		const previousBtn = new MessageButton()
+		const previousBtn = new ButtonComponent()
 			.setCustomId('previous')
-			.setStyle('SECONDARY')
+			.setStyle(ButtonStyle.Secondary)
 			.setLabel(this.t('misc:paginated_embed.buttons.previous'))
 			.setDisabled(this.rollback ? false : this.currentPage <= 1);
 
-		const nextBtn = new MessageButton()
+		const nextBtn = new ButtonComponent()
 			.setCustomId('next')
-			.setStyle('SECONDARY')
+			.setStyle(ButtonStyle.Secondary)
 			.setLabel(this.t('misc:paginated_embed.buttons.next'))
 			.setDisabled(this.rollback ? false : this.currentPage >= this.pages);
 
-		const actionRow = new MessageActionRow().addComponents([previousBtn, nextBtn]);
+		const actionRow = new ActionRow().addComponents(previousBtn, nextBtn);
 
 		if (
 			this.deletable &&
 			!(
-				this.target instanceof BaseCommandInteraction &&
+				this.target instanceof CommandInteraction &&
 				(((this.target.replied || this.target.deferred) && this.target.ephemeral) || this.ephemeral)
 			)
 		) {
-			const deleteBtn = new MessageButton()
+			const deleteBtn = new ButtonComponent()
 				.setCustomId('delete')
-				.setStyle('DANGER')
+				.setStyle(ButtonStyle.Danger)
 				.setLabel(this.t('misc:paginated_embed.buttons.delete'));
 
 			actionRow.addComponents(deleteBtn);
 		}
 
 		if (this.showCurrentPageBtn) {
-			const currentPageBtn = new MessageButton()
+			const currentPageBtn = new ButtonComponent()
 				.setCustomId('current_page')
 				.setDisabled(true)
-				.setStyle('SECONDARY')
+				.setStyle(ButtonStyle.Secondary)
 				.setLabel(
 					this.t('misc:paginated_embed.buttons.current_page', {
 						current_page: this.currentPage,

@@ -27,6 +27,10 @@ export const Emojis = {
 	info: '<:info:945132548609155132>',
 };
 
+export const EmojisIds = Object.fromEntries(
+	Object.entries(Emojis).map((x) => [x[0], x[1].replace(/<(a)?:.*:(\d+)>/gi, '$2')])
+) as Record<keyof typeof Emojis, string>;
+
 export enum MatchStatus {
 	ENDED,
 	IN_GAME,

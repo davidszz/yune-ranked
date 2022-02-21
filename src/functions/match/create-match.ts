@@ -1,4 +1,4 @@
-import type { Guild, GuildMember, OverwriteResolvable, TextBasedChannel, User, VoiceChannel } from 'discord.js';
+import { ChannelType, Guild, GuildMember, OverwriteResolvable, TextBasedChannel, User, VoiceChannel } from 'discord.js';
 
 import { tFunction } from '@functions/misc/t-function';
 import { MatchStatus, TeamID } from '@utils/Constants';
@@ -16,56 +16,50 @@ export async function createMatch({ guild, queueChannel, participants, teamSize 
 
 	const { everyone } = guild.roles;
 	const category = await guild.channels.create(t('misc:match.category_name', { match_id: matchId }), {
-		type: 'GUILD_CATEGORY',
+		type: ChannelType.GuildCategory,
 	});
 
-	const chat = await category.createChannel(`chat-${matchId}`, {
-		type: 'GUILD_TEXT',
+	const chat = await category.children.create(`chat-${matchId}`, {
+		type: ChannelType.GuildText,
 		topic: `ID: ${matchId}`,
 		permissionOverwrites: [
 			{
 				id: everyone.id,
-				type: 'role',
-				deny: ['SEND_MESSAGES'],
+				deny: ['SendMessages'],
 			},
 			...participants.map<OverwriteResolvable>((x) => ({
 				id: x.user.id,
-				type: 'member',
-				allow: ['SEND_MESSAGES'],
+				allow: ['SendMessages'],
 			})),
 		],
 	});
 
-	const blueVoice = await category.createChannel(t('misc:match.teams.blue.channel_name'), {
-		type: 'GUILD_VOICE',
+	const blueVoice = await category.children.create(t('misc:match.teams.blue.channel_name'), {
+		type: ChannelType.GuildVoice,
 		userLimit: teamSize,
 		permissionOverwrites: [
 			{
 				id: everyone.id,
-				type: 'role',
-				deny: ['CONNECT'],
+				deny: ['Connect'],
 			},
 			...participants.slice(0, teamSize).map<OverwriteResolvable>((x) => ({
 				id: x.user.id,
-				type: 'member',
-				allow: ['CONNECT'],
+				allow: ['Connect'],
 			})),
 		],
 	});
 
-	const redVoice = await category.createChannel(t('misc:match.teams.red.channel_name'), {
-		type: 'GUILD_VOICE',
+	const redVoice = await category.children.create(t('misc:match.teams.red.channel_name'), {
+		type: ChannelType.GuildVoice,
 		userLimit: teamSize,
 		permissionOverwrites: [
 			{
 				id: everyone.id,
-				type: 'role',
-				deny: ['CONNECT'],
+				deny: ['Connect'],
 			},
 			...participants.slice(teamSize, teamSize * 2).map<OverwriteResolvable>((x) => ({
 				id: x.user.id,
-				type: 'member',
-				allow: ['CONNECT'],
+				allow: ['Connect'],
 			})),
 		],
 	});

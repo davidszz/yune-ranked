@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
@@ -10,12 +10,12 @@ export default class extends Command {
 			name: 'tamanho-equipes',
 			description: 'Define o tamanho padrão das equipes nas partidas',
 			usage: '<tamanho>',
-			permissions: ['ADMINISTRATOR'],
+			permissions: ['Administrator'],
 			options: [
 				{
 					name: 'tamanho',
 					description: 'Tamanho de cada equipe',
-					type: 'INTEGER',
+					type: ApplicationCommandOptionType.Integer,
 					minValue: 1,
 					maxValue: 10,
 					required: true,
@@ -24,7 +24,7 @@ export default class extends Command {
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply();
 
 		const size = interaction.options.getInteger('tamanho');

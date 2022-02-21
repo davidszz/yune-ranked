@@ -1,10 +1,10 @@
-import type { CommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import { PaginatedEmbed } from '@structures/PaginatedEmbed';
 import { YuneEmbed } from '@structures/YuneEmbed';
 
-export async function wins(interaction: CommandInteraction, t: TFunction): Promise<void> {
+export async function wins(interaction: ChatInputCommandInteraction, t: TFunction): Promise<void> {
 	const reply = await interaction.deferReply({ fetchReply: true });
 
 	const members = await interaction.client.database.members

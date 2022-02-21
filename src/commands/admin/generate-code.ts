@@ -1,11 +1,19 @@
-import { CommandInteraction, Message, MessageActionRow, MessageButton } from 'discord.js';
+import {
+	ChatInputCommandInteraction,
+	Message,
+	ActionRow,
+	ButtonComponent,
+	ApplicationCommandOptionType,
+	ButtonStyle,
+	ComponentType,
+} from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
 import type { ISubscriptionCodeSchema } from '@database/schemas/SubscriptionCodeSchema';
 import { Command } from '@structures/Command';
 import { YuneEmbed } from '@structures/YuneEmbed';
-import { Emojis } from '@utils/Constants';
+import { EmojisIds } from '@utils/Constants';
 import { TimeUtils } from '@utils/TimeUtils';
 import { Utils } from '@utils/Utils';
 
@@ -15,18 +23,18 @@ export default class extends Command {
 			name: 'gerar-codigo',
 			description: 'Gera um código de assinatura com a duração fornecida',
 			usage: '<duração> [quantidade: 1]',
-			permissions: ['ADMINISTRATOR'],
+			permissions: ['Administrator'],
 			options: [
 				{
 					name: 'duração',
 					description: 'Duração da assinatura. Exemplo: 25 dias e 12 horas',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					required: true,
 				},
 				{
 					name: 'quantidade',
 					description: 'Quantidade de códigos a ser gerada. Padrão: 1',
-					type: 'INTEGER',
+					type: ApplicationCommandOptionType.Integer,
 					minValue: 1,
 					maxValue: 20,
 				},
@@ -34,7 +42,7 @@ export default class extends Command {
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply({ ephemeral: true });
 
 		const duration = interaction.options.getString('duração');
@@ -71,7 +79,7 @@ export default class extends Command {
 		const embed = new YuneEmbed()
 			.setTitle(t('generate_code.embed.title', { count }))
 			.setDescription(t('generate_code.embed.description', { count, code: entities[0].code }))
-			.addFields([
+			.addFields(
 				{
 					name: t('generate_code.embed.fields.code', { count }),
 					value: entities.map((x) => `\`${x.code}\``).join('\n'),
@@ -84,19 +92,22 @@ export default class extends Command {
 						duration_in_minutes: Math.round(parsedDuration / 60000),
 					}),
 					inline: true,
-				},
-			]);
+				}
+			);
 
-		const copyBtn = new MessageButton().setCustomId('copy').setStyle('SUCCESS').setEmoji(Emojis.copy);
+		const copyBtn = new ButtonComponent()
+			.setCustomId('copy')
+			.setStyle(ButtonStyle.Success)
+			.setEmoji({ id: EmojisIds.copy });
 
 		const reply = await interaction.editReply({
 			embeds: [embed],
-			components: [new MessageActionRow().addComponents(copyBtn)],
+			components: [new ActionRow().addComponents(copyBtn)],
 		});
 
 		if (reply && reply instanceof Message) {
 			const collector = reply.createMessageComponentCollector({
-				componentType: 'BUTTON',
+				componentType: ComponentType.Button,
 				idle: 1200000,
 				filter: (i) => i.user.id === interaction.user.id,
 			});

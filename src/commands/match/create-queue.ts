@@ -1,12 +1,14 @@
 import {
 	ButtonInteraction,
-	CommandInteraction,
+	ChatInputCommandInteraction,
 	InteractionCollector,
-	MessageActionRow,
+	ActionRow,
 	MessageAttachment,
-	MessageButton,
+	ButtonComponent,
 	TextBasedChannel,
 	User,
+	ComponentType,
+	ButtonStyle,
 } from 'discord.js';
 import { on } from 'events';
 import type { TFunction } from 'i18next';
@@ -16,7 +18,7 @@ import { createMatch } from '@functions/match/create-match';
 import { MatchStartTemplate } from '@structures/canvas/templates/MatchStartTemplate';
 import { Command } from '@structures/Command';
 import { YuneEmbed } from '@structures/YuneEmbed';
-import { CreateUrl, MatchStatus, Emojis, UserRank, DEFAULT_USER_MMR, Ranks } from '@utils/Constants';
+import { CreateUrl, MatchStatus, UserRank, DEFAULT_USER_MMR, Ranks, EmojisIds, Emojis } from '@utils/Constants';
 import { RankUtils } from '@utils/RankUtils';
 
 export default class extends Command {
@@ -28,7 +30,7 @@ export default class extends Command {
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		const reply = await interaction.deferReply({ fetchReply: true });
 
 		const { teamSize, hideParticipantNames } = await interaction.client.database.guilds.findOne(
@@ -87,7 +89,7 @@ export default class extends Command {
 			});
 
 			const collector = reply.createMessageComponentCollector({
-				componentType: 'BUTTON',
+				componentType: ComponentType.Button,
 				time: 5 * 60000,
 				filter: collectorFilter,
 			});
@@ -151,15 +153,15 @@ export default class extends Command {
 							users.map((x, i) => `${x}${[0, teamSize].includes(i) ? ` ${Emojis.crown}` : ''}`).join('\n');
 
 						const chatEmbed = new YuneEmbed()
-							.setColor('DEFAULT')
+							.setColor(0x454545)
 							.setAuthor({
 								name: t('create_queue.embeds.chat.author', {
 									match_id: matchData.matchId,
 								}),
-								iconURL: client.user.displayAvatarURL({ format: 'png', dynamic: true }),
+								iconURL: client.user.displayAvatarURL(),
 							})
 							.setDescription(t('create_queue.embeds.chat.description'))
-							.addFields([
+							.addFields(
 								{
 									name: t('create_queue.embeds.chat.fields.team_blue'),
 									value: mapParticipants(participants.slice(0, teamSize)),
@@ -169,11 +171,11 @@ export default class extends Command {
 									name: t('create_queue.embeds.chat.fields.team_red'),
 									value: mapParticipants(participants.slice(teamSize, teamSize * 2)),
 									inline: true,
-								},
-							])
+								}
+							)
 							.setFooter({
 								text: t('create_queue.embeds.chat.footer'),
-								iconURL: guild.iconURL({ format: 'png', dynamic: true }),
+								iconURL: guild.iconURL(),
 							});
 
 						await chatChannel.send({
@@ -194,12 +196,12 @@ export default class extends Command {
 						],
 						components: [
 							{
-								type: 'ACTION_ROW',
+								type: ComponentType.ActionRow,
 								components: [
 									{
-										type: 'BUTTON',
+										type: ComponentType.Button,
 										url: CreateUrl.channel({ guildId: guild.id, channelId: matchData.channels.chat }),
-										style: 'LINK',
+										style: ButtonStyle.Link,
 										label: t('create_queue.buttons.goto_match'),
 									},
 								],
@@ -349,13 +351,13 @@ export default class extends Command {
 			}
 
 			const embed = new YuneEmbed()
-				.setColor('DEFAULT')
+				.setColor(0x454545)
 				.setAuthor({
 					name: t('create_queue.embeds.queue.author', { user: interaction.user.tag }),
-					iconURL: interaction.user.displayAvatarURL({ format: 'png', dynamic: true }),
+					iconURL: interaction.user.displayAvatarURL(),
 				})
 				.setDescription(t('create_queue.embeds.queue.description'))
-				.addFields([
+				.addFields(
 					{
 						name: t('create_queue.embeds.queue.fields.team_blue'),
 						value: formattedParticipants.slice(0, teamSize).join('\n'),
@@ -365,8 +367,8 @@ export default class extends Command {
 						name: t('create_queue.embeds.queue.fields.team_red'),
 						value: formattedParticipants.slice(teamSize, teamSize * 2).join('\n'),
 						inline: true,
-					},
-				])
+					}
+				)
 				.setFooter({
 					text: t('create_queue.embeds.queue.footer'),
 				});
@@ -376,15 +378,15 @@ export default class extends Command {
 
 		function destroyedEmbed(data: { reason: string; destroyedBy: string }) {
 			return new YuneEmbed()
-				.setColor('RED')
+				.setColor(0xff0000)
 				.setAuthor({
 					name: t('create_queue.embeds.destroyed.author', {
 						user: interaction.user.tag,
 					}),
-					iconURL: interaction.user.displayAvatarURL({ format: 'png', dynamic: true }),
+					iconURL: interaction.user.displayAvatarURL(),
 				})
 				.setDescription(t('create_queue.embeds.destroyed.description'))
-				.addFields([
+				.addFields(
 					{
 						name: t('create_queue.embeds.destroyed.fields.reason.name'),
 						value: data.reason,
@@ -394,18 +396,18 @@ export default class extends Command {
 						name: t('create_queue.embeds.destroyed.fields.destroyed_by.name'),
 						value: data.destroyedBy,
 						inline: true,
-					},
-				])
+					}
+				)
 				.setFooter({
 					text: t('create_queue.embeds.destroyed.footer'),
-					iconURL: guild.iconURL({ format: 'png', dynamic: true }),
+					iconURL: guild.iconURL(),
 				})
 				.setTimestamp();
 		}
 
 		function creatingEmbed() {
 			return new YuneEmbed()
-				.setColor('YELLOW')
+				.setColor(0xffff00)
 				.setTitle(t('create_queue.embeds.creating.title'))
 				.setDescription(
 					t('create_queue.embeds.creating.description', {
@@ -422,12 +424,12 @@ export default class extends Command {
 
 		function startedEmbed(data: { matchRank: string; matchId: number }) {
 			return new YuneEmbed()
-				.setColor('GREEN')
+				.setColor(0x00ff00)
 				.setAuthor({
 					name: t('create_queue.embeds.started.author', {
 						user: interaction.user.tag,
 					}),
-					iconURL: interaction.user.displayAvatarURL({ format: 'png', dynamic: true }),
+					iconURL: interaction.user.displayAvatarURL(),
 				})
 				.setDescription(
 					t('create_queue.embeds.started.description', {
@@ -446,10 +448,10 @@ export default class extends Command {
 		 * Generate buttons function
 		 */
 		function buttons() {
-			const joinBtn = new MessageButton()
+			const joinBtn = new ButtonComponent()
 				.setCustomId('join')
-				.setStyle('SUCCESS')
-				.setEmoji(Emojis.join)
+				.setStyle(ButtonStyle.Success)
+				.setEmoji({ id: EmojisIds.join })
 				.setLabel(
 					t('create_queue.buttons.join', {
 						total: participants.filter(Boolean).length,
@@ -457,18 +459,18 @@ export default class extends Command {
 					})
 				);
 
-			const leaveBtn = new MessageButton()
+			const leaveBtn = new ButtonComponent()
 				.setCustomId('leave')
-				.setStyle('SECONDARY')
-				.setEmoji(Emojis.left)
+				.setStyle(ButtonStyle.Primary)
+				.setEmoji({ id: EmojisIds.left })
 				.setLabel(t('create_queue.buttons.leave'));
 
-			const destroyBtn = new MessageButton()
+			const destroyBtn = new ButtonComponent()
 				.setCustomId('destroy')
-				.setStyle('DANGER')
+				.setStyle(ButtonStyle.Danger)
 				.setLabel(t('create_queue.buttons.destroy'));
 
-			return new MessageActionRow().addComponents([joinBtn, leaveBtn, destroyBtn]);
+			return new ActionRow().addComponents(joinBtn, leaveBtn, destroyBtn);
 		}
 
 		/**

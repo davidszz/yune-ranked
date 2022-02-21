@@ -1,11 +1,11 @@
-import type { CommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import { PaginatedEmbed } from '@structures/PaginatedEmbed';
 import { YuneEmbed } from '@structures/YuneEmbed';
 import { Ranks } from '@utils/Constants';
 
-export async function list(interaction: CommandInteraction, t: TFunction): Promise<void> {
+export async function list(interaction: ChatInputCommandInteraction, t: TFunction): Promise<void> {
 	const { rankRoles } = await interaction.client.database.guilds.findOne(interaction.guildId, 'rankRoles');
 
 	const validRankRoles = rankRoles.filter(

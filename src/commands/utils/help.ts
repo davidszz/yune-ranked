@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import { ApplicationCommandType, ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
@@ -16,7 +16,7 @@ export default class extends Command {
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply({ ephemeral: true });
 
 		const matchData = await interaction.client.database.matches.findOne({
@@ -27,7 +27,7 @@ export default class extends Command {
 
 		if (matchData?._id) {
 			const commands = interaction.client.commands.filter(
-				(x) => (!x.type || x.type === 'CHAT_INPUT') && x.showInMatchHelp
+				(x) => (!x.type || x.type === ApplicationCommandType.ChatInput) && x.showInMatchHelp
 			);
 			if (!commands.size) {
 				interaction.editReply({
@@ -38,7 +38,7 @@ export default class extends Command {
 
 			const template = new YuneEmbed().setDescription([t('help.embeds.match.description'), '']).setFooter({
 				text: t('help.embeds.match.footer', { total_commands: commands.size }),
-				iconURL: interaction.client.user.displayAvatarURL({ format: 'png', dynamic: true }),
+				iconURL: interaction.client.user.displayAvatarURL(),
 			});
 
 			const paginated = new PaginatedEmbed({
@@ -61,7 +61,9 @@ export default class extends Command {
 
 			paginated.paginate();
 		} else {
-			const commands = interaction.client.commands.filter((x) => !x.type || x.type === 'CHAT_INPUT');
+			const commands = interaction.client.commands.filter(
+				(x) => !x.type || x.type === ApplicationCommandType.ChatInput
+			);
 			if (!commands.size) {
 				interaction.editReply({
 					content: t('help.errors.no_commands'),
@@ -71,7 +73,7 @@ export default class extends Command {
 
 			const template = new YuneEmbed().setDescription([t('help.embeds.common.description'), '']).setFooter({
 				text: t('help.embeds.common.footer', { total_commands: commands.size }),
-				iconURL: interaction.client.user.displayAvatarURL({ format: 'png', dynamic: true }),
+				iconURL: interaction.client.user.displayAvatarURL(),
 			});
 
 			const paginated = new PaginatedEmbed({

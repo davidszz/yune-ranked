@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
@@ -15,7 +15,7 @@ export default class extends Command {
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		const reply = await interaction.deferReply({ fetchReply: true });
 
 		const members = await interaction.client.database.members
@@ -48,7 +48,7 @@ export default class extends Command {
 			.setDescription(t('top.embeds.template.description').concat('\n'))
 			.setFooter({
 				text: t('top.embeds.template.footer', { total: members.length }),
-				iconURL: interaction.client.user.displayAvatarURL({ format: 'png', dynamic: true }),
+				iconURL: interaction.client.user.displayAvatarURL(),
 			});
 
 		const paginated = new PaginatedEmbed({

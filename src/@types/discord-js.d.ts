@@ -18,7 +18,7 @@ declare module 'discord.js' {
 		client: Yune;
 	}
 
-	interface BaseCommandInteraction {
+	interface CommandInteraction {
 		deferReply(options: InteractionDeferReplyOptions & { fetchReply: true }): Promise<Message>;
 		member: GuildMember;
 	}

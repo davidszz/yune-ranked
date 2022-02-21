@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
@@ -10,19 +10,19 @@ export default class extends Command {
 			name: 'remover-assinatura',
 			description: 'Remove a assinatura atual de um usuário',
 			usage: '[usuário]',
-			permissions: ['ADMINISTRATOR'],
+			permissions: ['Administrator'],
 			options: [
 				{
 					name: 'usuario',
 					description: '@menção ou ID do usuário',
-					type: 'USER',
+					type: ApplicationCommandOptionType.User,
 					required: true,
 				},
 			],
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply();
 
 		const target = interaction.options.getMember('usuario');

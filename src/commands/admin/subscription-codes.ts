@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
@@ -12,11 +12,11 @@ export default class extends Command {
 		super(client, {
 			name: 'codigos-assinatura',
 			description: 'Obtem uma lista com os códigos de assinatura disponíveis',
-			permissions: ['ADMINISTRATOR'],
+			permissions: ['Administrator'],
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply({ ephemeral: true });
 
 		const subscriptionCodes = await interaction.client.database.subscriptionCodes.findMany({
@@ -32,7 +32,7 @@ export default class extends Command {
 
 		const template = new YuneEmbed().setTitle(t('subscription_codes.embeds.template.title')).setFooter({
 			text: t('subscription_codes.embeds.template.footer', { total: subscriptionCodes.length }),
-			iconURL: interaction.client.user.displayAvatarURL({ format: 'png', dynamic: true }),
+			iconURL: interaction.client.user.displayAvatarURL(),
 		});
 
 		const paginated = new PaginatedEmbed({

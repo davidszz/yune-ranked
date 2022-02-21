@@ -3,9 +3,9 @@ import {
 	AutocompleteInteraction,
 	ApplicationCommandData,
 	ApplicationCommandOptionData,
-	Constants,
 	PermissionFlags,
 	ChatInputApplicationCommandData,
+	ApplicationCommandType,
 } from 'discord.js';
 import type { TFunction } from 'i18next';
 
@@ -25,7 +25,7 @@ export interface Command {
 
 export abstract class Command {
 	name: string;
-	type?: ApplicationCommandData['type'];
+	type?: ApplicationCommandType;
 	defaultPermission?: boolean;
 	manageable: boolean;
 	permissions?: (keyof PermissionFlags)[];
@@ -48,7 +48,7 @@ export abstract class Command {
 		this.usage = data.usage ?? '';
 		this.subscribersOnly = !!data.subscribersOnly;
 
-		if (!data.type || data.type === 'CHAT_INPUT' || data.type === Constants.ApplicationCommandTypes.CHAT_INPUT) {
+		if (!data.type || data.type === ApplicationCommandType.ChatInput) {
 			this.description = (<ChatInputApplicationCommandData>data).description;
 			this.options = (<ChatInputApplicationCommandData>data).options;
 		}

@@ -1,9 +1,9 @@
-import type { CommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import { Ranks } from '@utils/Constants';
 
-export async function remove(interaction: CommandInteraction, t: TFunction): Promise<void> {
+export async function remove(interaction: ChatInputCommandInteraction, t: TFunction): Promise<void> {
 	const rank = interaction.options.getString('rank');
 	const roleId = interaction.options.getString('cargo').replace(/[<@&>]/g, '');
 

@@ -58,15 +58,15 @@ export default class MatchListener extends EventListener {
 
 				const matchOwner = guild.members.cache.get(matchData.participants[0].userId);
 				const deletedEmbed = new YuneEmbed()
-					.setColor('RED')
+					.setColor(0xff0000)
 					.setAuthor({
 						name: t('create_queue.embeds.deleted.author', {
 							match_id: matchData.matchId,
 						}),
-						iconURL: client.user.displayAvatarURL({ format: 'png', dynamic: true }),
+						iconURL: client.user.displayAvatarURL(),
 					})
 					.setDescription(t('create_queue.embeds.deleted.description'))
-					.addFields([
+					.addFields(
 						{
 							name: t('create_queue.embeds.deleted.fields.started_at'),
 							value: matchData.createdAt.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
@@ -78,8 +78,8 @@ export default class MatchListener extends EventListener {
 								? `**${matchOwner.user.tag}** (${matchOwner.id})`
 								: `<@!${matchData.participants[0].userId}>`,
 							inline: true,
-						},
-					])
+						}
+					)
 					.setTimestamp();
 
 				queueChannel.send({

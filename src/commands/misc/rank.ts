@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
@@ -18,18 +18,18 @@ export default class extends Command {
 				{
 					name: 'vitorias',
 					description: 'Obtem um rank baseado nas vitórias dos usuários',
-					type: 'SUB_COMMAND',
+					type: ApplicationCommandOptionType.Subcommand,
 				},
 				{
 					name: 'derrotas',
 					description: 'Obtem um rank baseado nas derrotas dos usuários',
-					type: 'SUB_COMMAND',
+					type: ApplicationCommandOptionType.Subcommand,
 				},
 			],
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		switch (interaction.options.getSubcommand()) {
 			case 'vitorias': {
 				wins(interaction, t);

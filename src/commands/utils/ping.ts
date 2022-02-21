@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction } from 'discord.js';
 
 import type { Yune } from '@client';
 import { Command } from '@structures/Command';
@@ -13,7 +13,7 @@ export default class extends Command {
 		});
 	}
 
-	async run(interaction: CommandInteraction) {
+	async run(interaction: ChatInputCommandInteraction) {
 		const reply = await interaction.deferReply({ ephemeral: true, fetchReply: true });
 		await interaction.editReply({
 			content: `Latência: \`${reply.createdTimestamp - interaction.createdTimestamp}ms\``,

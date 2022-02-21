@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
@@ -20,14 +20,14 @@ export default class extends Command {
 				{
 					name: 'partida',
 					description: 'Forneça o ID da partida para finaliza-la',
-					type: 'INTEGER',
+					type: ApplicationCommandOptionType.Integer,
 					minValue: 1,
 				},
 			],
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		const matchId = interaction.options.getInteger('partida');
 
 		await interaction.deferReply();
@@ -58,7 +58,7 @@ export default class extends Command {
 		}
 
 		const participant = (id: string) => matchData.participants.find((x) => x.userId === id);
-		if (!interaction.memberPermissions.has('ADMINISTRATOR') && !participant(interaction.user.id)?.isCaptain) {
+		if (!interaction.memberPermissions.has('Administrator') && !participant(interaction.user.id)?.isCaptain) {
 			interaction.editReply({
 				content: t('finalize.errors.no_permission'),
 			});
@@ -80,10 +80,10 @@ export default class extends Command {
 		}
 
 		const confirmationEmbed = new YuneEmbed()
-			.setColor('YELLOW')
+			.setColor(0xffff00)
 			.setTitle(t('finalize.embeds.confirmation.title'))
 			.setDescription(t('finalize.embeds.confirmation.description'))
-			.addFields([
+			.addFields(
 				{
 					name: t('finalize.embeds.confirmation.fields.team_winner.name'),
 					value: t('finalize.embeds.confirmation.fields.team_winner.values.team', {
@@ -95,8 +95,8 @@ export default class extends Command {
 					name: t('finalize.embeds.confirmation.fields.mvp_player'),
 					value: `<@!${matchData.participants.find((x) => x.mvp).userId}>`,
 					inline: true,
-				},
-			]);
+				}
+			);
 
 		const confirmation = new ConfirmationEmbed({
 			author: interaction.user,
@@ -115,7 +115,7 @@ export default class extends Command {
 			const chat = interaction.guild.channels.cache.get(matchData.channels.chat);
 			if (chat && chat.isText()) {
 				const finalizedEmbed = new YuneEmbed()
-					.setColor('YELLOW')
+					.setColor(0xffff00)
 					.setTitle(t('finalize.embeds.finalized.title'))
 					.setDescription(t('finalize.embeds.finalized.description'));
 

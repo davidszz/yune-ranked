@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
@@ -17,13 +17,13 @@ export default class extends Command {
 				{
 					name: 'usuário',
 					description: '@usuário que foi o jogador MVP da partida',
-					type: 'USER',
+					type: ApplicationCommandOptionType.User,
 				},
 			],
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply();
 
 		const matchData = await interaction.client.database.matches.findOne(
@@ -44,7 +44,7 @@ export default class extends Command {
 
 		if (
 			!matchData.participants.some((x) => x.userId === interaction.user.id) &&
-			!interaction.memberPermissions.has('ADMINISTRATOR')
+			!interaction.memberPermissions.has('Administrator')
 		) {
 			interaction.editReply({
 				content: t('mvp.errors.no_permission'),

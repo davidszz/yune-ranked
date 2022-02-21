@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
@@ -15,14 +15,14 @@ export default class extends Command {
 				{
 					name: 'codigo',
 					description: 'Código de resgate',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					required: true,
 				},
 			],
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply({ ephemeral: true });
 
 		const code = interaction.options.getString('codigo');

@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
@@ -13,12 +13,12 @@ export default class extends Command {
 			name: 'cancelar-partida',
 			description: 'Cancele uma partida rapidamente sem os votos dos participantes',
 			usage: '<partida>',
-			permissions: ['ADMINISTRATOR'],
+			permissions: ['Administrator'],
 			options: [
 				{
 					name: 'partida',
 					description: 'Forneça o ID da partida',
-					type: 'INTEGER',
+					type: ApplicationCommandOptionType.Integer,
 					minValue: 1,
 					required: true,
 				},
@@ -26,7 +26,7 @@ export default class extends Command {
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply({
 			ephemeral: true,
 		});
@@ -50,7 +50,7 @@ export default class extends Command {
 
 		const matchUrl = CreateUrl.channel({ guildId: interaction.guildId, channelId: matchData.channels.chat });
 		const confirmationEmbed = new YuneEmbed()
-			.setColor('YELLOW')
+			.setColor(0xffff00)
 			.setTitle(t('cancel_match.embeds.confirmation.title'))
 			.setDescription(
 				t('cancel_match.embeds.confirmation.description', {

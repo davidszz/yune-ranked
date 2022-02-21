@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
@@ -17,7 +17,7 @@ export default class extends Command {
 				{
 					name: 'time',
 					description: 'Escolha o time vencedor da partida',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					choices: [
 						{
 							name: 'Time Azul',
@@ -33,7 +33,7 @@ export default class extends Command {
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply();
 
 		const matchData = await interaction.client.database.matches.findOne(
@@ -54,7 +54,7 @@ export default class extends Command {
 
 		if (
 			!matchData.participants.some((x) => x.userId === interaction.user.id) &&
-			!interaction.memberPermissions.has('ADMINISTRATOR')
+			!interaction.memberPermissions.has('Administrator')
 		) {
 			interaction.editReply({
 				content: t('winner.errors.no_permission'),

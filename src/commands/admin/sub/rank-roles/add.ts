@@ -1,9 +1,9 @@
-import type { CommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import { Ranks, RANK_ROLES_LIMIT } from '@utils/Constants';
 
-export async function add(interaction: CommandInteraction, t: TFunction): Promise<void> {
+export async function add(interaction: ChatInputCommandInteraction, t: TFunction): Promise<void> {
 	const rank = interaction.options.getString('rank');
 	const role = interaction.options.getRole('cargo');
 

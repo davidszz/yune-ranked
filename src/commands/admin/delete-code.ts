@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
@@ -10,19 +10,19 @@ export default class extends Command {
 			name: 'deletar-codigo',
 			description: 'Deleta um código de assinatura permanentemente',
 			usage: '<código>',
-			permissions: ['ADMINISTRATOR'],
+			permissions: ['Administrator'],
 			options: [
 				{
 					name: 'codigo',
 					description: 'O código da assinatura que deseja deletar',
-					type: 'STRING',
+					type: ApplicationCommandOptionType.String,
 					required: true,
 				},
 			],
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply({ ephemeral: true });
 
 		const code = interaction.options.getString('codigo');

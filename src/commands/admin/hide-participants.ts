@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
@@ -9,11 +9,11 @@ export default class extends Command {
 		super(client, {
 			name: 'ocultar-participantes',
 			description: 'Use para ocultar e desocultar o nome dos participantes',
-			permissions: ['ADMINISTRATOR'],
+			permissions: ['Administrator'],
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply();
 
 		const { hideParticipantNames } = await interaction.client.database.guilds.findOne(

@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
@@ -16,7 +16,7 @@ export default class extends Command {
 		});
 	}
 
-	async run(interaction: CommandInteraction, t: TFunction) {
+	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply();
 
 		const matchData = await interaction.client.database.matches.findOne(
@@ -62,7 +62,7 @@ export default class extends Command {
 			});
 
 			const canceledEmbed = new YuneEmbed()
-				.setColor('RED')
+				.setColor(0xff0000)
 				.setTitle(t('surrender.embeds.canceled.title'))
 				.setDescription(
 					t('surrender.embeds.canceled.description', {
