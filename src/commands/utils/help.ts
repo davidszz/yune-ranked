@@ -36,7 +36,7 @@ export default class extends Command {
 				return;
 			}
 
-			const template = new YuneEmbed().setDescription([t('help.embeds.match.description'), '']).setFooter({
+			const template = new YuneEmbed().setDescription(t('help.embeds.match.description'), '').setFooter({
 				text: t('help.embeds.match.footer', { total_commands: commands.size }),
 				iconURL: interaction.client.user.displayAvatarURL(),
 			});
@@ -71,7 +71,7 @@ export default class extends Command {
 				return;
 			}
 
-			const template = new YuneEmbed().setDescription([t('help.embeds.common.description'), '']).setFooter({
+			const template = new YuneEmbed().setDescription(t('help.embeds.common.description'), '').setFooter({
 				text: t('help.embeds.common.footer', { total_commands: commands.size }),
 				iconURL: interaction.client.user.displayAvatarURL(),
 			});
