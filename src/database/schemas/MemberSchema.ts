@@ -10,6 +10,7 @@ export interface IMemberSchema {
 	subscriptionCreatedBy?: string;
 	wins: number;
 	loses: number;
+	mvps: number;
 	rank: number;
 	pdl: number;
 	mmr: number;
@@ -31,6 +32,7 @@ export const MemberSchema = new Schema<IMemberSchema>(
 		subscriptionCreatedBy: String,
 		wins: Number,
 		loses: Number,
+		mvps: Number,
 		pdl: Number,
 		rank: Number,
 		mmr: Number,

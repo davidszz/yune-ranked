@@ -18,6 +18,7 @@ export class MemberRepository extends Repository<IMemberSchema> {
 			rank: UserRank.Unranked,
 			wins: 0,
 			loses: 0,
+			mvps: 0,
 			pdl: 0,
 			mmr: DEFAULT_USER_MMR,
 			...(super.parse(entity) ?? ({} as IMemberSchema)),

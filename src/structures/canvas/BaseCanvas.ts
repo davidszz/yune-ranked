@@ -112,5 +112,7 @@ export class BaseCanvas<T = unknown> extends Canvas {
 		} else {
 			this.ctx.fillText(text, x, y, maxWidth);
 		}
+
+		return this.measureText(text);
 	}
 }

@@ -9,6 +9,7 @@ export const Ranks = [
 		maxPdl: 0,
 		assets: {
 			badge: Assets.images('ranks/badges/unranked.png'),
+			regalia: Assets.images('ranks/regalias/unranked.png'),
 		},
 	},
 	{
@@ -19,6 +20,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/iron.png'),
+			regalia: Assets.images('ranks/regalias/iron.png'),
 		},
 	},
 	{
@@ -29,6 +31,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/iron.png'),
+			regalia: Assets.images('ranks/regalias/iron.png'),
 		},
 	},
 	{
@@ -39,6 +42,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/iron.png'),
+			regalia: Assets.images('ranks/regalias/iron.png'),
 		},
 	},
 	{
@@ -49,6 +53,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/bronze.png'),
+			regalia: Assets.images('ranks/regalias/bronze.png'),
 		},
 	},
 	{
@@ -59,6 +64,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/bronze.png'),
+			regalia: Assets.images('ranks/regalias/bronze.png'),
 		},
 	},
 	{
@@ -69,6 +75,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/bronze.png'),
+			regalia: Assets.images('ranks/regalias/bronze.png'),
 		},
 	},
 	{
@@ -79,6 +86,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/silver.png'),
+			regalia: Assets.images('ranks/regalias/silver.png'),
 		},
 	},
 	{
@@ -89,6 +97,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/silver.png'),
+			regalia: Assets.images('ranks/regalias/silver.png'),
 		},
 	},
 	{
@@ -99,6 +108,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/silver.png'),
+			regalia: Assets.images('ranks/regalias/silver.png'),
 		},
 	},
 	{
@@ -109,6 +119,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/gold.png'),
+			regalia: Assets.images('ranks/regalias/gold.png'),
 		},
 	},
 	{
@@ -119,6 +130,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/gold.png'),
+			regalia: Assets.images('ranks/regalias/gold.png'),
 		},
 	},
 	{
@@ -129,6 +141,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/gold.png'),
+			regalia: Assets.images('ranks/regalias/gold.png'),
 		},
 	},
 	{
@@ -139,6 +152,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/platinum.png'),
+			regalia: Assets.images('ranks/regalias/platinum.png'),
 		},
 	},
 	{
@@ -149,6 +163,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/platinum.png'),
+			regalia: Assets.images('ranks/regalias/platinum.png'),
 		},
 	},
 	{
@@ -159,6 +174,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/platinum.png'),
+			regalia: Assets.images('ranks/regalias/platinum.png'),
 		},
 	},
 	{
@@ -169,6 +185,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/diamond.png'),
+			regalia: Assets.images('ranks/regalias/diamond.png'),
 		},
 	},
 	{
@@ -179,6 +196,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/diamond.png'),
+			regalia: Assets.images('ranks/regalias/diamond.png'),
 		},
 	},
 	{
@@ -189,6 +207,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/diamond.png'),
+			regalia: Assets.images('ranks/regalias/diamond.png'),
 		},
 	},
 	{
@@ -199,6 +218,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/master.png'),
+			regalia: Assets.images('ranks/regalias/master.png'),
 		},
 	},
 	{
@@ -209,6 +229,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/master.png'),
+			regalia: Assets.images('ranks/regalias/master.png'),
 		},
 	},
 	{
@@ -219,6 +240,7 @@ export const Ranks = [
 		maxPdl: 100,
 		assets: {
 			badge: Assets.images('ranks/badges/master.png'),
+			regalia: Assets.images('ranks/regalias/master.png'),
 		},
 	},
 	{
@@ -228,6 +250,7 @@ export const Ranks = [
 		maxPdl: 400,
 		assets: {
 			badge: Assets.images('ranks/badges/grand_master.png'),
+			regalia: Assets.images('ranks/regalias/grand_master.png'),
 		},
 	},
 	{
@@ -237,6 +260,7 @@ export const Ranks = [
 		maxPdl: 3000,
 		assets: {
 			badge: Assets.images('ranks/badges/challenger.png'),
+			regalia: Assets.images('ranks/regalias/challenger.png'),
 		},
 	},
 ];
