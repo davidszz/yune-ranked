@@ -6,7 +6,8 @@
 			"not_subscribed": "Este usuário não possui uma assinatura válida.",
 			"not_subscribed_yourself": "Você não possui uma assinatura válida.",
 			"cannot_be_a_bot": "O usuário não pode ser um bot 🤖.",
-			"invalid_member": "Nenhum **membro do servidor** foi encontrado(a) com esta @menção ou ID."
+			"invalid_member": "Nenhum **membro do servidor** foi encontrado(a) com esta @menção ou ID.",
+			"not_a_member": "Este usuário não é um membro do servidor."
 		}
 	},
 	"bot_config": {
@@ -335,10 +336,21 @@
 			}
 		}
 	},
-	"reset": {
-		"errors": {
-			"invalid_member": "Este usuário não é um membro do servidor."
+	"pdl": {
+		"add": {
+			"errors": {
+				"reached_maximum": "Este usuário já possui o **rank** e **pontuação** máxima possível."
+			},
+			"added": "Você adicionou **{{- amount}} pdl(s)** em {{- target}}!"
 		},
+		"remove": {
+			"errors": {
+				"reached_minimum": "Este usuário já possui o **menor rank** e **0 pdl**."
+			},
+			"removed": "Você removeu **{{- amount}} pdl(s)** de {{- target}}!"
+		}
+	},
+	"reset": {
 		"rank": {
 			"errors": {
 				"no_members": "Não há nenhum membro com um rank e/ou pdl's até o momento.",

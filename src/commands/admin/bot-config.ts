@@ -16,6 +16,7 @@ export default class extends Command {
 			name: 'bot-config',
 			description: 'Configure o bot de acordo com suas preferências',
 			permissions: ['Administrator'],
+			usage: '<avatar/nome/atividade>',
 			options: [
 				{
 					name: 'avatar',

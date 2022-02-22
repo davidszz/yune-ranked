@@ -1,6 +1,7 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
+import { updateNicknames } from '@functions/match/update-nicknames';
 import { ConfirmationEmbed } from '@structures/ConfirmationEmbed';
 import { YuneEmbed } from '@structures/YuneEmbed';
 
@@ -17,7 +18,7 @@ export async function all(interaction: ChatInputCommandInteraction, t: TFunction
 	const targetMember = target ? await interaction.guild.members.fetch(target.id).catch<null>(() => null) : null;
 	if (target && !targetMember) {
 		await interaction.editReply({
-			content: t('reset.errors.invalid_member'),
+			content: t('common.errors.not_a_member'),
 		});
 		return;
 	}
@@ -28,13 +29,20 @@ export async function all(interaction: ChatInputCommandInteraction, t: TFunction
 			wins: 0,
 			pdl: 0,
 			rank: 0,
+			mmr: 0,
 		},
 	};
 
 	if (!target) {
 		const query = {
 			guildId: interaction.guildId,
-			$or: [{ loses: { $gt: 0 } }, { wins: { $gt: 0 } }, { rank: { $gt: 0 } }, { pdl: { $gt: 0 } }],
+			$or: [
+				{ loses: { $gt: 0 } },
+				{ wins: { $gt: 0 } },
+				{ rank: { $gt: 0 } },
+				{ pdl: { $gt: 0 } },
+				{ mmr: { $gt: 0 } },
+			],
 		};
 
 		const resetCount = await interaction.client.database.members.findMany(query, '_id', { returnCount: true });
@@ -65,6 +73,8 @@ export async function all(interaction: ChatInputCommandInteraction, t: TFunction
 		if (await confirmation.awaitConfirmation()) {
 			await interaction.client.database.members.updateMany(query, updateEntity);
 
+			updateNicknames(interaction.guild);
+
 			await interaction.channel.send({
 				content: t('reset.all.success_all', {
 					user: interaction.user.toString(),
@@ -75,8 +85,8 @@ export async function all(interaction: ChatInputCommandInteraction, t: TFunction
 		return;
 	}
 
-	const targetData = await interaction.client.database.members.findOne(targetMember, 'rank pdl wins loses');
-	if (!targetData.rank && !targetData.pdl && !targetData.wins && !targetData.loses) {
+	const targetData = await interaction.client.database.members.findOne(targetMember, 'mmr rank pdl wins loses');
+	if (!targetData.rank && targetData.pdl < 1 && targetData.wins < 1 && targetData.loses < 1 && targetData.mmr < 1) {
 		await interaction.editReply({
 			content: t('reset.all.errors.already_reset'),
 		});
@@ -84,6 +94,8 @@ export async function all(interaction: ChatInputCommandInteraction, t: TFunction
 	}
 
 	await interaction.client.database.members.update(targetMember, updateEntity);
+
+	updateNicknames(interaction.guild);
 
 	await interaction.editReply({
 		content: t('reset.all.success', {

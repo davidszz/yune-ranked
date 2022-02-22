@@ -17,7 +17,7 @@ export async function wins(interaction: ChatInputCommandInteraction, t: TFunctio
 	const targetMember = target ? await interaction.guild.members.fetch(target.id).catch<null>(() => null) : null;
 	if (target && !targetMember) {
 		await interaction.editReply({
-			content: t('reset.errors.invalid_member'),
+			content: t('common.errors.not_a_member'),
 		});
 		return;
 	}

@@ -14,6 +14,7 @@ export default class extends Command {
 		super(client, {
 			name: 'resetar',
 			description: 'Reseta os dados dos usuários do servidor',
+			usage: '<rank/vitorias/derrotas/tudo>',
 			permissions: ['Administrator'],
 			options: [
 				{

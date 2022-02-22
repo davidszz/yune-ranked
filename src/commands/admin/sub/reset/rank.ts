@@ -17,7 +17,7 @@ export async function rank(interaction: ChatInputCommandInteraction, t: TFunctio
 	const targetMember = target ? await interaction.guild.members.fetch(target.id).catch<null>(() => null) : null;
 	if (target && !targetMember) {
 		await interaction.editReply({
-			content: t('reset.errors.invalid_member'),
+			content: t('common.errors.not_a_member'),
 		});
 		return;
 	}
@@ -26,13 +26,14 @@ export async function rank(interaction: ChatInputCommandInteraction, t: TFunctio
 		$unset: {
 			rank: 0,
 			pdl: 0,
+			mmr: 0,
 		},
 	};
 
 	if (!target) {
 		const query = {
 			guildId: interaction.guildId,
-			$or: [{ rank: { $gt: 0 } }, { pdl: { $gt: 0 } }],
+			$or: [{ rank: { $gt: 0 } }, { pdl: { $gt: 0 } }, { mmr: { $gt: 0 } }],
 		};
 		const resetCount = await interaction.client.database.members.findMany(query, '_id', { returnCount: true });
 
@@ -73,7 +74,7 @@ export async function rank(interaction: ChatInputCommandInteraction, t: TFunctio
 	}
 
 	const targetData = await interaction.client.database.members.findOne(targetMember, 'rank pdl');
-	if (!targetData.rank && !targetData.pdl) {
+	if (!targetData.rank && targetData.pdl < 1 && targetData.mmr < 1) {
 		await interaction.editReply({
 			content: t('reset.rank.errors.already_reset'),
 		});
