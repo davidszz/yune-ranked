@@ -35,11 +35,11 @@ export class EventsListenerLoader extends Loader {
 											arg instanceof Guild ||
 											(typeof arg === 'object' && !Array.isArray('arg') && ('guild' in arg || 'guildId' in arg))
 										) {
-											if (arg instanceof Guild && arg.id !== this.client.guildId) {
+											if (arg instanceof Guild && arg?.id !== this.client.guildId) {
 												return;
 											}
 											if (
-												('guild' in arg && arg.guild.id !== this.client.guildId) ||
+												('guild' in arg && arg.guild?.id !== this.client.guildId) ||
 												('guildId' in arg && arg.guildId !== this.client.guildId)
 											) {
 												return;
