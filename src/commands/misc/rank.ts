@@ -5,6 +5,7 @@ import type { Yune } from '@client';
 import { Command } from '@structures/Command';
 
 import { loses } from './sub/rank/loses';
+import { mvp } from './sub/rank/mvp';
 import { wins } from './sub/rank/wins';
 
 export default class extends Command {
@@ -25,6 +26,11 @@ export default class extends Command {
 					description: 'Obtem um rank baseado nas derrotas dos usuários',
 					type: ApplicationCommandOptionType.Subcommand,
 				},
+				{
+					name: 'mvp',
+					description: 'Obtem um rank baseado nas vezes que os usuários terminaram MVP em uma partida',
+					type: ApplicationCommandOptionType.Subcommand,
+				},
 			],
 		});
 	}
@@ -38,6 +44,11 @@ export default class extends Command {
 
 			case 'derrotas': {
 				await loses(interaction, t);
+				return;
+			}
+
+			case 'mvp': {
+				await mvp(interaction, t);
 			}
 		}
 	}

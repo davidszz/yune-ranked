@@ -6,6 +6,7 @@ import { Command } from '@structures/Command';
 
 import { all } from './sub/reset/all';
 import { loses } from './sub/reset/loses';
+import { mvps } from './sub/reset/mvps';
 import { rank } from './sub/reset/rank';
 import { wins } from './sub/reset/wins';
 
@@ -14,12 +15,24 @@ export default class extends Command {
 		super(client, {
 			name: 'resetar',
 			description: 'Reseta os dados dos usuários do servidor',
-			usage: '<rank/vitorias/derrotas/tudo>',
+			usage: '<rank/vitorias/derrotas/mvps/tudo>',
 			permissions: ['Administrator'],
 			options: [
 				{
 					name: 'rank',
 					description: 'Reseta o rank dos usuários do servidor',
+					type: ApplicationCommandOptionType.Subcommand,
+					options: [
+						{
+							name: 'usuario',
+							description: '@usuário caso queira resetar um único usuário',
+							type: ApplicationCommandOptionType.User,
+						},
+					],
+				},
+				{
+					name: 'mvps',
+					description: 'Reseta a quantidade de mvp obtida dos usuários do servidor',
 					type: ApplicationCommandOptionType.Subcommand,
 					options: [
 						{
@@ -85,6 +98,11 @@ export default class extends Command {
 
 			case 'derrotas': {
 				await loses(interaction, t);
+				return;
+			}
+
+			case 'mvps': {
+				await mvps(interaction, t);
 				return;
 			}
 

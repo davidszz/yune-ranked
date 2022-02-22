@@ -1,11 +1,10 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-import { updateNicknames } from '@functions/match/update-nicknames';
 import { ConfirmationEmbed } from '@structures/ConfirmationEmbed';
 import { YuneEmbed } from '@structures/YuneEmbed';
 
-export async function all(interaction: ChatInputCommandInteraction, t: TFunction): Promise<void> {
+export async function mvps(interaction: ChatInputCommandInteraction, t: TFunction): Promise<void> {
 	const target = interaction.options.getUser('usuario');
 
 	if (target?.bot) {
@@ -25,11 +24,6 @@ export async function all(interaction: ChatInputCommandInteraction, t: TFunction
 
 	const updateEntity = {
 		$unset: {
-			loses: 0,
-			wins: 0,
-			pdl: 0,
-			rank: 0,
-			mmr: 0,
 			mvps: 0,
 		},
 	};
@@ -37,30 +31,25 @@ export async function all(interaction: ChatInputCommandInteraction, t: TFunction
 	if (!target) {
 		const query = {
 			guildId: interaction.guildId,
-			$or: [
-				{ loses: { $gt: 0 } },
-				{ wins: { $gt: 0 } },
-				{ rank: { $gt: 0 } },
-				{ pdl: { $gt: 0 } },
-				{ mmr: { $gt: 0 } },
-				{ mvps: { $gt: 0 } },
-			],
+			mvps: {
+				$gt: 0,
+			},
 		};
 
 		const resetCount = await interaction.client.database.members.findMany(query, '_id', { returnCount: true });
 
 		if (resetCount < 1) {
 			await interaction.editReply({
-				content: t('reset.all.errors.no_members'),
+				content: t('reset.mvps.errors.no_members'),
 			});
 			return;
 		}
 
 		const confirmationEmbed = new YuneEmbed()
 			.setColor('Yellow')
-			.setTitle(t('reset.all.embeds.confirmation.title'))
+			.setTitle(t('reset.mvps.embeds.confirmation.title'))
 			.setDescription(
-				t('reset.all.embeds.confirmation.description', {
+				t('reset.mvps.embeds.confirmation.description', {
 					total: resetCount,
 				})
 			);
@@ -75,10 +64,8 @@ export async function all(interaction: ChatInputCommandInteraction, t: TFunction
 		if (await confirmation.awaitConfirmation()) {
 			await interaction.client.database.members.updateMany(query, updateEntity);
 
-			updateNicknames(interaction.guild);
-
 			await interaction.channel.send({
-				content: t('reset.all.success_all', {
+				content: t('reset.mvps.success_all', {
 					user: interaction.user.toString(),
 					total: resetCount,
 				}),
@@ -87,27 +74,18 @@ export async function all(interaction: ChatInputCommandInteraction, t: TFunction
 		return;
 	}
 
-	const targetData = await interaction.client.database.members.findOne(targetMember, 'mmr rank pdl wins loses');
-	if (
-		!targetData.rank &&
-		targetData.pdl < 1 &&
-		targetData.wins < 1 &&
-		targetData.loses < 1 &&
-		targetData.mmr < 1 &&
-		targetData.mvps < 1
-	) {
+	const targetData = await interaction.client.database.members.findOne(targetMember, 'mvps');
+	if (!targetData.mvps) {
 		await interaction.editReply({
-			content: t('reset.all.errors.already_reset'),
+			content: t('reset.mvps.errors.already_reset'),
 		});
 		return;
 	}
 
 	await interaction.client.database.members.update(targetMember, updateEntity);
 
-	updateNicknames(interaction.guild);
-
 	await interaction.editReply({
-		content: t('reset.all.success', {
+		content: t('reset.mvps.success', {
 			target: target.toString(),
 		}),
 	});

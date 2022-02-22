@@ -184,7 +184,7 @@ export class PaginatedEmbed<T> {
 	}
 
 	private async createEmbed() {
-		const embed = new YuneEmbed(this.template);
+		const embed = new YuneEmbed(this.template.toJSON());
 
 		if (!this.showCurrentPageBtn) {
 			embed.setFooter({

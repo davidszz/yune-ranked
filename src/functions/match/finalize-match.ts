@@ -84,6 +84,7 @@ export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
 				$inc: {
 					wins: team.win ? 1 : 0,
 					loses: team.win ? 0 : 1,
+					mvps: participant.mvp ? 1 : 0,
 				},
 			}
 		);

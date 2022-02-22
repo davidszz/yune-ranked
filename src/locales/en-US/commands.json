@@ -60,6 +60,18 @@
 				"description_user_rank": "**Seu rank:** #{{rank}}",
 				"footer": "Total: {{total}}"
 			}
+		},
+		"mvp": {
+			"errors": {
+				"no_members": "Não há nenhum membro no rank de **MVP's** até o momento."
+			},
+			"embed": {
+				"title": "Rank de MVP",
+				"description": "Somente usuários assinantes fazem parte do rank.",
+				"description_row": "**#{{rank}}** {{- user}} - {{mvps}}x MVP",
+				"description_user_rank": "**Seu rank:** #{{rank}}",
+				"footer": "Total: {{total}}"
+			}
 		}
 	},
 	"top": {
@@ -393,10 +405,24 @@
 			"success": "Você resetou as derrotas de {{- target}} com sucesso!",
 			"success_all": "{{- user}}, você resetou as derrotas de **{{total}} usuários** do servidor!"
 		},
+		"mvps": {
+			"errors": {
+				"no_members": "Não há nenhum membro com **MVP's** obtidos até o momento.",
+				"already_reset": "Este membro não possui nenhuma **MVP** obtido até o momento."
+			},
+			"embeds": {
+				"confirmation": {
+					"title": "Confirme esta ação",
+					"description": "Tem certeza que deseja resetar os **MVP's** obtidos de `{{total}}` usuários?"
+				}
+			},
+			"success": "Você resetou os **MVP's** obtidos de {{- target}} com sucesso!",
+			"success_all": "{{- user}}, você resetou os **MVP's** obtidos de **{{total}} usuários** do servidor!"
+		},
 		"all": {
 			"errors": {
-				"no_members": "Não há nenhum membro com vitórias, rank, pontos ou derrotas até o momento.",
-				"already_reset": "Este membro não possui nenhuma vitórias, rank, ponto ou derrota."
+				"no_members": "Não há nenhum membro com vitórias, rank, pontos, mvps ou derrotas até o momento.",
+				"already_reset": "Este membro não possui nenhum rank, ponto, mvp, vitória ou derrota."
 			},
 			"embeds": {
 				"confirmation": {
