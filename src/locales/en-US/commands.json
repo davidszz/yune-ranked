@@ -480,13 +480,14 @@
 		"redeemed_broadcast": "{{- user}} ativou um código de assinatura de **{{- duration}}**!"
 	},
 	"profile": {
+		"success": "Seu perfil",
+		"success_target": "Perfil de {{- target}}"
+	},
+	"subscription": {
 		"embed": {
-			"title": "Perfil de {{- target}}",
-			"title_yourself": "Seu perfil",
-			"description": "$t(profile.embed.description_header)\n\n$t(profile.embed.description_stats)\n\n$t(profile.embed.description_subscription)",
-			"description_header": "Este é um perfil de usuário básico, futuramente o perfil pode ser alterado. Lembre-se que ainda estamos em fase de testes.",
-			"description_stats": "Vitórias: {{wins}}\nDerrotas: {{loses}}\nRank: {{- rank_name}} `{{pdl}} pdl`",
-			"description_subscription": "**Informações de assinatura:**\nAssinatura iniciada em: {{- subscribed_at, DD/MM/YY HH:mm:ss}}\nAssinatura termina em: {{- subscription_ends_in, fromNow(true)}} ({{- subscription_ends_at, DD/MM/YY HH:mm:ss}})\nAssinatura criada por: {{- subscription_created_by}}"
+			"title": "Assinatura de {{- target}}:",
+			"title_yourself": "Sua assinatura:",
+			"description": "Estas são informações basicas da assinatura de um usuário. Futuramente podem haver alterações neste comando.\n\nAssinatura criada por: {{- created_by}}\nAssinatura iniciada em: {{- started_at, DD/MM/YYYY HH:mm:ss}}\nAssinatura expira em: {{- ends_at, DD/MM/YYYY HH:mm:ss}} ({{- ends_at, fromNow(true)}})"
 		}
 	},
 	"remove_subscription": {

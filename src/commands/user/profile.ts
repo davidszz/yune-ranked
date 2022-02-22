@@ -2,9 +2,8 @@ import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'disco
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
+import { ProfileTemplate } from '@structures/canvas/templates/ProfileTemplate';
 import { Command } from '@structures/Command';
-import { YuneEmbed } from '@structures/YuneEmbed';
-import { Ranks } from '@utils/Ranks';
 
 export default class extends Command {
 	constructor(client: Yune) {
@@ -13,6 +12,7 @@ export default class extends Command {
 			description: 'Obtem o perfil do usuário',
 			usage: '[usuário]',
 			showInMatchHelp: true,
+			subscribersOnly: true,
 			options: [
 				{
 					name: 'usuário',
@@ -36,10 +36,7 @@ export default class extends Command {
 			return;
 		}
 
-		const data = await interaction.client.database.members.findOne(
-			target,
-			'pdl rank wins loses subscribed subscribedAt subscriptionEndsAt subscriptionCreatedBy'
-		);
+		const data = await interaction.client.database.members.findOne(target, 'pdl rank wins loses mvps subscribed');
 		if (!data.subscribed) {
 			await interaction.editReply({
 				content: t('common.errors.not_subscribed', { context: yourself ? 'yourself' : null }),
@@ -47,29 +44,37 @@ export default class extends Command {
 			return;
 		}
 
-		const userRank = Ranks[data.rank];
+		/* const myRank = await interaction.client.database.members.model.aggregate([
+			{ $match: { guildId: interaction.guildId, subscribed: true } },
+			{
+				$setWindowFields: {
+					partitionBy: null,
+					sortBy: { rank: -1 },
+					output: { userRank: { $rank: {} } },
+				},
+			},
+			{ $match: { userId: target.id } },
+			{ $project: { userRank: 1 } },
+		]).then((res: [{ userRank: number }]) => res?.[0]?.userRank ?? 0); */
 
-		const profileEmbed = new YuneEmbed()
-			.setTitle(t('profile.embed.title', { context: yourself ? 'yourself' : null, target: target.user.tag }))
-			.setThumbnail(target.user.displayAvatarURL())
-			.setDescription(
-				t('profile.embed.description', {
-					wins: data.wins,
-					loses: data.loses,
-					subscribed_at: data.subscribedAt,
-					subscription_ends_in: data.subscriptionEndsAt,
-					subscription_ends_at: data.subscriptionEndsAt,
-					subscription_created_by: `<@!${data.subscriptionCreatedBy}>`,
-					rank_name: t(`misc:ranks.${userRank.name}`, {
-						context: userRank.division ? 'division' : null,
-						division: userRank.division,
-					}),
-					pdl: data.pdl ?? 0,
-				})
-			);
+		const template = new ProfileTemplate(t, {
+			data,
+			user: target.user,
+		});
+
+		const buffer = await template.build();
 
 		await interaction.editReply({
-			embeds: [profileEmbed],
+			content: t('profile.success', {
+				context: yourself ? null : 'target',
+				target: target.toString(),
+			}),
+			files: [
+				{
+					name: 'profile.png',
+					attachment: buffer,
+				},
+			],
 		});
 	}
 }
