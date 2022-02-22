@@ -1,6 +1,6 @@
 {
   "name": "yune-ranked",
-  "version": "1.0.0",
+  "version": "1.0.45",
   "description": "A discord bot client for ranked games",
   "main": "dist/index.js",
   "repository": "https://github.com/sasuke-7/yune-ranked",
