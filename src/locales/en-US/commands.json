@@ -490,6 +490,15 @@
 			"description": "Estas são informações basicas da assinatura de um usuário. Futuramente podem haver alterações neste comando.\n\nAssinatura criada por: {{- created_by}}\nAssinatura iniciada em: {{- started_at, DD/MM/YYYY HH:mm:ss}}\nAssinatura expira em: {{- ends_at, DD/MM/YYYY HH:mm:ss}} ({{- ends_at, fromNow(true)}})"
 		}
 	},
+	"banner": {
+		"errors": {
+			"dont_have": "Você não possui nenhum banner definido até o momento. Use `/banner` para alterar seu banner do perfil.",
+			"invalid_image": "Este arquivo não é uma imagem válida.",
+			"unknown_error": "Ocorreu um erro ao atualizar seu banner. Tente novamente mais tarde e caso o erro persista conta-te um [desenvolvedor]({{- support_guild_url}})"
+		},
+		"current": "Seu banner atual:",
+		"changed": "Você alterou seu banner com sucesso!"
+	},
 	"remove_subscription": {
 		"errors": {
 			"not_subscribed": "Este usuário não possui uma assinatura válida."

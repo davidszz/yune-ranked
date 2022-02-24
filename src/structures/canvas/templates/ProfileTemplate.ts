@@ -40,13 +40,22 @@ export class ProfileTemplate extends BaseCanvas<IMemberData> {
 		ctx.closePath();
 
 		ctx.beginPath();
-		ctx.fillStyle =
-			(await user
-				.fetch(true)
-				.then((res) => res.hexAccentColor)
-				.catch<null>(() => null)) ?? '#0084ff';
-		ctx.rect(0, 0, this.width, 300);
-		ctx.fill();
+		const banner = data.bannerUrl && (await this.loadImage(data.bannerUrl));
+		if (banner) {
+			ctx.fillStyle = '#0084ff';
+			ctx.rect(0, 0, this.width, 300);
+			ctx.fill();
+
+			ctx.drawImage(banner, 0, 0, this.width, 300);
+		} else {
+			ctx.fillStyle =
+				(await user
+					.fetch(true)
+					.then((res) => res.hexAccentColor)
+					.catch<null>(() => null)) ?? '#0084ff';
+			ctx.rect(0, 0, this.width, 300);
+			ctx.fill();
+		}
 		ctx.closePath();
 
 		/**

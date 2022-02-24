@@ -36,7 +36,10 @@ export default class extends Command {
 			return;
 		}
 
-		const data = await interaction.client.database.members.findOne(target, 'pdl rank wins loses mvps subscribed');
+		const data = await interaction.client.database.members.findOne(
+			target,
+			'pdl rank wins loses mvps subscribed bannerUrl'
+		);
 		if (!data.subscribed) {
 			await interaction.editReply({
 				content: t('common.errors.not_subscribed', { context: yourself ? 'yourself' : null }),

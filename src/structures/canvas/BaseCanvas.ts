@@ -1,8 +1,17 @@
-import { Canvas, CanvasRenderingContext2D, loadImage } from 'canvas';
+import { Canvas, CanvasRenderingContext2D, loadImage, Image } from 'canvas';
 import type { TFunction } from 'i18next';
 
+interface IDrawImageOptions {
+	image: string | Buffer | Image;
+	x: number;
+	y: number;
+	width?: number;
+	height?: number;
+	keepProportion?: boolean;
+}
+
 interface IDrawRoundedImageOptions {
-	image: string | CanvasImageSource;
+	image: string | Image;
 	x: number;
 	y: number;
 	size: number;
@@ -22,7 +31,33 @@ export class BaseCanvas<T = unknown> extends Canvas {
 		this.ctx = this.getContext('2d');
 	}
 
-	drawRoundedImage(options: IDrawRoundedImageOptions & { image: CanvasImageSource }): void;
+	drawImage(options: IDrawImageOptions & { image: Image }): void;
+	drawImage(options: IDrawImageOptions): Promise<void>;
+	async drawImage(options: IDrawImageOptions) {
+		const { x, y, width, height, keepProportion } = options;
+
+		const image = options.image instanceof Image ? options.image : await this.loadImage(options.image);
+		if (keepProportion && width && height) {
+			this.ctx.save();
+			this.ctx.rect(x, y, width, height);
+			this.ctx.clip();
+
+			let w = width;
+			let h = (width / image.width) * image.height;
+
+			if (h < height) {
+				h = height;
+				w = (height / image.height) * image.width;
+			}
+
+			this.ctx.drawImage(image, x - (w - width) / 2, y - (h - height) / 2, w, h);
+			this.ctx.restore();
+		} else {
+			this.ctx.drawImage(image, x, y, width ?? image.width, height ?? image.height);
+		}
+	}
+
+	drawRoundedImage(options: IDrawRoundedImageOptions & { image: Image }): void;
 	drawRoundedImage(options: IDrawRoundedImageOptions & { image: string }): Promise<void>;
 	async drawRoundedImage(options: IDrawRoundedImageOptions) {
 		const { x, y, size, radius = 100, image } = options;

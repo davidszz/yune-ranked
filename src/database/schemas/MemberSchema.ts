@@ -14,6 +14,8 @@ export interface IMemberSchema {
 	rank: number;
 	pdl: number;
 	mmr: number;
+	bannerUrl: string;
+	bannerDeleteHash: string;
 }
 
 export const MemberSchema = new Schema<IMemberSchema>(
@@ -36,6 +38,8 @@ export const MemberSchema = new Schema<IMemberSchema>(
 		pdl: Number,
 		rank: Number,
 		mmr: Number,
+		bannerUrl: String,
+		bannerDeleteHash: String,
 	},
 	{
 		timestamps: {
