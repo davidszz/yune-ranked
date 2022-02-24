@@ -15,9 +15,11 @@ interface IFinalizeMatchData {
 }
 
 export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
-	const matchMmr = match.participants.reduce(
-		(acc, val) => acc + (typeof val.member === 'string' ? 0 : val.member?.mmr ?? DEFAULT_USER_MMR),
-		0
+	const matchMmr = Math.floor(
+		match.participants.reduce(
+			(acc, val) => acc + (typeof val.member === 'string' ? 0 : val.member?.mmr ?? DEFAULT_USER_MMR),
+			0
+		) / match.participants.length
 	);
 
 	for (const participant of match.participants) {
