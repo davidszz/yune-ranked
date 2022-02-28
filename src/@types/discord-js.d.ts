@@ -21,7 +21,7 @@ declare module 'discord.js' {
 
 	interface ClientEvents {
 		matchEnded: [match: Match];
-		matchCanceled: [match: Match];
+		matchCanceled: [match: Match, reason?: string];
 		matchCreated: [match: Match];
 	}
 

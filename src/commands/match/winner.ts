@@ -37,26 +37,15 @@ export default class extends Command {
 	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply();
 
-		const matchData = await interaction.client.database.matches.findOne(
-			{
-				guildId: interaction.guildId,
-				status: MatchStatus.InGame,
-				'channels.chat': interaction.channelId,
-			},
-			'participants teams'
-		);
-
-		if (!matchData?._id) {
+		const match = interaction.client.matches.getByChatChannel(interaction.channelId);
+		if (!match?.inGame) {
 			await interaction.editReply({
 				content: t('winner.errors.invalid_match_channel'),
 			});
 			return;
 		}
 
-		if (
-			!matchData.participants.some((x) => x.userId === interaction.user.id) &&
-			!interaction.memberPermissions.has('Administrator')
-		) {
+		if (!match.participants.has(interaction.user.id) && !interaction.memberPermissions.has('Administrator')) {
 			await interaction.editReply({
 				content: t('winner.errors.no_permission'),
 			});
@@ -65,12 +54,10 @@ export default class extends Command {
 
 		const winner = interaction.options.getString('time');
 		if (!winner) {
-			if (matchData.teams.some((x) => x.win)) {
+			if (match.teams.some((x) => x.win)) {
 				await interaction.editReply({
 					content: t('winner.current_winner', {
-						current_winner: t(
-							`winner.teams.${matchData.teams.find((x) => x.win).teamId === TeamId.Blue ? 'blue' : 'red'}`
-						),
+						current_winner: t(`winner.teams.${match.teams.find((x) => x.win).id === TeamId.Blue ? 'blue' : 'red'}`),
 					}),
 				});
 			} else {
@@ -82,21 +69,14 @@ export default class extends Command {
 		}
 
 		const winnerId = winner === 'blue' ? TeamId.Blue : TeamId.Red;
-		if (matchData.teams.find((x) => x.win)?.teamId === winnerId) {
+		if (match.teams.find((x) => x.win)?.id === winnerId) {
 			await interaction.editReply({
 				content: t('winner.errors.same_winner'),
 			});
 			return;
 		}
 
-		await interaction.client.database.matches.update(matchData._id, {
-			$set: {
-				teams: matchData.teams.map((x) => ({
-					...x,
-					win: x.teamId === winnerId,
-				})),
-			},
-		});
+		await match.setTeamWinner(winnerId);
 
 		await interaction.editReply({
 			content: t('winner.changed', {

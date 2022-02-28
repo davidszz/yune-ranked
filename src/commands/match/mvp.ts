@@ -26,26 +26,15 @@ export default class extends Command {
 	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply();
 
-		const matchData = await interaction.client.database.matches.findOne(
-			{
-				guildId: interaction.guildId,
-				status: MatchStatus.InGame,
-				'channels.chat': interaction.channelId,
-			},
-			'participants'
-		);
-
-		if (!matchData?._id) {
+		const match = interaction.client.matches.getByChatChannel(interaction.channelId);
+		if (!match?.inGame) {
 			await interaction.editReply({
 				content: t('mvp.errors.invalid_match_channel'),
 			});
 			return;
 		}
 
-		if (
-			!matchData.participants.some((x) => x.userId === interaction.user.id) &&
-			!interaction.memberPermissions.has('Administrator')
-		) {
+		if (!match.participants.has(interaction.user.id) && !interaction.memberPermissions.has('Administrator')) {
 			await interaction.editReply({
 				content: t('mvp.errors.no_permission'),
 			});
@@ -53,13 +42,12 @@ export default class extends Command {
 		}
 
 		const target = interaction.options.getUser('usuário');
-		const currentMvp = matchData.participants.find((x) => x.mvp);
 
 		if (!target) {
-			if (currentMvp) {
+			if (match.mvpMember) {
 				await interaction.editReply({
 					content: t('mvp.current_mvp', {
-						user: `<@!${currentMvp.userId}>`,
+						user: match.mvpMember.toString(),
 					}),
 				});
 			} else {
@@ -70,28 +58,21 @@ export default class extends Command {
 			return;
 		}
 
-		if (target.bot || !matchData.participants.some((x) => x.userId === target.id)) {
+		if (target.bot || !match.participants.has(target.id)) {
 			await interaction.editReply({
 				content: t('mvp.errors.invalid_user'),
 			});
 			return;
 		}
 
-		if (currentMvp?.userId === target.id) {
+		if (match.mvpMember?.id === target.id) {
 			await interaction.editReply({
 				content: t('mvp.errors.same_mvp'),
 			});
 			return;
 		}
 
-		await interaction.client.database.matches.update(matchData._id, {
-			$set: {
-				participants: matchData.participants.map((x) => ({
-					...x,
-					mvp: x.userId === target.id,
-				})),
-			},
-		});
+		await match.setMvp(target);
 
 		await interaction.editReply({
 			content: t('mvp.changed', {

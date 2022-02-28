@@ -1,4 +1,4 @@
-import { Collection } from 'discord.js';
+import { Collection, TextBasedChannelResolvable, UserResolvable } from 'discord.js';
 
 import type { Yune } from '@client';
 import { IMatchSchema } from '@database/schemas/MatchSchema';
@@ -19,6 +19,16 @@ export class MatchManager extends BaseManager {
 		super(client);
 
 		this.cache = new Collection();
+	}
+
+	getUserMatch(member: UserResolvable) {
+		const memberId = this.client.users.resolveId(member);
+		return this.cache.find((x) => x.participants.has(memberId));
+	}
+
+	getByChatChannel(chat: TextBasedChannelResolvable) {
+		const chatId = this.client.channels.resolveId(chat);
+		return this.cache.find((x) => x.channels.chat?.id === chatId);
 	}
 
 	add(data: IMatchSchema) {

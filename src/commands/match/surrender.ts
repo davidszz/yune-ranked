@@ -5,7 +5,6 @@ import type { Yune } from '@client';
 import { Command } from '@structures/Command';
 import { YuneEmbed } from '@structures/YuneEmbed';
 import { SURRENDER_VOTES_PERCENTAGE } from '@utils/Constants';
-import { MatchStatus } from '@utils/MatchStatus';
 
 export default class extends Command {
 	constructor(client: Yune) {
@@ -20,11 +19,8 @@ export default class extends Command {
 	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply();
 
-		const match = this.client.matches.cache.find(
-			(x) => x.status === MatchStatus.InGame && x.channels.chat?.id === interaction.channelId
-		);
-
-		if (!match) {
+		const match = interaction.client.matches.getByChatChannel(interaction.channelId);
+		if (!match?.inGame) {
 			await interaction.editReply({
 				content: t('surrender.errors.invalid_match_channel'),
 			});
@@ -50,7 +46,7 @@ export default class extends Command {
 
 		if (totalVotes >= requiredVotes) {
 			await match.delete();
-			this.client.emit('matchCanceled', match);
+			this.client.emit('matchCanceled', match, 'surrender');
 
 			await interaction.editReply({
 				content: t('surrender.last_vote', {

@@ -10,7 +10,7 @@ import { UpdateQuery } from 'mongoose';
 
 import type { Yune } from '@client';
 import { IMatchSchema } from '@database/schemas/MatchSchema';
-import type { MatchStatus } from '@utils/MatchStatus';
+import { MatchStatus } from '@utils/MatchStatus';
 import { TeamId } from '@utils/TeamId';
 
 interface IMatchTeam {
@@ -41,10 +41,18 @@ export class Match {
 		return this._data.status;
 	}
 
+	get inGame() {
+		return this._data.status === MatchStatus.InGame;
+	}
+
 	get participants() {
 		return new Collection<string, GuildMember>(
 			this._data.participants.map((x) => [x.userId, this.guild.members.resolve(x.userId) ?? null])
 		);
+	}
+
+	get mvpMember() {
+		return this.participants.find((x) => this._data.participants.some((p) => p.mvp && p.userId === x.id));
 	}
 
 	get owner() {
@@ -109,7 +117,7 @@ export class Match {
 
 	async addSurrenderVote(member: GuildMemberResolvable) {
 		const memberId = this.guild.members.resolveId(member);
-		if (!memberId || !this.participants.some((x) => x.id === memberId)) {
+		if (!memberId || !this.participants.has(memberId)) {
 			throw new Error('invalid_match_member');
 		}
 
@@ -119,6 +127,32 @@ export class Match {
 
 		await this.updateData({ $addToSet: { surrenderVotes: memberId } });
 		return this.surrenderVotes;
+	}
+
+	async setTeamWinner(id: TeamId) {
+		await this.updateData({
+			$set: {
+				teams: this.toJSON().teams.map((x) => ({
+					...x,
+					win: x.teamId === id,
+				})),
+			},
+		});
+
+		return this.teams.find((x) => x.id === id);
+	}
+
+	async setMvp(member: GuildMemberResolvable) {
+		const memberId = this.guild.members.resolveId(member);
+		await this.updateData({
+			$set: {
+				participants: this.toJSON().participants.map((x) => ({
+					...x,
+					mvp: x.userId === memberId,
+				})),
+			},
+		});
+		return this.mvpMember;
 	}
 
 	async deleteChannels() {
