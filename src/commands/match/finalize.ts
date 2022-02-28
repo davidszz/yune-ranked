@@ -111,7 +111,7 @@ export default class extends Command {
 				// Nothing
 			});
 
-			await finalizeMatch({ client: interaction.client, match: matchData });
+			await finalizeMatch({ client: interaction.client, matchData });
 
 			const chat = interaction.guild.channels.cache.get(matchData.channels.chat);
 			if (chat && chat.isText()) {

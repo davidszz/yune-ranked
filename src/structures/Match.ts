@@ -115,6 +115,14 @@ export class Match {
 		return status;
 	}
 
+	async setEnded() {
+		if (this.status === MatchStatus.Ended) {
+			return;
+		}
+
+		await this.updateData({ $set: { status: MatchStatus.Ended, endedAt: new Date() } });
+	}
+
 	async addSurrenderVote(member: GuildMemberResolvable) {
 		const memberId = this.guild.members.resolveId(member);
 		if (!memberId || !this.participants.has(memberId)) {

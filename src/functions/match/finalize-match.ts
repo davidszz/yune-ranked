@@ -2,7 +2,6 @@ import type { Yune } from '@client';
 import type { IMatchSchema } from '@database/schemas/MatchSchema';
 import { updateRankRole } from '@functions/member/update-rank-role';
 import { DEFAULT_USER_MMR } from '@utils/Constants';
-import { MatchStatus } from '@utils/MatchStatus';
 import { Ranks } from '@utils/Ranks';
 import { RankUtils } from '@utils/RankUtils';
 import { UserRank } from '@utils/UserRank';
@@ -11,20 +10,20 @@ import { updateNicknames } from './update-nicknames';
 
 interface IFinalizeMatchData {
 	client: Yune;
-	match: IMatchSchema;
+	matchData: IMatchSchema;
 }
 
-export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
+export async function finalizeMatch({ client, matchData }: IFinalizeMatchData) {
 	const matchMmr = Math.floor(
-		match.participants.reduce(
+		matchData.participants.reduce(
 			(acc, val) => acc + (typeof val.member === 'string' ? 0 : val.member?.mmr ?? DEFAULT_USER_MMR),
 			0
-		) / match.participants.length
+		) / matchData.participants.length
 	);
 
-	for (const participant of match.participants) {
+	for (const participant of matchData.participants) {
 		const member = typeof participant.member === 'string' ? null : participant.member;
-		const team = match.teams.find((x) => x.teamId === participant.teamId);
+		const team = matchData.teams.find((x) => x.teamId === participant.teamId);
 
 		const calcOptions = {
 			mmr: matchMmr,
@@ -92,34 +91,25 @@ export async function finalizeMatch({ client, match }: IFinalizeMatchData) {
 		);
 	}
 
-	await client.database.matches.update(match._id, {
-		$set: {
-			status: MatchStatus.Ended,
-			endedAt: new Date(),
-		},
-	});
+	const match = client.matches.cache.get(matchData.matchId);
+	await match.setEnded();
 
-	const guild = client.guilds.cache.get(match.guildId);
-	if (!guild) return;
+	if (!match.guild) return;
 
-	updateNicknames(guild);
+	updateNicknames(match.guild);
 
-	const members = await Promise.all(
-		match.participants.map(async (participant) => {
-			const member = await guild.members.fetch(participant.userId).catch(() => {
-				// Nothing
-			});
-
-			if (!member) return null;
+	const members = match.participants
+		.map((x) => {
+			const data = matchData.participants.find((y) => y.userId === x.id);
 			return {
-				rank: typeof participant.member === 'string' ? 0 : participant.member.rank,
-				member,
+				rank: typeof data.member === 'string' ? 0 : data.member.rank,
+				member: x,
 			};
 		})
-	).then((result) => result.filter(Boolean));
+		.filter(Boolean);
 
 	await updateRankRole({
-		guild,
+		guild: match.guild,
 		members,
 	});
 }
