@@ -2,15 +2,20 @@ import { Schema } from 'mongoose';
 
 import { MatchStatus } from '@utils/MatchStatus';
 import { TeamId } from '@utils/TeamId';
+import { UserRank } from '@utils/UserRank';
 
 import { IMemberSchema } from './MemberSchema';
 
 interface IMatchParticipant {
 	member: string | Partial<IMemberSchema>;
 	userId: string;
+	teamId: TeamId;
 	isCaptain?: boolean;
 	mvp?: boolean;
-	teamId: TeamId;
+	win?: boolean;
+	modifiedPdls?: number;
+	oldRank?: UserRank;
+	newRank?: UserRank;
 }
 
 export interface IMatchTeam {
@@ -56,6 +61,10 @@ const MatchParticipantSchema = new Schema<IMatchParticipant>(
 		},
 		isCaptain: Boolean,
 		mvp: Boolean,
+		modifiedPdls: Number,
+		oldRank: Number,
+		newRank: Number,
+		win: Boolean,
 	},
 	{ _id: false }
 );

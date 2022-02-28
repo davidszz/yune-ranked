@@ -2,6 +2,7 @@ import type { Yune } from '@client';
 import type { IMatchSchema } from '@database/schemas/MatchSchema';
 import { updateRankRole } from '@functions/member/update-rank-role';
 import { DEFAULT_USER_MMR } from '@utils/Constants';
+import { MatchStatus } from '@utils/MatchStatus';
 import { Ranks } from '@utils/Ranks';
 import { RankUtils } from '@utils/RankUtils';
 import { UserRank } from '@utils/UserRank';
@@ -21,6 +22,14 @@ export async function finalizeMatch({ client, matchData }: IFinalizeMatchData) {
 		) / matchData.participants.length
 	);
 
+	const collectedInfos: {
+		userId: string;
+		win: boolean;
+		modifiedPdls: number;
+		oldRank: UserRank;
+		newRank: UserRank;
+	}[] = [];
+
 	for (const participant of matchData.participants) {
 		const member = typeof participant.member === 'string' ? null : participant.member;
 		const team = matchData.teams.find((x) => x.teamId === participant.teamId);
@@ -34,12 +43,14 @@ export async function finalizeMatch({ client, matchData }: IFinalizeMatchData) {
 		let rank = member.rank ?? UserRank.Unranked;
 
 		let pdl = member.pdl ?? 0;
+		let modifiedPdls = 0;
 		let { mmr } = member;
 
 		const isUnranked = rank === UserRank.Unranked;
 
 		if (team.win) {
 			const wonPdlAmount = RankUtils.calculateWonPdlAmount(calcOptions);
+			modifiedPdls = wonPdlAmount;
 
 			const newRankIfUnranked = participant.mvp ? UserRank.Bronze3 : UserRank.Bronze1;
 			rank = rank !== UserRank.Unranked ? rank : newRankIfUnranked;
@@ -57,6 +68,7 @@ export async function finalizeMatch({ client, matchData }: IFinalizeMatchData) {
 			}
 		} else {
 			const losePdlAmount = RankUtils.calculateLosePdlAmount(calcOptions);
+			modifiedPdls = losePdlAmount;
 
 			const newRankIfUnranked = participant.mvp ? UserRank.Iron2 : UserRank.Iron1;
 			rank = rank !== UserRank.Unranked ? rank : newRankIfUnranked;
@@ -73,6 +85,14 @@ export async function finalizeMatch({ client, matchData }: IFinalizeMatchData) {
 				}
 			}
 		}
+
+		collectedInfos.push({
+			userId: participant.userId,
+			modifiedPdls,
+			oldRank: member.rank,
+			newRank: rank,
+			win: team.win,
+		});
 
 		await client.database.members.update(
 			{ _id: member._id },
@@ -91,9 +111,19 @@ export async function finalizeMatch({ client, matchData }: IFinalizeMatchData) {
 		);
 	}
 
-	const match = client.matches.cache.get(matchData.matchId);
-	await match.setEnded();
+	await client.database.matches.update(matchData._id, {
+		$set: {
+			status: MatchStatus.Ended,
+			endedAt: new Date(),
+			participants: matchData.participants.map((x) => ({
+				...x,
+				member: typeof x.member === 'string' ? x.member : x.member._id,
+				...collectedInfos.find((c) => c.userId === x.userId),
+			})),
+		},
+	});
 
+	const match = client.matches.cache.get(matchData.matchId);
 	if (!match.guild) return;
 
 	updateNicknames(match.guild);

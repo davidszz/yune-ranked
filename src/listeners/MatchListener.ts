@@ -1,3 +1,4 @@
+import { AuditLogEvent } from 'discord-api-types/v9';
 import type { GuildChannel } from 'discord.js';
 
 import { Yune } from '@client';
@@ -24,6 +25,18 @@ export default class MatchListener extends EventListener {
 
 		const match = this.client.matches.cache.find((x) => x.channelIds.some((x) => x === channel.id));
 		if (!match) {
+			return;
+		}
+
+		const auditLog = await channel.guild
+			.fetchAuditLogs({
+				type: AuditLogEvent.ChannelDelete,
+				limit: 1,
+			})
+			.then((res) => res.entries.first())
+			.catch<null>(() => null);
+
+		if (!auditLog || auditLog.target.id !== channel.id || auditLog.executor.id === channel.client.user.id) {
 			return;
 		}
 
