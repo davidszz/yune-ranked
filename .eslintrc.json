@@ -28,6 +28,7 @@
 		"no-param-reassign": "off",
 		"no-restricted-syntax": "off",
 		"no-underscore-dangle": "off",
+		"no-useless-constructor": "off",
 		"no-nested-ternary": "off",
 		"no-use-before-define": ["error", "nofunc"],
 		"default-case": "off",

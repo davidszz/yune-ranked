@@ -80,36 +80,41 @@ export async function createMatch({ guild, queueChannel, participants, teamSize 
 	await moveMembersTo(members.slice(0, teamSize), blueVoice);
 	await moveMembersTo(members.slice(teamSize, teamSize * 2), redVoice);
 
-	return guild.client.database.matches.create([
-		{
-			guildId: guild.id,
-			matchId,
-			queueChannelId: queueChannel.id,
-			channels: {
-				category: category.id,
-				chat: chat.id,
-				blueVoice: blueVoice.id,
-				redVoice: redVoice.id,
+	return guild.client.database.matches
+		.create([
+			{
+				guildId: guild.id,
+				matchId,
+				queueChannelId: queueChannel.id,
+				channels: {
+					category: category.id,
+					chat: chat.id,
+					blueVoice: blueVoice.id,
+					redVoice: redVoice.id,
+				},
+				teams: [
+					{
+						teamId: TeamId.Blue,
+						captainId: participants[0].user.id,
+					},
+					{
+						teamId: TeamId.Red,
+						captainId: participants[teamSize].user.id,
+					},
+				],
+				status: MatchStatus.InGame,
+				participants: participants.map((x, i) => ({
+					member: x.id,
+					userId: x.user.id,
+					isCaptain: [0, teamSize].includes(i),
+					teamId: i < teamSize ? TeamId.Blue : TeamId.Red,
+				})),
+				createdAt: new Date(),
+				updatedAt: new Date(),
 			},
-			teams: [
-				{
-					teamId: TeamId.Blue,
-					captainId: participants[0].user.id,
-				},
-				{
-					teamId: TeamId.Red,
-					captainId: participants[teamSize].user.id,
-				},
-			],
-			status: MatchStatus.InGame,
-			participants: participants.map((x, i) => ({
-				member: x.id,
-				userId: x.user.id,
-				isCaptain: [0, teamSize].includes(i),
-				teamId: i < teamSize ? TeamId.Blue : TeamId.Red,
-			})),
-			createdAt: new Date(),
-			updatedAt: new Date(),
-		},
-	]);
+		])
+		.then((data) => {
+			const match = guild.client.matches.add(data);
+			return match;
+		});
 }

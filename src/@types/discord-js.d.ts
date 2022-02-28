@@ -1,5 +1,6 @@
 import 'discord.js';
 import type { Yune } from '@client';
+import type { Match } from '@structures/Match';
 
 declare module 'discord.js' {
 	interface Interaction {
@@ -16,6 +17,12 @@ declare module 'discord.js' {
 
 	interface GuildChannel {
 		client: Yune;
+	}
+
+	interface ClientEvents {
+		matchEnded: [match: Match];
+		matchCanceled: [match: Match];
+		matchCreated: [match: Match];
 	}
 
 	interface CommandInteraction {

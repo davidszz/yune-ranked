@@ -13,7 +13,7 @@ interface IMatchParticipant {
 	teamId: TeamId;
 }
 
-interface IMatchTeam {
+export interface IMatchTeam {
 	teamId: TeamId;
 	captainId: string;
 	win?: boolean;

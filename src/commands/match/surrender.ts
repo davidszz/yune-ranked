@@ -20,41 +20,38 @@ export default class extends Command {
 	async run(interaction: ChatInputCommandInteraction, t: TFunction) {
 		await interaction.deferReply();
 
-		const matchData = await interaction.client.database.matches.findOne(
-			{
-				guildId: interaction.guildId,
-				status: MatchStatus.InGame,
-				'channels.chat': interaction.channelId,
-			},
-			'surrenderVotes participants channels'
+		const match = this.client.matches.cache.find(
+			(x) => x.status === MatchStatus.InGame && x.channels.chat?.id === interaction.channelId
 		);
 
-		if (!matchData?._id) {
+		if (!match) {
 			await interaction.editReply({
 				content: t('surrender.errors.invalid_match_channel'),
 			});
 			return;
 		}
 
-		if (!matchData.participants.some((x) => x.userId === interaction.user.id)) {
+		if (!match.participants.has(interaction.user.id)) {
 			await interaction.editReply({
 				content: t('surrender.errors.only_participants'),
 			});
 			return;
 		}
 
-		if (matchData.surrenderVotes?.includes(interaction.user.id)) {
+		if (match.surrenderVotes?.has(interaction.user.id)) {
 			await interaction.editReply({
 				content: t('surrender.errors.already_voted'),
 			});
 			return;
 		}
 
-		const totalVotes = (matchData.surrenderVotes?.length ?? 0) + 1;
-		const requiredVotes = Math.ceil(matchData.participants.length * SURRENDER_VOTES_PERCENTAGE);
+		const totalVotes = match.surrenderVotes.size + 1;
+		const requiredVotes = Math.ceil(match.participants.size * SURRENDER_VOTES_PERCENTAGE);
 
 		if (totalVotes >= requiredVotes) {
-			await interaction.client.database.matches.deleteOne(matchData._id);
+			await match.delete();
+			this.client.emit('matchCanceled', match);
+
 			await interaction.editReply({
 				content: t('surrender.last_vote', {
 					user: interaction.user.tag,
@@ -77,25 +74,12 @@ export default class extends Command {
 			});
 
 			setTimeout(async () => {
-				const categoryId = matchData.channels.category;
-				const channelIds = [...Object.values(matchData.channels).filter((x) => x !== categoryId), categoryId];
-
-				for (const channelId of channelIds) {
-					try {
-						await interaction.guild.channels.cache.get(channelId)?.delete();
-					} catch (err) {
-						// Nothing
-					}
-				}
+				await match.deleteChannels();
 			}, 10000);
 			return;
 		}
 
-		await interaction.client.database.matches.update(matchData._id, {
-			$addToSet: {
-				surrenderVotes: interaction.user.id,
-			},
-		});
+		await match.addSurrenderVote(interaction.user.id);
 
 		await interaction.editReply({
 			content: t('surrender.voted', {

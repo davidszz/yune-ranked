@@ -85,6 +85,17 @@ export abstract class Repository<T, R = T> {
 		return cursor.populate(populateOptions).then((res) => this.parse(<Document<T>>res));
 	}
 
+	async findOneAndUpdate(
+		query: string | FilterQuery<T>,
+		entity: UpdateQuery<T>,
+		options: QueryOptions = { upsert: true, new: true }
+	) {
+		if (typeof query === 'string') {
+			return this.model.findByIdAndUpdate(query, entity, options).then((res) => this.parse(res));
+		}
+		return this.model.findOneAndUpdate(query, entity, options).then((res) => this.parse(res));
+	}
+
 	async deleteOne(query: string | FilterQuery<T>) {
 		await this.model.deleteOne(typeof query === 'string' ? { _id: query } : query);
 	}
