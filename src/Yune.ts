@@ -4,6 +4,8 @@ import type { DBWrapper } from '@database/DBWrapper';
 import * as Loaders from '@loaders';
 import type { Command } from '@structures/Command';
 
+import { MatchManager } from './managers/MatchManager';
+
 interface IQueueMember {
 	id: string;
 	messageId: string;
@@ -24,11 +26,13 @@ interface YuneOptions extends ClientOptions {
 export class Yune extends Client {
 	guildId: string;
 	database: DBWrapper;
+	initialized: boolean;
 
 	commands: Collection<string, Command>;
 	queueMembers: IQueueMember[];
 	nicknameQueue: INicknameQueue[];
 	nicknameTemplate: string;
+	matches: MatchManager;
 
 	constructor(options: YuneOptions) {
 		super(options);
@@ -38,6 +42,8 @@ export class Yune extends Client {
 		this.commands = new Collection();
 		this.queueMembers = [];
 		this.nicknameQueue = [];
+		this.matches = new MatchManager(this);
+		this.initialized = false;
 	}
 
 	async start() {
@@ -50,6 +56,16 @@ export class Yune extends Client {
 
 		// Initialize post loaders
 		await Promise.all(loaders.filter((l) => !l.preLoad).map((l) => l.initialize()));
+
+		// Fetch the main guild members
+		if (this.guild) {
+			await this.guild.members.fetch();
+		}
+
+		// Fetch all InGame matches
+		await this.matches.fetch();
+
+		this.initialized = true;
 	}
 
 	get guild() {

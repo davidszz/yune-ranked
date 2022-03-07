@@ -1,91 +1,82 @@
-import type { GuildChannel, TextBasedChannel } from 'discord.js';
-import i18next, { StringMap, TOptions } from 'i18next';
+import { AuditLogEvent } from 'discord-api-types/v9';
+import type { GuildChannel } from 'discord.js';
 
 import { Yune } from '@client';
+import { tFunction } from '@functions/misc/t-function';
 import { EventListener } from '@structures/EventListener';
+import type { Match } from '@structures/Match';
 import { YuneEmbed } from '@structures/YuneEmbed';
-import { MatchStatus } from '@utils/MatchStatus';
 
 export default class MatchListener extends EventListener {
 	constructor(client: Yune) {
 		super(client, {
-			events: ['channelDelete'],
+			events: ['channelDelete', 'matchCanceled'],
 		});
 	}
 
 	async onChannelDelete(channel: GuildChannel) {
+		if (!this.client.initialized) {
+			return;
+		}
+
 		if (channel.guildId !== channel.client.guildId) {
 			return;
 		}
 
-		const { client, guild } = channel;
+		const match = this.client.matches.cache.find((x) => x.channelIds.some((x) => x === channel.id));
+		if (!match) {
+			return;
+		}
 
-		const matchData = await client.database.matches.findOne(
-			{
-				status: MatchStatus.InGame,
-				guildId: channel.guildId,
-				$or: [
-					{ 'channels.chat': channel.id },
-					{ 'channels.category': channel.id },
-					{ 'channels.redVoice': channel.id },
-					{ 'channels.blueVoice': channel.id },
-				],
-			},
-			'_id matchId queueChannelId createdAt participants.userId channels'
-		);
+		const auditLog = await channel.guild
+			.fetchAuditLogs({
+				type: AuditLogEvent.ChannelDelete,
+				limit: 1,
+			})
+			.then((res) => res.entries.first())
+			.catch<null>(() => null);
 
-		if (matchData?._id) {
-			await client.database.matches.deleteOne(matchData._id);
+		if (!auditLog || auditLog.target.id !== channel.id || auditLog.executor.id === channel.client.user.id) {
+			return;
+		}
 
-			const remainingChannels = Object.values(matchData.channels)
-				.map((x) => guild.channels.cache.get(x))
-				.filter(Boolean);
+		await match.delete();
+		this.client.emit('matchCanceled', match, 'deleted');
+		await match.deleteChannels();
+	}
 
-			if (remainingChannels.length) {
-				for (const channel of remainingChannels) {
-					try {
-						await channel.delete();
-					} catch {
-						// Nothing
-					}
-				}
-			}
+	async onMatchCanceled(match: Match, reason: string) {
+		const t = tFunction(match.guild.preferredLocale ?? 'pt-BR');
 
-			const queueChannel = guild.channels.cache.get(matchData.queueChannelId) as TextBasedChannel;
-			if (queueChannel) {
-				const t = (key: string | string[], options?: TOptions<StringMap>) =>
-					i18next.t(key, { ...options, lng: guild.preferredLocale ?? 'pt-BR' });
-
-				const matchOwner = guild.members.cache.get(matchData.participants[0].userId);
-				const deletedEmbed = new YuneEmbed()
+		if (match.queueChannel) {
+			if (reason === 'deleted') {
+				const embed = new YuneEmbed()
 					.setColor('Red')
 					.setAuthor({
 						name: t('create_queue.embeds.deleted.author', {
-							match_id: matchData.matchId,
+							match_id: match.id,
 						}),
-						iconURL: client.user.displayAvatarURL(),
+						iconURL: match.client.user.displayAvatarURL(),
 					})
 					.setDescription(t('create_queue.embeds.deleted.description'))
 					.addFields(
 						{
 							name: t('create_queue.embeds.deleted.fields.started_at.name'),
 							value: t('create_queue.embeds.deleted.fields.started_at.value', {
-								created_at: matchData.createdAt,
+								created_at: match.createdAt,
 							}),
 							inline: true,
 						},
 						{
 							name: t('create_queue.embeds.deleted.fields.created_by'),
-							value: matchOwner
-								? `**${matchOwner.user.tag}** (${matchOwner.id})`
-								: `<@!${matchData.participants[0].userId}>`,
+							value: match.owner ? `**${match.owner.user.tag}** (${match.ownerId})` : `<@!${match.ownerId}>`,
 							inline: true,
 						}
 					)
 					.setTimestamp();
 
-				await queueChannel.send({
-					embeds: [deletedEmbed],
+				await match.queueChannel.send({
+					embeds: [embed],
 				});
 			}
 		}

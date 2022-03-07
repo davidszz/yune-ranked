@@ -141,7 +141,7 @@ export default class extends Command {
 
 					const matchRank = Ranks[RankUtils.getRankByMmr(totalMmr / participants.filter(Boolean).length)];
 
-					const matchData = await createMatch({
+					const match = await createMatch({
 						guild,
 						queueChannel: channel,
 						teamSize,
@@ -151,8 +151,7 @@ export default class extends Command {
 						})),
 					});
 
-					const chatChannel = guild.channels.cache.get(matchData.channels.chat) as TextBasedChannel;
-					if (chatChannel) {
+					if (match.channels.chat) {
 						const mapParticipants = (users: User[]) =>
 							users.map((x, i) => `${x}${[0, teamSize].includes(i) ? ` ${Emojis.Crown}` : ''}`).join('\n');
 
@@ -160,7 +159,7 @@ export default class extends Command {
 							.setColor('Default')
 							.setAuthor({
 								name: t('create_queue.embeds.chat.author', {
-									match_id: matchData.matchId,
+									match_id: match.id,
 								}),
 								iconURL: client.user.displayAvatarURL(),
 							})
@@ -182,7 +181,7 @@ export default class extends Command {
 								iconURL: guild.iconURL(),
 							});
 
-						await chatChannel.send({
+						await match.channels.chat.send({
 							content: participants.join(' '),
 							embeds: [chatEmbed],
 						});
@@ -204,7 +203,7 @@ export default class extends Command {
 								components: [
 									{
 										type: ComponentType.Button,
-										url: CreateUrl.channel({ guildId: guild.id, channelId: matchData.channels.chat }),
+										url: CreateUrl.channel({ guildId: guild.id, channelId: match.channels.chat?.id }),
 										style: ButtonStyle.Link,
 										label: t('create_queue.buttons.goto_match'),
 									},

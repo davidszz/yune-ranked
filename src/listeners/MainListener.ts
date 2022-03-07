@@ -22,6 +22,10 @@ export default class MainListener extends EventListener {
 	}
 
 	async onInteractionCreate(interaction: Interaction) {
+		if (!this.client.initialized) {
+			return;
+		}
+
 		if (!interaction.isCommand() && !interaction.isContextMenuCommand() && !interaction.isAutocomplete()) {
 			return;
 		}

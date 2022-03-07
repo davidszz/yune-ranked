@@ -33,23 +33,16 @@ export default class extends Command {
 		});
 
 		const matchId = interaction.options.getInteger('partida');
-		const matchData = await interaction.client.database.matches.findOne(
-			{
-				guildId: interaction.guildId,
-				status: MatchStatus.InGame,
-				matchId,
-			},
-			'_id channels'
-		);
+		const match = interaction.client.matches.cache.get(matchId);
 
-		if (!matchData?._id) {
+		if (!match?.inGame) {
 			await interaction.editReply({
 				content: t('cancel_match.errors.not_found'),
 			});
 			return;
 		}
 
-		const matchUrl = CreateUrl.channel({ guildId: interaction.guildId, channelId: matchData.channels.chat });
+		const matchUrl = CreateUrl.channel({ guildId: interaction.guildId, channelId: match.channels.chat.id });
 		const confirmationEmbed = new YuneEmbed()
 			.setColor('Yellow')
 			.setTitle(t('cancel_match.embeds.confirmation.title'))
@@ -68,17 +61,8 @@ export default class extends Command {
 		});
 
 		if (await confirmation.awaitConfirmation()) {
-			await interaction.client.database.matches.deleteOne(matchData._id);
-			const categoryId = matchData.channels.category;
-			const channelIds = [...Object.values(matchData.channels).filter((x) => x !== categoryId), categoryId];
-
-			for (const channelId of channelIds) {
-				try {
-					await interaction.guild.channels.cache.get(channelId)?.delete();
-				} catch (err) {
-					// Nothing
-				}
-			}
+			await match.delete();
+			await match.deleteChannels();
 
 			await interaction.editReply({
 				content: t('cancel_match.canceled', {
