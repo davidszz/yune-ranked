@@ -7,6 +7,8 @@ interface IRankRole {
 
 export interface IGuildSchema {
 	_id: string;
+	name: string;
+	icon: string;
 	teamSize: number;
 	hideParticipantNames: boolean;
 	matchId: number;
@@ -25,6 +27,8 @@ const RankRoleSchema = new Schema<IRankRole>(
 
 export const GuildSchema = new Schema<IGuildSchema>({
 	_id: String,
+	name: String,
+	icon: String,
 	teamSize: Number,
 	hideParticipantNames: Boolean,
 	matchId: Number,
