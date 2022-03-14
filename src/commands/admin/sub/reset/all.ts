@@ -66,10 +66,10 @@ export async function all(interaction: ChatInputCommandInteraction, t: TFunction
 			);
 
 		const confirmation = new ConfirmationEmbed({
-			author: interaction.user,
+			users: [interaction.user],
 			target: interaction,
 			embed: confirmationEmbed,
-			locale: interaction.guildLocale ?? 'pt-BR',
+			t,
 		});
 
 		if (await confirmation.awaitConfirmation()) {
