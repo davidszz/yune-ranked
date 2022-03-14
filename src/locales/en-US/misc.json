@@ -31,6 +31,9 @@
 		"challenger": "{{- e_challenger}} $t(misc:ranks.names.challenger)"
 	},
 	"confirmation_embed": {
+		"errors": {
+			"already_confirmed": "Você já confirmou esta mensagem."
+		},
 		"buttons": {
 			"confirm": "Confirmar",
 			"refuse": "Recusar"

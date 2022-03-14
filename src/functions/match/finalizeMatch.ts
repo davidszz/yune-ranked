@@ -1,13 +1,13 @@
 import type { Yune } from '@client';
 import type { IMatchSchema } from '@database/schemas/MatchSchema';
-import { updateRankRole } from '@functions/member/update-rank-role';
+import { updateRankRole } from '@functions/member/updateRankRole';
 import { DEFAULT_USER_MMR } from '@utils/Constants';
 import { MatchStatus } from '@utils/MatchStatus';
 import { Ranks } from '@utils/Ranks';
 import { RankUtils } from '@utils/RankUtils';
 import { UserRank } from '@utils/UserRank';
 
-import { updateNicknames } from './update-nicknames';
+import { updateNicknames } from './updateNicknames';
 
 interface IFinalizeMatchData {
 	client: Yune;
@@ -35,54 +35,37 @@ export async function finalizeMatch({ client, matchData }: IFinalizeMatchData) {
 		const team = matchData.teams.find((x) => x.teamId === participant.teamId);
 
 		const calcOptions = {
-			mmr: matchMmr,
-			rank: member.rank ?? UserRank.Unranked,
+			matchMmr,
+			mmr: member.mmr ?? DEFAULT_USER_MMR,
 			mvp: participant.mvp,
 		};
 
-		let rank = member.rank ?? UserRank.Unranked;
+		let rank = member.rank ?? UserRank.Iron1;
 
-		let pdl = member.pdl ?? 0;
 		let modifiedPdls = 0;
-		let { mmr } = member;
-
-		const isUnranked = rank === UserRank.Unranked;
+		let { pdl = 0, mmr } = member;
 
 		if (team.win) {
 			const wonPdlAmount = RankUtils.calculateWonPdlAmount(calcOptions);
 			modifiedPdls = wonPdlAmount;
 
-			const newRankIfUnranked = participant.mvp ? UserRank.Bronze3 : UserRank.Bronze1;
-			rank = rank !== UserRank.Unranked ? rank : newRankIfUnranked;
+			mmr += wonPdlAmount;
+			pdl += wonPdlAmount;
 
-			if (isUnranked) {
-				mmr = Ranks[newRankIfUnranked].mmr;
-			} else {
-				mmr += wonPdlAmount;
-				pdl += wonPdlAmount;
-
-				while (pdl >= Ranks[rank].maxPdl && Ranks[rank + 1] !== null) {
-					pdl -= Ranks[rank].maxPdl;
-					rank++;
-				}
+			while (pdl >= Ranks[rank].maxPdl && Ranks[rank + 1] !== null) {
+				pdl -= Ranks[rank].maxPdl;
+				rank++;
 			}
 		} else {
 			const losePdlAmount = RankUtils.calculateLosePdlAmount(calcOptions);
 			modifiedPdls = losePdlAmount;
 
-			const newRankIfUnranked = participant.mvp ? UserRank.Iron2 : UserRank.Iron1;
-			rank = rank !== UserRank.Unranked ? rank : newRankIfUnranked;
-
-			if (isUnranked) {
-				mmr = Ranks[newRankIfUnranked].mmr;
-			} else {
-				mmr = Math.max(mmr - losePdlAmount, 100);
-				if (pdl > 0) {
-					pdl = Math.max(pdl - losePdlAmount, 0);
-				} else if (Ranks[rank - 1] && rank - 1 !== UserRank.Unranked) {
-					pdl = Ranks[rank - 1].maxPdl - losePdlAmount;
-					rank--;
-				}
+			mmr = Math.max(mmr - losePdlAmount, 100);
+			if (pdl > 0) {
+				pdl = Math.max(pdl - losePdlAmount, 0);
+			} else if (Ranks[rank - 1] && rank - 1 !== UserRank.Unranked) {
+				pdl = Ranks[rank - 1].maxPdl - losePdlAmount;
+				rank--;
 			}
 		}
 

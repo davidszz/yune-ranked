@@ -5,16 +5,17 @@ import {
 	ActionRow,
 	MessageAttachment,
 	ButtonComponent,
-	TextBasedChannel,
 	User,
 	ComponentType,
 	ButtonStyle,
+	SelectMenuComponent,
 } from 'discord.js';
 import { on } from 'events';
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
-import { createMatch } from '@functions/match/create-match';
+import { createMatch } from '@functions/match/createMatch';
+import { generateDashboardEmbed } from '@functions/match/generateDashboardEmbed';
 import { MatchStartTemplate } from '@structures/canvas/templates/MatchStartTemplate';
 import { Command } from '@structures/Command';
 import { YuneEmbed } from '@structures/YuneEmbed';
@@ -152,39 +153,58 @@ export default class extends Command {
 					});
 
 					if (match.channels.chat) {
-						const mapParticipants = (users: User[]) =>
-							users.map((x, i) => `${x}${[0, teamSize].includes(i) ? ` ${Emojis.Crown}` : ''}`).join('\n');
-
-						const chatEmbed = new YuneEmbed()
-							.setColor('Default')
-							.setAuthor({
-								name: t('create_queue.embeds.chat.author', {
-									match_id: match.id,
-								}),
-								iconURL: client.user.displayAvatarURL(),
-							})
-							.setDescription(t('create_queue.embeds.chat.description'))
-							.addFields(
+						const dashboardMenu = new SelectMenuComponent()
+							.setCustomId('match_dashboard')
+							.setPlaceholder(t('create_queue.select_menu.placeholder'))
+							.setMaxValues(1)
+							.setOptions(
 								{
-									name: t('create_queue.embeds.chat.fields.team_blue'),
-									value: mapParticipants(participants.slice(0, teamSize)),
-									inline: true,
+									label: t('create_queue.select_menu.options.set_mvp.label'),
+									value: 'set_mvp',
+									description: t('create_queue.select_menu.options.set_mvp.description'),
+									emoji: {
+										id: '952726163132936263',
+									},
 								},
 								{
-									name: t('create_queue.embeds.chat.fields.team_red'),
-									value: mapParticipants(participants.slice(teamSize, teamSize * 2)),
-									inline: true,
+									label: t('create_queue.select_menu.options.set_winner.label'),
+									value: 'set_winner',
+									description: t('create_queue.select_menu.options.set_winner.description'),
+									emoji: {
+										id: '952726163904684042',
+									},
+								},
+								{
+									label: t('create_queue.select_menu.options.finalize.label'),
+									value: 'finalize',
+									description: t('create_queue.select_menu.options.finalize.description'),
+									emoji: {
+										name: '🎌',
+									},
+								},
+								{
+									label: t('create_queue.select_menu.options.cancel.label'),
+									value: 'cancel',
+									description: t('create_queue.select_menu.options.cancel.description'),
+									emoji: {
+										name: '❌',
+									},
 								}
-							)
-							.setFooter({
-								text: t('create_queue.embeds.chat.footer'),
-								iconURL: guild.iconURL(),
+							);
+
+						const dashboardMessage = await match.channels.chat
+							.send({
+								content: participants.join(' '),
+								embeds: [generateDashboardEmbed({ t, match, teamSize })],
+								components: [new ActionRow().addComponents(dashboardMenu)],
+							})
+							.catch(() => {
+								// Nothing
 							});
 
-						await match.channels.chat.send({
-							content: participants.join(' '),
-							embeds: [chatEmbed],
-						});
+						if (dashboardMessage) {
+							await match.setDashboardMessage(dashboardMessage.id);
+						}
 					}
 
 					await interaction.editReply({
@@ -465,7 +485,7 @@ export default class extends Command {
 			const leaveBtn = new ButtonComponent()
 				.setCustomId('leave')
 				.setStyle(ButtonStyle.Primary)
-				.setEmoji({ id: EmojisIds.Left })
+				.setEmoji({ id: EmojisIds.Leave })
 				.setLabel(t('create_queue.buttons.leave'));
 
 			const destroyBtn = new ButtonComponent()

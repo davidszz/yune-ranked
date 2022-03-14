@@ -1,23 +1,21 @@
-import { DEFAULT_USER_MMR } from './Constants';
 import { Ranks } from './Ranks';
 import { UserRank } from './UserRank';
 
 interface PDLCalculatorOptions {
 	mmr: number;
-	rank: UserRank;
+	matchMmr: number;
 	mvp?: boolean;
 }
 
 export class RankUtils {
 	static calculateWonPdlAmount(options: PDLCalculatorOptions) {
-		const rank = Ranks[options.rank];
-		const currentRankBaseMMR = rank.mmr > 0 ? rank.mmr : DEFAULT_USER_MMR;
-		const wonPdl = (options.mmr / currentRankBaseMMR) * 15 * (options.mvp ? 1.2 : 1);
+		const wonPdl = Math.min(options.mmr / options.matchMmr, 1.8) * 15 * (options.mvp ? 1.2 : 1);
 		return wonPdl > 0 ? Math.floor(wonPdl) : 5;
 	}
 
 	static calculateLosePdlAmount(options: PDLCalculatorOptions) {
-		return Math.max(30 - this.calculateWonPdlAmount(options), 5);
+		const losePdl = Math.min(Math.min(options.matchMmr / options.mmr, 1.8) * 15 * (options.mvp ? 1.2 : 1), 24);
+		return Math.floor(30 - losePdl);
 	}
 
 	static getRankByMmr(mmr: number) {

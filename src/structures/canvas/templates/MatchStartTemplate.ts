@@ -122,9 +122,9 @@ export class MatchStartTemplate extends BaseCanvas<IMatchStartUser[]> {
 		});
 
 		if (data.isCaptain) {
-			const crownIcon = await this.loadImage(Assets.images('icons/crown.png'));
-			if (crownIcon) {
-				canvas.ctx.drawImage(crownIcon, 32 + padding + usernameWidth + 6, 0, 14, 14);
+			const captainIcon = await this.loadImage(Assets.images('icons/captain.png'));
+			if (captainIcon) {
+				canvas.ctx.drawImage(captainIcon, 32 + padding + usernameWidth + 6, 0, 14, 14);
 			}
 		}
 

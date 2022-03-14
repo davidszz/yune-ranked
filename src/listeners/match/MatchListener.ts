@@ -2,7 +2,7 @@ import { AuditLogEvent } from 'discord-api-types/v9';
 import type { GuildChannel } from 'discord.js';
 
 import { Yune } from '@client';
-import { tFunction } from '@functions/misc/t-function';
+import { tFunction } from '@functions/misc/tFunction';
 import { EventListener } from '@structures/EventListener';
 import type { Match } from '@structures/Match';
 import { YuneEmbed } from '@structures/YuneEmbed';
@@ -36,7 +36,7 @@ export default class MatchListener extends EventListener {
 			.then((res) => res.entries.first())
 			.catch<null>(() => null);
 
-		if (!auditLog || auditLog.target.id !== channel.id || auditLog.executor.id === channel.client.user.id) {
+		if (!auditLog || (<any>auditLog.target).id !== channel.id || auditLog.executor.id === channel.client.user.id) {
 			return;
 		}
 

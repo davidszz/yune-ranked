@@ -2,7 +2,7 @@ import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'disco
 import type { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
-import { finalizeMatch } from '@functions/match/finalize-match';
+import { finalizeMatch } from '@functions/match/finalizeMatch';
 import { Command } from '@structures/Command';
 import { ConfirmationEmbed } from '@structures/ConfirmationEmbed';
 import { YuneEmbed } from '@structures/YuneEmbed';

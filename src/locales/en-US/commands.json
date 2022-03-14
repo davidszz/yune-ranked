@@ -33,7 +33,7 @@
 				"invalid_length": "Forneça um nome de atividade válida entre **2** e **300 caracteres**."
 			},
 			"changed": "Você alterou a atividade do bot com sucesso! A atividade pode demorar para ser alterada.",
-			"changed_streaming": "Você alterou a atividade do bot com sucesso! A atividade pode demorar para ser alterada.\n{{- e_info_in}}{{- e_info_fo}}: Caso a URL informada seja inválida a atividade do bot será definida como **Jogando**."
+			"changed_streaming": "Você alterou a atividade do bot com sucesso! A atividade pode demorar para ser alterada.\n{{- e_info}} Caso a URL informada seja inválida a atividade do bot será definida como **Jogando**."
 		}
 	},
 	"rank": {
@@ -107,6 +107,27 @@
 			"destroy": "Destruir",
 			"goto_match": "Ir para partida"
 		},
+		"select_menu": {
+			"placeholder": "Selecione uma opção",
+			"options": {
+				"set_mvp": {
+					"label": "Definir MVP",
+					"description": "Define o jogador MVP da partida"
+				},
+				"set_winner": {
+					"label": "Definir time vencedor",
+					"description": "Define o time vencedor da partida"
+				},
+				"finalize": {
+					"label": "Finalizar",
+					"description": "Finaliza a partida"
+				},
+				"cancel": {
+					"label": "Cancelar",
+					"description": "Cancela a partida"
+				}
+			}
+		},
 		"embeds": {
 			"queue": {
 				"author": "Partida de {{- user}}",
@@ -164,8 +185,9 @@
 				}
 			},
 			"chat": {
-				"author": "Partida iniciada • ID: {{match_id}}",
-				"description": "Use o comando **/ajuda** neste canal para obter os comandos disponíveis durante a partida.",
+				"author": "Partida iniciada",
+				"title": "Partida {{- match_id}}",
+				"description": "Bem vindos ao painel de controle da partida. Aqui você poderá gerenciar as informações da partida utilizando comandos (/) de chat e utilizando o menu abaixo.\n\nUse o comando **/ajuda** neste canal para obter os comandos disponíveis durante a partida.",
 				"fields": {
 					"team_blue": "{{- e_team_blue}} Time azul:",
 					"team_red": "{{- e_team_red}} Time vermelho:"
@@ -461,7 +483,7 @@
 		"embeds": {
 			"template": {
 				"title": "Códigos de assinatura",
-				"description_row": "**Código:** {{- code}}\n**Duração:** {{- duration}}\n**Criado em:** {{- created_at, DD/MM/YYYY HH:mm:ss}}\n**Criado por:** {{- created_by}}",
+				"description_row": "**Código:** {{- code}}\n**Duração:** {{- duration}}\n**Criado em:** <t:{{created_at}}>\n**Criado por:** {{- created_by}}",
 				"footer": "Total: {{total}}"
 			}
 		}
@@ -487,7 +509,7 @@
 		"embed": {
 			"title": "Assinatura de {{- target}}:",
 			"title_yourself": "Sua assinatura:",
-			"description": "Estas são informações basicas da assinatura de um usuário. Futuramente podem haver alterações neste comando.\n\nAssinatura criada por: {{- created_by}}\nAssinatura iniciada em: {{- started_at, DD/MM/YYYY HH:mm:ss}}\nAssinatura expira em: {{- ends_at, DD/MM/YYYY HH:mm:ss}} ({{- ends_at, fromNow(true)}})"
+			"description": "Estas são informações basicas da assinatura de um usuário. Futuramente podem haver alterações neste comando.\n\nAssinatura criada por: {{- created_by}}\nAssinatura iniciada em: <t:{{started_at}}>\nAssinatura expira: <t:{{ends_at}}:R>"
 		}
 	},
 	"banner": {

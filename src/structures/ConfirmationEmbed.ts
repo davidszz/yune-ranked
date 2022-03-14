@@ -12,101 +12,140 @@ import {
 	InteractionType,
 	ComponentType,
 } from 'discord.js';
-import i18next from 'i18next';
+import { EventEmitter } from 'events';
+import type { TFunction } from 'i18next';
 
 interface IConfirmationEmbedData {
-	author: User;
+	users: User[];
+	confirmed?: string[];
 	target: CommandInteraction | Message | TextBasedChannel;
 	embed: Embed;
 	replyTo?: string;
-	locale: string;
+	t: TFunction;
 }
 
-export class ConfirmationEmbed {
-	author: User;
+export class ConfirmationEmbed extends EventEmitter {
+	users: User[];
+	confirmed: string[];
 	target: CommandInteraction | Message | TextBasedChannel;
 	embed: Embed;
 	replyTo?: string;
-	locale: string;
+	t: TFunction;
+
+	on: (event: 'confirm', listener: (user: User, isLast: boolean) => void) => this;
 
 	constructor(data: IConfirmationEmbedData) {
-		this.author = data.author;
+		super();
+
+		this.users = data.users;
 		this.target = data.target;
 		this.embed = data.embed;
 		this.replyTo = data.replyTo;
-		this.locale = data.locale;
+		this.t = data.t;
+
+		this.confirmed = data.confirmed ?? [];
 	}
 
 	async awaitConfirmation(duration = 60000) {
+		const reply = await (() => {
+			if (this.target instanceof Message) {
+				return this.target.edit({
+					embeds: [this.embed],
+					components: [this.generateButtons()],
+				});
+			}
+			if (this.target instanceof CommandInteraction) {
+				return this.target.editReply({
+					embeds: [this.embed],
+					components: [this.generateButtons()],
+				});
+			}
+
+			return this.target.send({
+				embeds: [this.embed],
+				components: [this.generateButtons()],
+				...(this.replyTo ? { reply: { messageReference: this.replyTo } } : {}),
+			});
+		})();
+
+		const collector = new InteractionCollector<ButtonInteraction>(this.target.client, {
+			interactionType: InteractionType.MessageComponent,
+			componentType: ComponentType.Button,
+			filter: (i) => this.users.some((x) => x.id === i.user.id),
+			message: reply,
+			time: duration,
+		});
+
+		return new Promise<string[]>((resolve, reject) => {
+			collector.on('collect', async (i) => {
+				if (this.confirmed.includes(i.user.id)) {
+					await i.reply({
+						content: this.t('misc:confirmation_embed.errors.already_confirmed'),
+						ephemeral: true,
+					});
+					return;
+				}
+
+				i.deferUpdate().catch(() => {
+					// Nothing
+				});
+
+				if (i.customId !== 'confirm') {
+					reject(new Error('refused'));
+					return;
+				}
+
+				this.emit('collect', i.user, this.confirmed.length + 1 >= this.users.length);
+
+				this.confirmed.push(i.user.id);
+				if (this.confirmed.length >= this.users.length) {
+					resolve(this.confirmed);
+					collector.stop('finalized');
+					return;
+				}
+
+				if (reply instanceof Message) {
+					await i.editReply({
+						components: [this.generateButtons()],
+					});
+				}
+			});
+
+			collector.on('end', (_, reason) => {
+				if (reason !== 'finalized') {
+					reject(reason);
+				}
+			});
+		}).then((res) => {
+			if (reply instanceof Message) {
+				reply.delete().catch(() => {
+					// Nothing
+				});
+			}
+			return res;
+		});
+	}
+
+	private generateButtons() {
 		const confirmBtn = new ButtonComponent()
 			.setCustomId('confirm')
-			.setLabel(i18next.t('misc:confirmation_embed.buttons.confirm'))
+			.setLabel(this.t('misc:confirmation_embed.buttons.confirm'))
 			.setStyle(ButtonStyle.Success);
+
+		if (this.users.length > 1) {
+			confirmBtn.setLabel(
+				this.t('misc:confirmation_embed.buttons.confirm_multiple', {
+					amount: this.confirmed.length,
+					max: this.users.length,
+				})
+			);
+		}
 
 		const refuseBtn = new ButtonComponent()
 			.setCustomId('refuse')
-			.setLabel(i18next.t('misc:confirmation_embed.buttons.refuse'))
+			.setLabel(this.t('misc:confirmation_embed.buttons.refuse'))
 			.setStyle(ButtonStyle.Danger);
 
-		try {
-			const reply = await (() => {
-				if (this.target instanceof Message) {
-					return this.target.edit({
-						embeds: [this.embed],
-						components: [new ActionRow().addComponents(confirmBtn, refuseBtn)],
-					});
-				}
-				if (this.target instanceof CommandInteraction) {
-					return this.target.editReply({
-						embeds: [this.embed],
-						components: [new ActionRow().addComponents(confirmBtn, refuseBtn)],
-					});
-				}
-
-				return this.target.send({
-					embeds: [this.embed],
-					components: [new ActionRow().addComponents(confirmBtn, refuseBtn)],
-					...(this.replyTo ? { reply: { messageReference: this.replyTo } } : {}),
-				});
-			})();
-
-			const collector = new InteractionCollector<ButtonInteraction>(this.target.client, {
-				interactionType: InteractionType.MessageComponent,
-				componentType: ComponentType.Button,
-				filter: (i) => i.user.id === this.author.id,
-				message: reply,
-				max: 1,
-				time: duration,
-			});
-
-			return new Promise((resolve) => {
-				collector.on('collect', (i) => {
-					i.deferUpdate().catch(() => {
-						// Nothing
-					});
-
-					resolve(i.customId === 'confirm');
-				});
-
-				collector.on('end', (collected) => {
-					if (collected?.size) {
-						resolve(collected.first().customId === 'confirm');
-					} else {
-						resolve(false);
-					}
-				});
-			})
-				.then((res) => {
-					if (reply instanceof Message) {
-						reply.delete().catch(() => {
-							// Nothing
-						});
-					}
-					return res;
-				})
-				.catch(() => false);
-		} catch {
-			return false;
-		}
+		return new ActionRow().addComponents(confirmBtn, refuseBtn);
 	}
 }

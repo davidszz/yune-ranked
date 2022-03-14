@@ -84,7 +84,12 @@ async function createClient(data: IClientSchema) {
 	const client = new Yune({
 		token: data.token,
 		guildId: data.guildId,
-		intents: [IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMembers, IntentsBitField.Flags.GuildMembers],
+		intents: [
+			IntentsBitField.Flags.Guilds,
+			IntentsBitField.Flags.GuildMembers,
+			IntentsBitField.Flags.GuildMembers,
+			IntentsBitField.Flags.GuildMessages,
+		],
 		database,
 	});
 

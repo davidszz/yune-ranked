@@ -11,17 +11,14 @@ export const Emojis = {
 	Challenger: '<:challenger:936795758668169226>',
 	EmptyUser: '<:empty_user:936917351918604298>',
 	AcceptedUser: '<:accepted_user:936917351918628914>',
-	Join: '<:join:936935440307613716>',
-	Left: '<:left:936935440257269770>',
-	ToggleOn: '<:toggle_on:937221783604584458>',
-	ToggleOff: '<:toggle_off:937221783604563988>',
-	Crown: '<:icrown:943643271299735602>',
-	TeamBlue: '<:team_blue:944303523171016705>',
-	TeamRed: '<:team_red:944303523267493938>',
+	Join: '<:join:952723191778914336>',
+	Leave: '<:leave:952723191455973407>',
+	Captain: '<:captain:952725352751444008>',
+	TeamBlue: '<:team_blue:952725352420098079>',
+	TeamRed: '<:team_red:952725353024082050>',
 	Copy: '<:copy_paste:945130219730255922>',
 	Info: '<:info:945132548609155132>',
-	InfoIn: '<:info_in:945387615287377950>',
-	InfoFo: '<:info_fo:945387615190921226>',
+	CheckCircle: '<:check_circle:952741238501675009>',
 };
 
 export const EmojisIds = Object.fromEntries(

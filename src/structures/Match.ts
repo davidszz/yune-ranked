@@ -3,6 +3,7 @@ import {
 	Collection,
 	GuildMember,
 	GuildMemberResolvable,
+	MessageResolvable,
 	TextBasedChannel,
 	VoiceChannel,
 } from 'discord.js';
@@ -108,6 +109,17 @@ export class Match {
 
 	get createdTimestamp() {
 		return this.createdAt.getTime();
+	}
+
+	isParticipant(member: GuildMemberResolvable) {
+		const memberId = this.guild.members.resolveId(member);
+		return this.participants.some((x) => x.id === memberId);
+	}
+
+	async setDashboardMessage(message: MessageResolvable) {
+		const messageId = typeof message === 'string' ? message : message.id;
+		await this.updateData({ $set: { messageId } });
+		return messageId;
 	}
 
 	async setStatus(status: MatchStatus) {

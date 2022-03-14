@@ -35,6 +35,7 @@ export interface IMatchSchema {
 		redVoice: string;
 	};
 	queueChannelId: string;
+	messageId: string;
 	status: MatchStatus;
 	teams: [IMatchTeam, IMatchTeam];
 	participants: IMatchParticipant[];
@@ -106,6 +107,7 @@ export const MatchSchema = new Schema<IMatchSchema>(
 			type: String,
 			required: true,
 		},
+		messageId: String,
 		status: {
 			type: Number,
 			required: true,

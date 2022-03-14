@@ -1,0 +1,20 @@
+{
+	"match_control": {
+		"errors": {
+			"only_one_action": "Só é possivel executar uma ação por vez neste canal. Aguarde por favor.",
+			"invalid_match_participant": "Este usuário não é um participante da partida atual."
+		},
+		"embeds": {
+			"confirmation_mvp": {
+				"title": "{{- e_check_circle}} Confirmação dos capitões",
+				"description": "É necessário que os capitões de ambas equipes confirme esta mensagem para definir {{- target}} como MVP da partida."
+			},
+			"confirmation_canceled": {
+				"title": "Confirmação cancelada",
+				"description": "A confirmação atual foi cancelada."
+			}
+		},
+		"provide_a_mvp": "{{- user}}, forneça o ID ou @mencione o usuário que será definido como MVP da partida:",
+		"mvp_set_to": "{{- target}} foi definido como jogador MVP da partida pelos capitões."
+	}
+}
