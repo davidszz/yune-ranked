@@ -42,6 +42,10 @@ export class Match {
 		return this._data.status;
 	}
 
+	set status(status: MatchStatus) {
+		this._data.status = status;
+	}
+
 	get inGame() {
 		return this._data.status === MatchStatus.InGame;
 	}
@@ -82,6 +86,10 @@ export class Match {
 		});
 	}
 
+	get teamSize() {
+		return Math.ceil(this._data.participants.length / 2);
+	}
+
 	get channels() {
 		return {
 			category: this.guild.channels.resolve(this._data.channels.category) as CategoryChannel,
@@ -114,6 +122,11 @@ export class Match {
 	isParticipant(member: GuildMemberResolvable) {
 		const memberId = this.guild.members.resolveId(member);
 		return this.participants.some((x) => x.id === memberId);
+	}
+
+	isCaptain(member: GuildMemberResolvable) {
+		const memberId = this.guild.members.resolveId(member);
+		return this.captains.some((x) => x.id === memberId);
 	}
 
 	async setDashboardMessage(message: MessageResolvable) {

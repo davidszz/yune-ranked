@@ -36,8 +36,10 @@
 		},
 		"buttons": {
 			"confirm": "Confirmar",
+			"confirm_multiple": "Confirmar ({{amount}}/{{max}})",
 			"refuse": "Recusar"
-		}
+		},
+		"confirmed": "{{- e_check_circle}} Você confirmou esta mensagem."
 	},
 	"paginated_embed": {
 		"template": {

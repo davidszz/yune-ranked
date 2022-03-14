@@ -86,10 +86,6 @@ export class ConfirmationEmbed extends EventEmitter {
 					return;
 				}
 
-				i.deferUpdate().catch(() => {
-					// Nothing
-				});
-
 				if (i.customId !== 'confirm') {
 					reject(new Error('refused'));
 					return;
@@ -103,9 +99,13 @@ export class ConfirmationEmbed extends EventEmitter {
 					collector.stop('finalized');
 					return;
 				}
+				await i.reply({
+					content: this.t('misc:confirmation_embed.confirmed'),
+					ephemeral: true,
+				});
 
 				if (reply instanceof Message) {
-					await i.editReply({
+					await reply.edit({
 						components: [this.generateButtons()],
 					});
 				}
@@ -113,17 +113,26 @@ export class ConfirmationEmbed extends EventEmitter {
 
 			collector.on('end', (_, reason) => {
 				if (reason !== 'finalized') {
-					reject(reason);
+					reject(new Error(reason));
 				}
 			});
-		}).then((res) => {
-			if (reply instanceof Message) {
-				reply.delete().catch(() => {
-					// Nothing
-				});
-			}
-			return res;
-		});
+		})
+			.then((res) => {
+				if (reply instanceof Message) {
+					reply.delete().catch(() => {
+						// Nothing
+					});
+				}
+				return res;
+			})
+			.catch((err) => {
+				if (reply instanceof Message) {
+					reply.delete().catch(() => {
+						// Nothing
+					});
+				}
+				throw new Error(err);
+			});
 	}
 
 	private generateButtons() {

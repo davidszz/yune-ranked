@@ -1,20 +1,56 @@
 {
 	"match_control": {
 		"errors": {
+			"no_permission": "Somente os capitães da partida e os administradores do servidor podem usar esta ação.",
 			"only_one_action": "Só é possivel executar uma ação por vez neste canal. Aguarde por favor.",
-			"invalid_match_participant": "Este usuário não é um participante da partida atual."
+			"invalid_match_participant": "Este usuário não é um participante da partida atual.",
+			"no_mvp": "É necessário definir o jogador MVP antes de finalizar a partida.",
+			"no_team_winner": "É necessário definir o time vencedor antes de finalizar a partida."
+		},
+		"variables": {
+			"team_blue": "{{- e_team_blue}} Time azul",
+			"team_red": "{{- e_team_red}} Time vermelho"
+		},
+		"select_menus": {
+			"team_winner": {
+				"placeholder": "Selecione o time vencedor",
+				"options": {
+					"team_blue": {
+						"label": "Time azul",
+						"description": "Define o time azul como vencedor"
+					},
+					"team_red": {
+						"label": "Time vermelho",
+						"description": "Define o time vermelho como vencedor"
+					}
+				}
+			}
 		},
 		"embeds": {
 			"confirmation_mvp": {
-				"title": "{{- e_check_circle}} Confirmação dos capitões",
-				"description": "É necessário que os capitões de ambas equipes confirme esta mensagem para definir {{- target}} como MVP da partida."
+				"title": "{{- e_check_circle}} Confirmação dos capitães",
+				"description": "É necessário que os capitães de ambas equipes confirme esta mensagem para definir {{- target}} como MVP da partida."
+			},
+			"confirmation_team_winner": {
+				"title": "{{- e_check_circle}} Confirmação dos capitães",
+				"description": "É necessário que os capitães de ambas equipes confirmem esta mensagem para definir o time **$t(events:match_control.variables.{{- team}})** como time vencedor da partida."
+			},
+			"confirmation_finalize": {
+				"title": "{{- e_check_circle}} Confirmação de finalização",
+				"description": "É necessário que os capitães de ambas equipes confirmem a finalização da partida atual."
 			},
 			"confirmation_canceled": {
 				"title": "Confirmação cancelada",
 				"description": "A confirmação atual foi cancelada."
+			},
+			"finalized": {
+				"title": "Partida finalizada",
+				"description": "A pontuação dos usuários já foi atualizada e os canais serão deletados em breve."
 			}
 		},
-		"provide_a_mvp": "{{- user}}, forneça o ID ou @mencione o usuário que será definido como MVP da partida:",
-		"mvp_set_to": "{{- target}} foi definido como jogador MVP da partida pelos capitões."
+		"provide_a_mvp": "{{- user}}, forneça o ID ou @mencione o usuário que será definido como MVP da partida ou digite `cancelar` para cancelar esta ação:",
+		"mvp_set_to": "{{- target}} foi definido como jogador MVP da partida pelos capitães.",
+		"team_winner_set_to": "O **$t(events:match_control.variables.{{team_winner}})** foi definido como time vecendor pelos capitães.",
+		"select_team_winner": "Selecione o time vencedor da partida:"
 	}
 }

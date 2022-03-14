@@ -181,14 +181,6 @@ export default class extends Command {
 									emoji: {
 										name: '🎌',
 									},
-								},
-								{
-									label: t('create_queue.select_menu.options.cancel.label'),
-									value: 'cancel',
-									description: t('create_queue.select_menu.options.cancel.description'),
-									emoji: {
-										name: '❌',
-									},
 								}
 							);
 
