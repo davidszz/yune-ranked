@@ -4,6 +4,7 @@ import type { TFunction } from 'i18next';
 import { Match } from '@structures/Match';
 import { YuneEmbed } from '@structures/YuneEmbed';
 import { Emojis } from '@utils/Emojis';
+import { TeamId } from '@utils/TeamId';
 
 interface IGenerateDashboardEmbedOptions {
 	t: TFunction;
@@ -24,7 +25,16 @@ export function generateDashboardEmbed({ t, match, teamSize }: IGenerateDashboar
 			iconURL: match.client.user.displayAvatarURL(),
 		})
 		.setTitle(t('create_queue.embeds.chat.title', { match_id: match.id }))
-		.setDescription(t('create_queue.embeds.chat.description'))
+		.setDescription(
+			t('create_queue.embeds.chat.description', {
+				mvp: match.mvpMember?.toString() ?? t('create_queue.embeds.chat.variables.not_defined'),
+				team_winner: match.teams.some((x) => x.win)
+					? t('create_queue.embeds.chat.variables.team', {
+							context: match.teams.find((x) => x.win).id === TeamId.Red ? 'red' : 'blue',
+					  })
+					: t('create_queue.embeds.chat.variables.not_defined'),
+			})
+		)
 		.addFields(
 			{
 				name: t('create_queue.embeds.chat.fields.team_blue'),
