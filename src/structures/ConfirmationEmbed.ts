@@ -99,15 +99,18 @@ export class ConfirmationEmbed extends EventEmitter {
 					collector.stop('finalized');
 					return;
 				}
+
 				await i.reply({
 					content: this.t('misc:confirmation_embed.confirmed'),
 					ephemeral: true,
 				});
 
 				if (reply instanceof Message) {
-					await reply.edit({
-						components: [this.generateButtons()],
-					});
+					await reply
+						.edit({
+							components: [this.generateButtons()],
+						})
+						.catch(() => undefined);
 				}
 			});
 
@@ -119,17 +122,13 @@ export class ConfirmationEmbed extends EventEmitter {
 		})
 			.then((res) => {
 				if (reply instanceof Message) {
-					reply.delete().catch(() => {
-						// Nothing
-					});
+					reply.delete().catch(() => undefined);
 				}
 				return res;
 			})
 			.catch((err) => {
 				if (reply instanceof Message) {
-					reply.delete().catch(() => {
-						// Nothing
-					});
+					reply.delete().catch(() => undefined);
 				}
 				throw new Error(err);
 			});
