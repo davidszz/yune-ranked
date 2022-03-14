@@ -55,10 +55,10 @@ export async function loses(interaction: ChatInputCommandInteraction, t: TFuncti
 			);
 
 		const confirmation = new ConfirmationEmbed({
-			author: interaction.user,
+			users: [interaction.user],
 			target: interaction,
 			embed: confirmationEmbed,
-			locale: interaction.guildLocale ?? 'pt-BR',
+			t,
 		});
 
 		if (await confirmation.awaitConfirmation()) {
