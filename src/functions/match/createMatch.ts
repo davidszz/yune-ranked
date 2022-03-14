@@ -26,7 +26,7 @@ export async function createMatch({ guild, queueChannel, participants, teamSize 
 		permissionOverwrites: [
 			{
 				id: everyone.id,
-				deny: ['SendMessages'],
+				deny: ['ViewChannel', 'SendMessages'],
 			},
 			...participants.map<OverwriteResolvable>((x) => ({
 				id: x.user.id,
