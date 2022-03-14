@@ -44,4 +44,10 @@ export class Utils {
 	static pascalToSnakecase(text: string) {
 		return text.replace(/\.?([A-Z]+)/g, (x, y) => `_${y.toLowerCase()}`).replace(/^_/, '');
 	}
+
+	static async wait(delay: number) {
+		return new Promise((resolve) => {
+			setTimeout(resolve, delay);
+		});
+	}
 }

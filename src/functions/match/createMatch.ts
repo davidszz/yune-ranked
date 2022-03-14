@@ -3,6 +3,7 @@ import { ChannelType, Guild, GuildMember, OverwriteResolvable, TextBasedChannel,
 import { tFunction } from '@functions/misc/tFunction';
 import { MatchStatus } from '@utils/MatchStatus';
 import { TeamId } from '@utils/TeamId';
+import { Utils } from '@utils/Utils';
 
 interface ICreateMatchData {
 	guild: Guild;
@@ -66,10 +67,11 @@ export async function createMatch({ guild, queueChannel, participants, teamSize 
 	});
 
 	const moveMembersTo = async (members: GuildMember[], channel: VoiceChannel) => {
-		for (const member of members.filter((m) => !!m && !!m.voice.channel)) {
+		for (const member of members.filter((m) => !!m?.voice.channel)) {
 			if (member.voice.channelId !== channel.id) {
 				try {
 					await member.voice.setChannel(channel);
+					await Utils.wait(1250);
 				} catch {
 					// Nothing
 				}
@@ -77,6 +79,11 @@ export async function createMatch({ guild, queueChannel, participants, teamSize 
 		}
 	};
 	const members = participants.map((x) => guild.members.cache.get(x.user.id));
+	const oldChannels = members.map((x) => ({
+		id: x.id,
+		channelId: x.voice?.channelId,
+	}));
+
 	await moveMembersTo(members.slice(0, teamSize), blueVoice);
 	await moveMembersTo(members.slice(teamSize, teamSize * 2), redVoice);
 
@@ -108,6 +115,7 @@ export async function createMatch({ guild, queueChannel, participants, teamSize 
 					userId: x.user.id,
 					isCaptain: [0, teamSize].includes(i),
 					teamId: i < teamSize ? TeamId.Blue : TeamId.Red,
+					lastCallId: oldChannels.find((c) => c.id === x.user.id).channelId,
 				})),
 				createdAt: new Date(),
 				updatedAt: new Date(),
