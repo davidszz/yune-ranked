@@ -43,7 +43,7 @@ export async function finalizeMatch({ client, matchData }: IFinalizeMatchData) {
 		let rank = member.rank ?? UserRank.Iron1;
 
 		let modifiedPdls = 0;
-		let { pdl = 0, mmr } = member;
+		let { pdl = 0, mmr = DEFAULT_USER_MMR } = member;
 
 		if (team.win) {
 			const wonPdlAmount = RankUtils.calculateWonPdlAmount(calcOptions);
