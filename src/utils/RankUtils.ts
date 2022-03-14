@@ -9,12 +9,12 @@ interface PDLCalculatorOptions {
 
 export class RankUtils {
 	static calculateWonPdlAmount(options: PDLCalculatorOptions) {
-		const wonPdl = Math.min(options.mmr / options.matchMmr, 1.8) * 15 * (options.mvp ? 1.2 : 1);
+		const wonPdl = Math.min(options.matchMmr / options.mmr, 1.8) * 15 * (options.mvp ? 1.2 : 1);
 		return wonPdl > 0 ? Math.floor(wonPdl) : 5;
 	}
 
 	static calculateLosePdlAmount(options: PDLCalculatorOptions) {
-		const losePdl = Math.min(Math.min(options.matchMmr / options.mmr, 1.8) * 15 * (options.mvp ? 1.2 : 1), 24);
+		const losePdl = this.calculateWonPdlAmount(options);
 		return Math.floor(30 - losePdl);
 	}
 
