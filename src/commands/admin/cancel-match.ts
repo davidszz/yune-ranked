@@ -6,7 +6,6 @@ import { Command } from '@structures/Command';
 import { ConfirmationEmbed } from '@structures/ConfirmationEmbed';
 import { YuneEmbed } from '@structures/YuneEmbed';
 import { CreateUrl } from '@utils/Constants';
-import { MatchStatus } from '@utils/MatchStatus';
 
 export default class extends Command {
 	constructor(client: Yune) {
@@ -54,13 +53,15 @@ export default class extends Command {
 			);
 
 		const confirmation = new ConfirmationEmbed({
-			author: interaction.user,
+			users: [interaction.user],
 			target: interaction,
 			embed: confirmationEmbed,
-			locale: interaction.guildLocale ?? 'pt-BR',
+			t,
 		});
 
-		if (await confirmation.awaitConfirmation()) {
+		const confirmed = await confirmation.awaitConfirmation().catch(() => false);
+
+		if (confirmed) {
 			await match.delete();
 			await match.deleteChannels();
 

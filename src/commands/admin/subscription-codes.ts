@@ -51,7 +51,7 @@ export default class extends Command {
 				return t('subscription_codes.embeds.template.description_row', {
 					code: value.code,
 					duration: TimeUtils.humanizeDuration(value.duration),
-					created_at: value.createdAt,
+					created_at: Math.floor(value.createdAt.getTime() / 1000),
 					created_by: `<@!${value.createdBy}>`,
 				}).concat('\n');
 			},

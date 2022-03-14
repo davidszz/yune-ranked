@@ -3,6 +3,7 @@ import {
 	Collection,
 	GuildMember,
 	GuildMemberResolvable,
+	MessageResolvable,
 	TextBasedChannel,
 	VoiceChannel,
 } from 'discord.js';
@@ -39,6 +40,10 @@ export class Match {
 
 	get status() {
 		return this._data.status;
+	}
+
+	set status(status: MatchStatus) {
+		this._data.status = status;
 	}
 
 	get inGame() {
@@ -81,6 +86,10 @@ export class Match {
 		});
 	}
 
+	get teamSize() {
+		return Math.ceil(this._data.participants.length / 2);
+	}
+
 	get channels() {
 		return {
 			category: this.guild.channels.resolve(this._data.channels.category) as CategoryChannel,
@@ -108,6 +117,22 @@ export class Match {
 
 	get createdTimestamp() {
 		return this.createdAt.getTime();
+	}
+
+	isParticipant(member: GuildMemberResolvable) {
+		const memberId = this.guild.members.resolveId(member);
+		return this.participants.some((x) => x.id === memberId);
+	}
+
+	isCaptain(member: GuildMemberResolvable) {
+		const memberId = this.guild.members.resolveId(member);
+		return this.captains.some((x) => x.id === memberId);
+	}
+
+	async setDashboardMessage(message: MessageResolvable) {
+		const messageId = typeof message === 'string' ? message : message.id;
+		await this.updateData({ $set: { messageId } });
+		return messageId;
 	}
 
 	async setStatus(status: MatchStatus) {

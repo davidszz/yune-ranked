@@ -33,7 +33,7 @@
 				"invalid_length": "Forneça um nome de atividade válida entre **2** e **300 caracteres**."
 			},
 			"changed": "Você alterou a atividade do bot com sucesso! A atividade pode demorar para ser alterada.",
-			"changed_streaming": "Você alterou a atividade do bot com sucesso! A atividade pode demorar para ser alterada.\n{{- e_info_in}}{{- e_info_fo}}: Caso a URL informada seja inválida a atividade do bot será definida como **Jogando**."
+			"changed_streaming": "Você alterou a atividade do bot com sucesso! A atividade pode demorar para ser alterada.\n{{- e_info}} Caso a URL informada seja inválida a atividade do bot será definida como **Jogando**."
 		}
 	},
 	"rank": {
@@ -107,6 +107,23 @@
 			"destroy": "Destruir",
 			"goto_match": "Ir para partida"
 		},
+		"select_menu": {
+			"placeholder": "Selecione uma opção",
+			"options": {
+				"set_mvp": {
+					"label": "Definir MVP",
+					"description": "Define o jogador MVP da partida"
+				},
+				"set_winner": {
+					"label": "Definir time vencedor",
+					"description": "Define o time vencedor da partida"
+				},
+				"finalize": {
+					"label": "Finalizar",
+					"description": "Finaliza a partida"
+				}
+			}
+		},
 		"embeds": {
 			"queue": {
 				"author": "Partida de {{- user}}",
@@ -164,8 +181,14 @@
 				}
 			},
 			"chat": {
-				"author": "Partida iniciada • ID: {{match_id}}",
-				"description": "Use o comando **/ajuda** neste canal para obter os comandos disponíveis durante a partida.",
+				"variables": {
+					"not_defined": "Ainda não definido",
+					"team_blue": "{{- e_team_blue}} Time azul",
+					"team_red": "{{- e_team_red}} Time vermelho"
+				},
+				"author": "Partida iniciada",
+				"title": "Partida {{- match_id}}",
+				"description": "Bem vindos ao painel de controle da partida. Aqui você poderá gerenciar as informações da partida utilizando comandos (/) de chat e utilizando o menu abaixo.\n\nUse o comando **/ajuda** neste canal para obter os comandos disponíveis durante a partida.\n\n`⭐` **MVP:** {{- mvp}}\n`🏆` **Time vencedor:** {{- team_winner}}",
 				"fields": {
 					"team_blue": "{{- e_team_blue}} Time azul:",
 					"team_red": "{{- e_team_red}} Time vermelho:"
@@ -184,36 +207,6 @@
 		"turn_on": "Agora o nome dos participantes **não aparecerá** durante as filas de partidas.",
 		"turn_off": "Agora o nome dos participantes **aparecerá** durante as filas de partidas."
 	},
-	"finalize": {
-		"errors": {
-			"not_found": "Nenhuma partida foi encontrada com este ID.",
-			"invalid_match_channel": "Este canal não é o canal de uma partida ativa.",
-			"no_permission": "Somente os capitães da partida ou administradores do servidor podem finalizar uma partida.",
-			"no_mvp": "É necessário definir o **jogador MVP** da partida antes de finaliza-la.",
-			"no_team_winner": "É necessário definir o **time vencedor** da partida antes de finaliza-la."
-		},
-		"embeds": {
-			"confirmation": {
-				"title": "Confirmar finalização",
-				"description": "Confirme os dados para finalização da partida e use os botões abaixo para finaliza-la ou cancelar a finalização.\n\n***Esta ação é irreversivel.***",
-				"fields": {
-					"team_winner": {
-						"name": "Time vencedor:",
-						"values": {
-							"team_blue": "{{- e_team_blue}} Time azul",
-							"team_red": "{{- e_team_red}} Time vermelho"
-						}
-					},
-					"mvp_player": "Jogador MVP:"
-				}
-			},
-			"finalized": {
-				"title": "Partida finalizada!",
-				"description": "Esta partida foi finalizada por um **administrador ou capitão**. Os canais serão deletados automaticamente em **10 segundos**."
-			}
-		},
-		"finalized": "{{- author}}, você finalizou a partida **{{match_id}}** com sucesso!"
-	},
 	"help": {
 		"errors": {
 			"no_commands": "Não há nenhum comando disponível no momento.",
@@ -229,31 +222,6 @@
 				"footer": "{{total_commands}} comandos"
 			}
 		}
-	},
-	"mvp": {
-		"errors": {
-			"invalid_match_channel": "Este não é um canal válido de uma partida ativa.",
-			"no_permission": "Somente os paticipantes da partida e os administradores do servidor podem definir o **MVP** da partida.",
-			"invalid_user": "Este não é um usuário válido desta partida.",
-			"same_mvp": "Este usuário já é o **MVP** da partida."
-		},
-		"current_mvp": "O jogador **MVP** atual da partida é: {{- user}}",
-		"no_mvp": "Não há nenhum jogador **MVP** definido até o momento.",
-		"changed": "Você definiu {{- user}} como o jogador **MVP** da partida."
-	},
-	"winner": {
-		"errors": {
-			"invalid_match_channel": "Este não é um canal válido de uma partida ativa.",
-			"no_permission": "Somente os paticipantes da partida e os administradores do servidor podem definir o time vencedor da partida.",
-			"same_winner": "Este time já foi definido como o time vencedor desta partida."
-		},
-		"teams": {
-			"blue": "{{- e_team_blue}} Time azul",
-			"red": "{{- e_team_red}} Time vermelho"
-		},
-		"current_winner": "Time vencedor atual: **{{- current_winner}}**",
-		"no_winner": "Não há nenhum time vencedor definido até o momento.",
-		"changed": "Você definiu o time vencedor da partida como: **{{- winner}}**"
 	},
 	"surrender": {
 		"errors": {
@@ -276,8 +244,8 @@
 		},
 		"embeds": {
 			"confirmation": {
-				"title": "Confirmar cancelamento de partida",
-				"description": "Deseja mesmo cancelar a [**partida {{match_id}}**](<{{- match_url}}>)?\n**ATENÇÃO!** Está ação é irreversivel."
+				"title": "{{- e_check_circle}} Confirmar cancelamento de partida",
+				"description": "Tem certeza que deseja cancelar a [**partida {{match_id}}**](<{{- match_url}}>)?"
 			}
 		},
 		"confirmation_canceled": "Você cancelou o cancelamento da [**partida {{match_id}}**](<{{- match_url}}>)!",
@@ -461,7 +429,7 @@
 		"embeds": {
 			"template": {
 				"title": "Códigos de assinatura",
-				"description_row": "**Código:** {{- code}}\n**Duração:** {{- duration}}\n**Criado em:** {{- created_at, DD/MM/YYYY HH:mm:ss}}\n**Criado por:** {{- created_by}}",
+				"description_row": "**Código:** {{- code}}\n**Duração:** {{- duration}}\n**Criado em:** <t:{{created_at}}>\n**Criado por:** {{- created_by}}",
 				"footer": "Total: {{total}}"
 			}
 		}
@@ -487,7 +455,7 @@
 		"embed": {
 			"title": "Assinatura de {{- target}}:",
 			"title_yourself": "Sua assinatura:",
-			"description": "Estas são informações basicas da assinatura de um usuário. Futuramente podem haver alterações neste comando.\n\nAssinatura criada por: {{- created_by}}\nAssinatura iniciada em: {{- started_at, DD/MM/YYYY HH:mm:ss}}\nAssinatura expira em: {{- ends_at, DD/MM/YYYY HH:mm:ss}} ({{- ends_at, fromNow(true)}})"
+			"description": "Estas são informações basicas da assinatura de um usuário. Futuramente podem haver alterações neste comando.\n\nAssinatura criada por: {{- created_by}}\nAssinatura iniciada em: <t:{{started_at}}>\nAssinatura expira: <t:{{ends_at}}:R>"
 		}
 	},
 	"banner": {

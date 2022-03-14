@@ -53,8 +53,8 @@ export default class extends Command {
 			)
 			.setDescription(
 				t('subscription.embed.description', {
-					started_at: targetData.subscribedAt,
-					ends_at: targetData.subscriptionEndsAt,
+					started_at: Math.floor(targetData.subscribedAt.getTime() / 1000),
+					ends_at: Math.floor(targetData.subscriptionEndsAt.getTime() / 1000),
 					created_by: `<@!${targetData.subscriptionCreatedBy}>`,
 				})
 			);

@@ -1,6 +1,6 @@
 import { ChannelType, Guild, GuildMember, OverwriteResolvable, TextBasedChannel, User, VoiceChannel } from 'discord.js';
 
-import { tFunction } from '@functions/misc/t-function';
+import { tFunction } from '@functions/misc/tFunction';
 import { MatchStatus } from '@utils/MatchStatus';
 import { TeamId } from '@utils/TeamId';
 

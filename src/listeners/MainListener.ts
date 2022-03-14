@@ -2,7 +2,7 @@ import type { Interaction } from 'discord.js';
 import { TFunction } from 'i18next';
 
 import type { Yune } from '@client';
-import { tFunction } from '@functions/misc/t-function';
+import { tFunction } from '@functions/misc/tFunction';
 import { Logger } from '@services/Logger';
 import { EventListener } from '@structures/EventListener';
 import { DEFAULT_NICKNAME_TEMPLATE } from '@utils/Constants';

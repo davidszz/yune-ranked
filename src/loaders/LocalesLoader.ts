@@ -30,7 +30,7 @@ export class LocalesLoader extends Loader {
 			fallbackLng: ['pt-BR', 'en-US'],
 			defaultNS: 'commands',
 			lng: 'pt-BR',
-			ns: ['commands', 'misc'],
+			ns: ['commands', 'misc', 'events'],
 			interpolation: {
 				skipOnVariables: false,
 				defaultVariables: {

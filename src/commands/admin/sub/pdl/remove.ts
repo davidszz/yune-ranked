@@ -1,8 +1,8 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type { TFunction } from 'i18next';
 
-import { updateNicknames } from '@functions/match/update-nicknames';
-import { updateRankRole } from '@functions/member/update-rank-role';
+import { updateNicknames } from '@functions/match/updateNicknames';
+import { updateRankRole } from '@functions/member/updateRankRole';
 import { Ranks } from '@utils/Ranks';
 import { UserRank } from '@utils/UserRank';
 
