@@ -6,6 +6,7 @@ import { MatchStatus } from '@utils/MatchStatus';
 import { Ranks } from '@utils/Ranks';
 import { RankUtils } from '@utils/RankUtils';
 import { UserRank } from '@utils/UserRank';
+import { Utils } from '@utils/Utils';
 
 import { updateNicknames } from './updateNicknames';
 
@@ -107,7 +108,7 @@ export async function finalizeMatch({ client, matchData }: IFinalizeMatchData) {
 	});
 
 	const match = client.matches.cache.get(matchData.matchId);
-	if (!match.guild) return;
+	if (!match?.guild) return;
 
 	updateNicknames(match.guild);
 
@@ -120,6 +121,25 @@ export async function finalizeMatch({ client, matchData }: IFinalizeMatchData) {
 			};
 		})
 		.filter(Boolean);
+
+	async function moveBack() {
+		for (const { member } of members.filter((x) => !!x?.member?.voice.channel)) {
+			const memberData = matchData.participants.find((x) => x.userId === member.id);
+			if (memberData?.lastCallId && member.voice.channelId !== memberData.lastCallId) {
+				const oldChannel = match.guild.channels.cache.get(memberData.lastCallId);
+				if (oldChannel) {
+					try {
+						await member.voice.setChannel(oldChannel.id);
+						await Utils.wait(1250);
+					} catch {
+						// Nothing
+					}
+				}
+			}
+		}
+	}
+
+	moveBack();
 
 	await updateRankRole({
 		guild: match.guild,

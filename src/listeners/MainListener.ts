@@ -68,7 +68,7 @@ export default class MainListener extends EventListener {
 				}
 			} catch (err) {
 				Logger.error(
-					`<${interaction.guild.name}(${interaction.guild.id})> [${interaction.user.tag}(${interaction.user.id})] #${interaction.channel.name} /${interaction.commandName}:`,
+					`<${interaction.guild?.name}(${interaction.guild.id})> [${interaction.user.tag}(${interaction.user.id})] #${interaction.channel?.name} /${interaction.commandName}:`,
 					err
 				);
 			}

@@ -10,6 +10,7 @@ interface IMatchParticipant {
 	member: string | Partial<IMemberSchema>;
 	userId: string;
 	teamId: TeamId;
+	lastCallId?: string;
 	isCaptain?: boolean;
 	mvp?: boolean;
 	win?: boolean;
@@ -60,6 +61,7 @@ const MatchParticipantSchema = new Schema<IMatchParticipant>(
 			type: Number,
 			required: true,
 		},
+		lastCallId: String,
 		isCaptain: Boolean,
 		mvp: Boolean,
 		modifiedPdls: Number,
