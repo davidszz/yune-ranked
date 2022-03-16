@@ -123,9 +123,9 @@ export async function finalizeMatch({ client, matchData }: IFinalizeMatchData) {
 		.filter(Boolean);
 
 	async function moveBack() {
-		for (const { member } of members.filter((x) => !!x?.member?.voice.channel)) {
+		for (const { member } of members) {
 			const memberData = matchData.participants.find((x) => x.userId === member.id);
-			if (memberData?.lastCallId && member.voice.channelId !== memberData.lastCallId) {
+			if (memberData?.lastCallId && member && member.voice.channelId !== memberData.lastCallId) {
 				const oldChannel = match.guild.channels.cache.get(memberData.lastCallId);
 				if (oldChannel) {
 					try {
