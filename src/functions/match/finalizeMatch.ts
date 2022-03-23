@@ -50,7 +50,7 @@ export async function finalizeMatch({ client, matchData }: IFinalizeMatchData) {
 			const wonPdlAmount = RankUtils.calculateWonPdlAmount(calcOptions);
 			modifiedPdls = wonPdlAmount;
 
-			mmr += wonPdlAmount;
+			mmr += wonPdlAmount * 1.4;
 			pdl += wonPdlAmount;
 
 			while (pdl >= Ranks[rank].maxPdl && Ranks[rank + 1] !== null) {
@@ -61,7 +61,7 @@ export async function finalizeMatch({ client, matchData }: IFinalizeMatchData) {
 			const losePdlAmount = RankUtils.calculateLosePdlAmount(calcOptions);
 			modifiedPdls = losePdlAmount;
 
-			mmr = Math.max(mmr - losePdlAmount, 100);
+			mmr = Math.max(mmr - losePdlAmount * 1.2, 100);
 			if (pdl > 0) {
 				pdl = Math.max(pdl - losePdlAmount, 0);
 			} else if (Ranks[rank - 1] && rank - 1 !== UserRank.Unranked) {

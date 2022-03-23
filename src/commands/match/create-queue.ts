@@ -20,7 +20,7 @@ import { MatchStartTemplate } from '@structures/canvas/templates/MatchStartTempl
 import { Command } from '@structures/Command';
 import { YuneEmbed } from '@structures/YuneEmbed';
 import { CreateUrl, DEFAULT_USER_MMR } from '@utils/Constants';
-import { Emojis, EmojisIds } from '@utils/Emojis';
+import { EmojisIds } from '@utils/Emojis';
 import { MatchStatus } from '@utils/MatchStatus';
 import { Ranks } from '@utils/Ranks';
 import { RankUtils } from '@utils/RankUtils';

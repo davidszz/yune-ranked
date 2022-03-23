@@ -9,13 +9,13 @@ interface PDLCalculatorOptions {
 
 export class RankUtils {
 	static calculateWonPdlAmount(options: PDLCalculatorOptions) {
-		const wonPdl = Math.min(options.matchMmr / options.mmr, 1.8) * 20 * (options.mvp ? 1.2 : 1);
-		return wonPdl > 0 ? Math.min(Math.floor(wonPdl), 32) : 5;
+		const wonPdl = Math.min(options.matchMmr / options.mmr, 1.8) * 26 * (options.mvp ? 1.2 : 1);
+		return wonPdl > 0 ? Math.min(Math.floor(wonPdl), 50) : 12;
 	}
 
 	static calculateLosePdlAmount(options: PDLCalculatorOptions) {
 		const losePdl = this.calculateWonPdlAmount(options);
-		return Math.min(32 - losePdl, 5);
+		return Math.min(40 - losePdl, 8);
 	}
 
 	static getRankByMmr(mmr: number) {
